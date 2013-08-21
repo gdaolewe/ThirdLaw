@@ -9,9 +9,11 @@
 #import "IndexTableViewController.h"
 #import "IndexData.h"
 #import "PageViewController.h"
+#import "SavedPagesController.h"
 #import "SearchViewController.h"
+#import "Styles.h"
 
-@interface IndexTableViewController () <SearchViewDelegate>
+@interface IndexTableViewController () <SearchViewDelegate, SavedPagesDelegate>
 
 @end
 
@@ -35,7 +37,10 @@ IndexData * _indexData;
 {
     [super viewDidLoad];
     _indexData = [IndexData sharedIndexData];
-    self.navigationController.toolbar.tintColor = [UIColor colorWithRed:0.03922 green:0.19608 blue:0.4 alpha:1];
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,21 +78,20 @@ IndexData * _indexData;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Index cell"];
     }
+    cell.textLabel.font = [UIFont fontWithName:@"MarkerFelt-Wide" size:cell.textLabel.font.pointSize];
     // Configure the cell...
-    //cell.textLabel.font = [UIFont fontWithName:@"NoticiaText-Bold" size:[UIFont labelFontSize]];
     switch (self.indexDepth) {
         case 0:
             cell.textLabel.text = [_indexData categoryNameAtIndex:indexPath.row];
             break;
         case 1:
             cell.textLabel.text = [_indexData exampleNameForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
+            break;
     }
-    
     return cell;
 }
 
 #pragma mark - Table view delegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"%d", self.indexDepth);
@@ -109,6 +113,22 @@ IndexData * _indexData;
     }
 }
 
+#pragma mark - SavedPagesDelegate
+-(void) savedPageController:(id)controller didSelectSavedPageWithHTML:(NSString *)html andURL:(NSString*)url {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    PageViewController * page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+    page.url = url;
+    [page loadPageFromHTML:html];
+    [self.navigationController pushViewController:page animated:YES];
+}
+-(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    PageViewController * page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+    page.url = url;
+    [self.navigationController pushViewController:page animated:YES];
+}
+
+
 #pragma mark - SearchViewDelegate
 -(void)searchViewController:(id)controller didSelectSearchResult:(NSString *)result {
     [controller dismissViewControllerAnimated:YES completion:nil];
@@ -121,6 +141,9 @@ IndexData * _indexData;
     if ([segue.identifier isEqualToString:@"IndexToSearchSegue"]) {
         UINavigationController *searchNav = (UINavigationController*)segue.destinationViewController;
         ((SearchViewController*)searchNav.topViewController).delegate = self;
+    } else if ([segue.identifier isEqualToString:@"IndexToSavedPagesSegue"]) {
+        SavedPagesController *savedPages = (SavedPagesController*)segue.destinationViewController;
+        savedPages.delegate = self;
     }
 }
 

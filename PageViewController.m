@@ -65,6 +65,7 @@ bool _isFullScreen;
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 }
 -(void)loadPageFromHTML:(NSString*)html{
+    _loadingSavedPage = YES;
 	_finishedLoading = NO;
     _jsInjected = NO;
     NSURL* baseURL = [[NSBundle mainBundle] resourceURL];

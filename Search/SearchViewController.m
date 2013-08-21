@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "NSString+URLEncoding.h"
 #import "PageViewController.h"
+#import "Styles.h"
 
 @interface SearchViewController ()
     <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIWebViewDelegate>
@@ -44,8 +45,6 @@ BOOL _allSwitchOn;
 
 - (void)viewDidUnload
 {
-    //[self setInfoButton:nil];
-    [self setSearchWebView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -87,7 +86,6 @@ BOOL _allSwitchOn;
 {
     static NSString *CellIdentifier = @"Search Option Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     UISwitch *cellSwitch = [[UISwitch alloc] initWithFrame:cell.frame];
     [cellSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     
