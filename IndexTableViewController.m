@@ -147,4 +147,10 @@ IndexData * _indexData;
     }
 }
 
+- (IBAction)random:(UIBarButtonItem *)sender {
+    PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+    page.url = @"http://tvtropes.org/pmwiki/randomitem.php?p=1";
+    [self.navigationController pushViewController:page animated:YES];
+}
+
 @end

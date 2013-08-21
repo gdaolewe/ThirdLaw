@@ -52,6 +52,10 @@
 		F6C1F21E17C1D66900E1EDCA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F21A17C1D66900E1EDCA /* InfoPlist.strings */; };
 		F6C1F21F17C1D66900E1EDCA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F21C17C1D66900E1EDCA /* MainStoryboard.storyboard */; };
 		F6EC50DA17C44DC400E8876C /* Styles.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC50D917C44DC400E8876C /* Styles.m */; };
+		F6EC50F817C55F3700E8876C /* fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F617C55F3700E8876C /* fullscreen.png */; };
+		F6EC50F917C55F3700E8876C /* fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F717C55F3700E8876C /* fullscreen@2x.png */; };
+		F6EC50FC17C5625C00E8876C /* unfullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50FA17C5625C00E8876C /* unfullscreen.png */; };
+		F6EC50FD17C5625C00E8876C /* unfullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50FB17C5625C00E8876C /* unfullscreen@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -124,6 +128,10 @@
 		F6C1F21D17C1D66900E1EDCA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		F6EC50D817C44DC400E8876C /* Styles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Styles.h; sourceTree = "<group>"; };
 		F6EC50D917C44DC400E8876C /* Styles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Styles.m; sourceTree = "<group>"; };
+		F6EC50F617C55F3700E8876C /* fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fullscreen.png; path = Images/fullscreen.png; sourceTree = SOURCE_ROOT; };
+		F6EC50F717C55F3700E8876C /* fullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fullscreen@2x.png"; path = "Images/fullscreen@2x.png"; sourceTree = SOURCE_ROOT; };
+		F6EC50FA17C5625C00E8876C /* unfullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unfullscreen.png; path = Images/unfullscreen.png; sourceTree = SOURCE_ROOT; };
+		F6EC50FB17C5625C00E8876C /* unfullscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unfullscreen@2x.png"; path = "Images/unfullscreen@2x.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +214,7 @@
 		F6AA220916B3BA2300C7A6D4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F6EC50DD17C552C000E8876C /* Images */,
 				F6AA220B16B3BA2E00C7A6D4 /* Fonts */,
 			);
 			name = Resources;
@@ -315,6 +324,17 @@
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
+		F6EC50DD17C552C000E8876C /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F6EC50FA17C5625C00E8876C /* unfullscreen.png */,
+				F6EC50FB17C5625C00E8876C /* unfullscreen@2x.png */,
+				F6EC50F617C55F3700E8876C /* fullscreen.png */,
+				F6EC50F717C55F3700E8876C /* fullscreen@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -380,6 +400,10 @@
 				F6C1F21617C1D65600E1EDCA /* Lampshade-Info.plist in Resources */,
 				F6C1F21E17C1D66900E1EDCA /* InfoPlist.strings in Resources */,
 				F6C1F21F17C1D66900E1EDCA /* MainStoryboard.storyboard in Resources */,
+				F6EC50F817C55F3700E8876C /* fullscreen.png in Resources */,
+				F6EC50F917C55F3700E8876C /* fullscreen@2x.png in Resources */,
+				F6EC50FC17C5625C00E8876C /* unfullscreen.png in Resources */,
+				F6EC50FD17C5625C00E8876C /* unfullscreen@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

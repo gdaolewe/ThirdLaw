@@ -96,7 +96,11 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Q9H-hy-Jfs"/>
-                        <barButtonItem title="?" style="plain" id="n9s-cN-qkG"/>
+                        <barButtonItem title="?" style="plain" id="n9s-cN-qkG">
+                            <connections>
+                                <action selector="random:" destination="PWF-3I-eV0" id="osx-vw-gkI"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Main Index" id="6l4-wb-VQa">
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="g0g-8F-lCw">
@@ -133,13 +137,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
-                            <button opaque="NO" alpha="0.50000000000000011" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rND-wr-EdE">
-                                <rect key="frame" x="280" y="376" width="40" height="40"/>
+                            <button opaque="NO" alpha="0.60000000000000009" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rND-wr-EdE">
+                                <rect key="frame" x="280" y="374" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <size key="titleShadowOffset" width="1" height="1"/>
-                                <state key="normal" title="X">
+                                <state key="normal" image="unfullscreen.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -178,7 +181,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="4DK-ZL-cgx"/>
-                        <barButtonItem title="X" style="plain" id="8XW-kz-hGQ">
+                        <barButtonItem image="fullscreen.png" style="plain" id="8XW-kz-hGQ">
                             <connections>
                                 <action selector="toggleFullscreen:" destination="2" id="IIw-hi-IXB"/>
                             </connections>
@@ -499,6 +502,10 @@
             <point key="canvasLocation" x="1754" y="158"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="fullscreen.png" width="24" height="24"/>
+        <image name="unfullscreen.png" width="24" height="24"/>
+    </resources>
     <classes>
         <class className="ExternalWebViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
