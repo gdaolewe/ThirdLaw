@@ -18,10 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    //IndexData *indexData = [[IndexData alloc] init];
-    //[indexData loadHTML];
-    
+    //[[UILabel appearance] setFont:[UIFont fontWithName:@"NoticiaText-Regular" size:20.0]];
     [FileLoader downloadFiles];
     return YES;
 }

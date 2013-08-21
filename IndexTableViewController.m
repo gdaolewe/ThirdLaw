@@ -35,6 +35,7 @@ IndexData * _indexData;
 {
     [super viewDidLoad];
     _indexData = [IndexData sharedIndexData];
+    self.navigationController.toolbar.tintColor = [UIColor colorWithRed:0.03922 green:0.19608 blue:0.4 alpha:1];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,7 +74,7 @@ IndexData * _indexData;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Index cell"];
     }
     // Configure the cell...
-    
+    //cell.textLabel.font = [UIFont fontWithName:@"NoticiaText-Bold" size:[UIFont labelFontSize]];
     switch (self.indexDepth) {
         case 0:
             cell.textLabel.text = [_indexData categoryNameAtIndex:indexPath.row];

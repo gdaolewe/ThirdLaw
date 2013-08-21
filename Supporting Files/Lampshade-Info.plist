@@ -26,6 +26,13 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>NoticiaText-Italic.ttf</string>
+		<string>NoticiaText-Regular.ttf</string>
+		<string>NoticiaText-BoldItalic.ttf</string>
+		<string>NoticiaText-Bold.ttf</string>
+		<string>Rosario-Regular.ttf</string>
+		<string>Rosario-Bold.ttf</string>
+		<string>Rosario-Italic.ttf</string>
 		<string>POORICH.TTF</string>
 	</array>
 	<key>UIMainStoryboardFile</key>

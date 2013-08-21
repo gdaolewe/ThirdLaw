@@ -18,10 +18,12 @@
 
 @interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
+@property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
 @end
 
 @implementation PageViewController
 @synthesize webView = _webView;
+@synthesize fullscreenOffButton = _fullscreenOffButton;
 
 @synthesize url = _url;
 NSString* _script;
@@ -31,11 +33,15 @@ bool _loadingSavedPage;
 bool _shouldSaveHistory;
 bool _historySaved;
 
+bool _isFullScreen;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.webView.delegate = self;
     self.navigationController.toolbarHidden = NO;
+    _isFullScreen = NO;
+    self.fullscreenOffButton.hidden = YES;
     _script = [FileLoader getScript];
     [HistoryTracker setHistoryIndex:0];
     _loadingSavedPage = NO;
@@ -47,6 +53,7 @@ bool _historySaved;
 {
     [self setWebView:nil];
     [self setActivityIndicator:nil];
+    [self setFullscreenOffButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -71,6 +78,7 @@ bool _historySaved;
     if ([url hasPrefix:@"command://"]) {    //page is finished loading
         self.webView.hidden = NO;
         [self.activityIndicator stopAnimating];
+        self.title = [request.URL.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [self addToHistory];
 		_finishedLoading = YES;
         NSLog(@"command done");
@@ -106,14 +114,12 @@ bool _historySaved;
     NSString* documentReadyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
     NSLog(@"%@ %@", documentReadyState, _jsInjected? @"YES":@"NO");
     if (([documentReadyState isEqualToString:@"interactive"] || [documentReadyState isEqualToString:@"complete"]) && !_jsInjected) {
-        //_script = [FileLoader getScript];
         NSString* jQueryString = [NSString stringWithFormat:@"var script = document.createElement('script');script.setAttribute('src','file://%@');document.getElementsByTagName('head')[0].appendChild(script);",[[NSBundle mainBundle] pathForResource:@"jquery" ofType:@"js"]];
         [self.webView stringByEvaluatingJavaScriptFromString:jQueryString];
         NSString* stringForCSS = [NSString stringWithFormat:@"document.getElementsByTagName('link')[1].href='file://%@';",
                                             [FileLoader getCSSPath]];
         [self.webView stringByEvaluatingJavaScriptFromString:stringForCSS];
         [self.webView stringByEvaluatingJavaScriptFromString:_script];
-        self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
          _jsInjected = YES;
     }
     if (_loadingSavedPage && _jsInjected) {
@@ -212,6 +218,21 @@ bool _historySaved;
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
+- (IBAction)toggleFullscreen:(UIBarButtonItem *)sender {
+    if (_isFullScreen) {
+        _isFullScreen = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        self.fullscreenOffButton.hidden = YES;
+    } else {
+        _isFullScreen = YES;
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:YES animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        self.fullscreenOffButton.hidden = NO;
+    }
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
