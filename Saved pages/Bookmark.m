@@ -15,6 +15,8 @@
 @dynamic url;
 @dynamic title;
 
+NSArray *_bookmarksCached;
+
 +(void) saveBookmarkURL:(NSString*)url withTitle:(NSString*)title {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     Bookmark *bookmark = [NSEntityDescription insertNewObjectForEntityForName:@"Bookmark" inManagedObjectContext:context];
@@ -23,6 +25,8 @@
     NSError *error = nil;
     if (![context save:&error]) {
         NSLog(@"Error saving bookmark to Core Data: %@", error.localizedDescription);
+    } else {
+        _bookmarksCached = [self fetchBookMarks];
     }
 }
 +(void) deleteBookmark:(Bookmark*)bookmark {
@@ -31,9 +35,11 @@
     NSError *error = nil;
     if (![context save:&error]) {
         NSLog(@"Error deleting bookmark from Core Data: %@", error.localizedDescription);
+    } else {
+        _bookmarksCached = [self fetchBookMarks];
     }
 }
-+(NSArray*) bookmarks {
++(NSArray*) fetchBookMarks {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Bookmark" inManagedObjectContext:context];
@@ -47,6 +53,13 @@
         NSLog(@"Error fetching bookmarks from Core Data");
     }
     return results;
+}
++(NSArray*) bookmarks {
+    if (_bookmarksCached == nil) {
+        _bookmarksCached = [self fetchBookMarks];
+    }
+    return _bookmarksCached;
+        
 }
 
 

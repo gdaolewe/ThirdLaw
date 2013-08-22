@@ -16,6 +16,9 @@
 @dynamic url;
 @dynamic date;
 
+NSArray *_historyCached;
+NSDateFormatter *_formatter;
+
 +(void)addHistoryItemHTML:(NSString *)html withTitle:(NSString *)title andURL:(NSString*)url {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSError *error = nil;
@@ -35,10 +38,12 @@
     //then save
     if (![context save:&error]) {
         NSLog(@"Error saving history to Core Data: %@", error.localizedDescription);
+    } else {
+        _historyCached = [self fetchHistory];
     }
 }
 
-+(NSArray*) history {
++(NSArray*) fetchHistory {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"HistoryItem" inManagedObjectContext:context];
@@ -54,6 +59,12 @@
     return results;
 }
 
++(NSArray*) history {
+    if (_historyCached == nil)
+        _historyCached = [self fetchHistory];
+    return _historyCached;
+}
+
 +(void) clearHistory {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSArray *history = [self history];
@@ -63,13 +74,17 @@
     NSError *error = nil;
     if (![context save:&error]) {
         NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
+    } else {
+        _historyCached = [self fetchHistory];
     }
 }
 
 -(NSString*) dateString {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MM/dd/yyyy HH:mm";
-    return [formatter stringFromDate:self.date];
+    if (_formatter == nil) {
+        _formatter = [[NSDateFormatter alloc] init];
+        _formatter.dateFormat = @"MM/dd/yyyy HH:mm";
+    }
+    return [_formatter stringFromDate:self.date];
 }
 
 @end

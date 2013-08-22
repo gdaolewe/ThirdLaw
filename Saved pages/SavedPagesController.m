@@ -117,8 +117,9 @@ NSMutableSet * _selectedEditRows;
         }
         pages = [Page pages];
     }
-    _selectedEditRows = [NSMutableSet set];
     [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
+    _selectedEditRows = [NSMutableSet set];
+
 }
 
 - (void)viewDidLoad
