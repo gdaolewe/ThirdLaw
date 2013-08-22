@@ -8,12 +8,14 @@
 
 #import "FileLoader.h"
 
-NSString *const DEV_HOST = @"192.168.1.115:3000";
-
+NSString *const DEV_HOST = @"http://192.168.1.115:3000";
+NSString *_host;
 
 @implementation FileLoader
+
 NSString* appSupportDir;
 +(void) downloadFiles {
+    _host = DEV_HOST;
     appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     if (![[NSFileManager defaultManager] fileExistsAtPath:appSupportDir isDirectory:NULL]) {
         NSError *error = nil;
@@ -41,7 +43,8 @@ NSString* appSupportDir;
 }
 
 +(void) downloadScriptToDir: (NSString*) dir {
-    NSURL* scriptURL = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/u/2555201/script.js"];
+    NSURL* scriptURL = [NSURL URLWithString:[_host stringByAppendingPathComponent:@"script.js"]];
+    NSLog(@"%@", scriptURL.absoluteString);
     NSData* scriptData = [NSData dataWithContentsOfURL:scriptURL];
     if (scriptData) {
         NSString  *filePath = [NSString stringWithFormat:@"%@/%@", dir,@"script.js"];
@@ -52,7 +55,7 @@ NSString* appSupportDir;
 }
 
 +(void) downloadCSSToDir: (NSString*) dir {
-    NSURL* styleURL = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/u/2555201/css_white.css"];
+    NSURL* styleURL = [NSURL URLWithString:[_host stringByAppendingPathComponent:@"css_white.css"]];
     NSData* styleData = [NSData dataWithContentsOfURL:styleURL];
     if (styleData) {
         NSString  *filePath = [NSString stringWithFormat:@"%@/%@", dir,@"css_white.css"];
