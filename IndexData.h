@@ -26,4 +26,6 @@
 
 -(NSString *)urlForCategoryIndex:(int)category atIndex:(int)index;
 
+-(NSString*) homePage;
+
 @end

@@ -60,6 +60,10 @@
     for (HistoryItem *item in history) {
         [context deleteObject:item];
     }
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
+    }
 }
 
 -(NSString*) dateString {

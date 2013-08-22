@@ -21,6 +21,7 @@
 {
     //[[UILabel appearance] setFont:[UIFont fontWithName:@"NoticiaText-Regular" size:20.0]];
     [FileLoader downloadFiles];
+    [[IndexData sharedIndexData] loadHTML];
    // for (NSString* name in [UIFont familyNames])
      //   NSLog(@"%@", [[UIFont fontNamesForFamilyName:name] objectAtIndex:0]);
     

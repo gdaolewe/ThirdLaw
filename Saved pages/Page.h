@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "GenericSavedPage.h"
 
 
-@interface Page : NSManagedObject
+@interface Page : NSManagedObject <GenericSavedPage>
 
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * html;

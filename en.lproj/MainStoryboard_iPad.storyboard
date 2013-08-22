@@ -142,11 +142,6 @@
                                     <outletCollection property="gestureRecognizers" destination="WIp-TT-LX6" appends="YES" id="oLK-RI-rZS"/>
                                 </connections>
                             </webView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sgZ-Xb-TD7">
-                                <rect key="frame" x="366" y="461" width="37" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </activityIndicatorView>
                             <button opaque="NO" alpha="0.60000000000000009" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rND-wr-EdE">
                                 <rect key="frame" x="728" y="918" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -163,9 +158,14 @@
                                     <action selector="toggleFullscreen:" destination="2" eventType="touchDown" id="BYx-rX-VKT"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="q1u-PK-lKc">
-                                <rect key="frame" x="224" y="543" width="320" height="417"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sgZ-Xb-TD7">
+                                <rect key="frame" x="366" y="461" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                            <button hidden="YES" opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="q1u-PK-lKc">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="960"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal">
@@ -593,6 +593,63 @@
         <image name="index.png" width="24" height="24"/>
         <image name="unfullscreen.png" width="24" height="24"/>
     </resources>
+    <classes>
+        <class className="ExternalWebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="IndexTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="PageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="back:" candidateClass="UIButton"/>
+                <relationship kind="action" name="cancelBackForward:" candidateClass="UIButton"/>
+                <relationship kind="action" name="forward:" candidateClass="UIButton"/>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="leftSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="rightSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="saveActions:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="SavedPagesController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
+            <relationships>
+                <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="editButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tabBar" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="SearchOptionsTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchOptionsTVC.h"/>
+        </class>
+        <class className="SearchViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="searchWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -600,7 +657,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="UAr-7G-L2p"/>
-        <segue reference="zaA-DJ-eV7"/>
-        <segue reference="hIl-9p-fhN"/>
+        <segue reference="jF8-bL-F2p"/>
+        <segue reference="77L-gb-68x"/>
     </inferredMetricsTieBreakers>
 </document>

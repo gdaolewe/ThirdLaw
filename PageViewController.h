@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PageViewController : UIViewController 
+extern NSString *const RANDOM_URL;
+
+@interface PageViewController : UIViewController
+
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property NSString *url;

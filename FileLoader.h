@@ -13,5 +13,5 @@
 +(void) downloadFiles;
 +(NSString*) getScript;
 +(NSString*) getCSSPath;
-
++(NSString*) getHomePage;
 @end

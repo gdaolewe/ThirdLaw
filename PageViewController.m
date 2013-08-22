@@ -7,6 +7,7 @@
 //
 
 #import "PageViewController.h"
+#import "IndexData.h"
 #import "FileLoader.h"
 #import "HistoryItem.h"
 #import "HistoryTracker.h"
@@ -16,17 +17,30 @@
 #import "SearchViewController.h"
 #import "ExternalWebViewController.h"
 
+NSString *const RANDOM_URL;
+
 @interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
+@property (strong, nonatomic) IBOutlet UIButton *backButton;
+@property (strong, nonatomic) IBOutlet UIButton *forwardButton;
+@property (strong, nonatomic) IBOutlet UIButton *backForwardCancelButton;
+
+
 @end
 
 @implementation PageViewController
+
+NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php?p=1";
+
 @synthesize webView = _webView;
 @synthesize fullscreenOffButton = _fullscreenOffButton;
+@synthesize backButton = _backButton;
+@synthesize forwardButton = _forwardButton;
 
 @synthesize url = _url;
 NSString* _script;
+bool _backForwardButtonsShowing;
 bool _jsInjected;
 bool _finishedLoading;
 bool _loadingSavedPage;
@@ -41,30 +55,56 @@ bool _isFullScreen;
     self.webView.delegate = self;
     self.navigationController.toolbarHidden = NO;
     _isFullScreen = NO;
+    _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
     _script = [FileLoader getScript];
     [HistoryTracker setHistoryIndex:0];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
-    [self loadURLFromString:self.url];
+    if (self.url == nil) {
+        _shouldSaveHistory = NO;
+        [self loadPageFromHTML: [FileLoader getHomePage]];
+        _loadingSavedPage = NO;
+    } else {
+        [self loadURLFromString:self.url];
+    }
 }
 - (void)viewDidUnload
 {
     [self setWebView:nil];
     [self setActivityIndicator:nil];
     [self setFullscreenOffButton:nil];
+    [self setBackButton:nil];
+    [self setForwardButton:nil];
+    [self setBackForwardCancelButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [self hideBackForwardButtons];
+    [super viewWillDisappear:animated];
+}
+
+-(void) setPageHidden:(BOOL)hidden {
+    self.webView.hidden = hidden;
+    if (hidden) {
+        [self.activityIndicator startAnimating];
+    } else {
+        [self.activityIndicator stopAnimating];
+    }
+}
+
 -(void) loadURLFromString:(NSString *)urlString {
+    [self setPageHidden:YES];
 	_finishedLoading = NO;
     _jsInjected = NO;
     self.url = urlString;
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 }
 -(void)loadPageFromHTML:(NSString*)html{
+    [self setPageHidden:YES];
     _loadingSavedPage = YES;
 	_finishedLoading = NO;
     _jsInjected = NO;
@@ -77,8 +117,9 @@ bool _isFullScreen;
     
     NSString *url = request.URL.absoluteString;
     if ([url hasPrefix:@"command://"]) {    //page is finished loading
-        self.webView.hidden = NO;
-        [self.activityIndicator stopAnimating];
+        [self.webView stringByEvaluatingJavaScriptFromString:@"$('iframe').remove();"];
+        NSLog(@"command done unhid");
+        [self setPageHidden:NO];
         self.title = [request.URL.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [self addToHistory];
 		_finishedLoading = YES;
@@ -86,12 +127,14 @@ bool _isFullScreen;
         return NO;
     }
     else if ([request.URL.host isEqualToString:@"tvtropes.org"]) {
+        [self setPageHidden:YES];
         _jsInjected = NO;
         self.url = url;
         NSData* htmlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.url]];
         NSString* htmlString = [[NSString alloc] initWithData:htmlData encoding:NSISOLatin1StringEncoding];
         NSURL* baseURL = [[NSBundle mainBundle] resourceURL];
         [webView loadHTMLString:htmlString baseURL:baseURL];
+        NSLog(@"%@", url);
         return NO;
     } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 		NSLog(@"\n\n%@", url);
@@ -104,8 +147,7 @@ bool _isFullScreen;
 	}
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
-    self.webView.hidden = YES;
-    [self.activityIndicator startAnimating];
+    [self hideBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self.activityIndicator stopAnimating];
@@ -125,8 +167,8 @@ bool _isFullScreen;
     }
     if (_loadingSavedPage && _jsInjected) {
         _loadingSavedPage = NO;
-        self.webView.hidden = NO;
-        [self.activityIndicator stopAnimating];
+        [self setPageHidden:NO];
+        NSLog(@"webviewdidfinishload unhid");
 		_finishedLoading = YES;
         [self addToHistory];
     }
@@ -137,6 +179,7 @@ bool _isFullScreen;
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
         [HistoryItem addHistoryItemHTML:html withTitle:self.title andURL:self.url];
         _historySaved = YES;
+        [HistoryTracker setHistoryIndex:0];
     } else {
         _shouldSaveHistory = YES;
     }
@@ -151,8 +194,49 @@ bool _isFullScreen;
         ((SavedPagesController*)segue.destinationViewController).delegate = self;
     }
 }
+- (IBAction)home:(UIBarButtonItem *)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+- (IBAction)random:(UIBarButtonItem *)sender {
+    [self loadURLFromString:RANDOM_URL];
+}
 
-- (IBAction)back:(UIBarButtonItem *)sender {
+- (IBAction)cancelBackForward:(UIButton *)sender {
+    [self hideBackForwardButtons];
+}
+
+- (IBAction)tapGesture:(UITapGestureRecognizer *)sender {
+    [self hideBackForwardButtons];
+}
+-(void) hideBackForwardButtons {
+    if (_backForwardButtonsShowing) {
+        self.webView.alpha = 1;
+        self.backButton.hidden = YES;
+        self.forwardButton.hidden = YES;
+        self.backForwardCancelButton.hidden = YES;
+    }
+}
+- (IBAction)rightSwipeGesture:(UISwipeGestureRecognizer *)sender {
+    NSArray* history = [HistoryItem history];
+    if ([HistoryTracker historyIndex] < history.count-1) {
+        self.webView.alpha = 0.5;
+        self.forwardButton.hidden = YES;
+        self.backButton.hidden = NO;
+        self.backForwardCancelButton.hidden = NO;
+        _backForwardButtonsShowing = YES;
+    }
+}
+- (IBAction)leftSwipeGesture:(UISwipeGestureRecognizer *)sender {
+    if ([HistoryTracker historyIndex] > 0) {
+        self.webView.alpha = 0.5;
+        self.backButton.hidden = YES;
+        self.forwardButton.hidden = NO;
+        self.backForwardCancelButton.hidden = NO;
+        _backForwardButtonsShowing = YES;
+    }
+}
+
+- (IBAction)back:(UIButton *)sender {
     NSArray* history = [HistoryItem history];
     if ([HistoryTracker historyIndex] < history.count-1) {
         [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]+1];
@@ -163,8 +247,7 @@ bool _isFullScreen;
         [self loadPageFromHTML:previous.html];
     }
 }
-
-- (IBAction)forward:(UIBarButtonItem *)sender {
+- (IBAction)forward:(UIButton *)sender {
     if ([HistoryTracker historyIndex] > 0) {
         NSArray* history = [HistoryItem history];
         [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]-1];
@@ -177,11 +260,14 @@ bool _isFullScreen;
 }
 
 #pragma mark - SavedPagesDelegate
--(void) savedPageController:(id)controller didSelectSavedPageWithHTML:(NSString *)html andURL:(NSString*)url {
+-(void) savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {
     [controller dismissViewControllerAnimated:YES completion:nil];
     _loadingSavedPage = YES;
-    self.url = url;
-    [self loadPageFromHTML:html];
+    self.url = page.url;
+    self.title = page.title;
+    if ([page isKindOfClass:HistoryItem.class])
+        _shouldSaveHistory = NO;
+    [self loadPageFromHTML:page.html];
 }
 -(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
     [controller dismissViewControllerAnimated:YES completion:nil];

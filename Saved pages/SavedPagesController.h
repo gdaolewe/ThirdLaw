@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericSavedPage.h"
 
 @protocol SavedPagesDelegate <NSObject>
 
--(void)savedPageController:(id)controller didSelectSavedPageWithHTML:(NSString*)html andURL:(NSString*)url;
+-(void)savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page;
 -(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString*)url;
 @end
 

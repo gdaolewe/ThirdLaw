@@ -34,6 +34,7 @@ NSString* appSupportDir;
     }
     [self downloadScriptToDir:appSupportDir];
     [self downloadCSSToDir:appSupportDir];
+    [self downloadHomePageToDir:appSupportDir];
 }
 
 +(void) downloadScriptToDir: (NSString*) dir {
@@ -58,6 +59,17 @@ NSString* appSupportDir;
     }
 }
 
++(void) downloadHomePageToDir:(NSString*)dir {
+    NSURL *homeURL = [NSURL URLWithString:@"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage"];
+    NSData *homePageData = [NSData dataWithContentsOfURL:homeURL];
+    if (homePageData) {
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@", dir, @"home.html"];
+        [homePageData writeToFile:filePath atomically:YES];
+    } else {
+        NSLog(@"Error downloading home page to Application Support directory");
+    }
+}
+
 +(NSString*) getScript {
     NSString  *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir,@"script.js"];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
@@ -65,6 +77,11 @@ NSString* appSupportDir;
 }
 +(NSString*) getCSSPath {
     return [NSString stringWithFormat:@"%@/%@", appSupportDir,@"css_white.css"];
+}
++(NSString*) getHomePage {
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"home.html"];
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    return [[NSString alloc] initWithData:fileData encoding:NSASCIIStringEncoding];
 }
 
 @end

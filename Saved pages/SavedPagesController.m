@@ -98,7 +98,7 @@ NSMutableSet * _selectedEditRows;
 
 - (IBAction)clearHistory:(UIBarButtonItem *)sender {
     [HistoryItem clearHistory];
-    history = [NSArray array];
+    history = [HistoryItem history];
     [self.tableView reloadData];
 }
 
@@ -162,7 +162,7 @@ NSMutableSet * _selectedEditRows;
             }
             HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
             if ([HistoryTracker historyIndex] == indexPath.row)
-                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", @"►", item.title];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", @">", item.title];
             else
                 cell.textLabel.text = item.title;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"Visited %@", [item dateString]];
@@ -209,7 +209,8 @@ NSMutableSet * _selectedEditRows;
             case HISTORY:
             {
                 HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
-                [self.delegate savedPageController:self didSelectSavedPageWithHTML:item.html andURL:item.url];
+                [HistoryTracker setHistoryIndex:indexPath.row];
+                [self.delegate savedPageController:self didSelectSavedPage:item];
             }
                 break;
             case BOOKMARKS:
@@ -223,7 +224,7 @@ NSMutableSet * _selectedEditRows;
             case SAVED_PAGES:
             {
                 Page* page = (Page*)[pages objectAtIndex:indexPath.row];
-                [self.delegate savedPageController:self didSelectSavedPageWithHTML:page.html andURL:page.url];
+                [self.delegate savedPageController:self didSelectSavedPage:page];
             }
                 break;
         }

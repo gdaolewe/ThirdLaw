@@ -78,14 +78,17 @@ IndexData * _indexData;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Index cell"];
     }
-    cell.textLabel.font = [UIFont fontWithName:@"MarkerFelt-Wide" size:cell.textLabel.font.pointSize];
     // Configure the cell...
     switch (self.indexDepth) {
         case 0:
             cell.textLabel.text = [_indexData categoryNameAtIndex:indexPath.row];
             break;
-        case 1:
+        case 1: {
+            NSString * url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
+            if (!url)
+                cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.text = [_indexData exampleNameForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
+        }
             break;
     }
     return cell;
@@ -105,21 +108,25 @@ IndexData * _indexData;
         }
             break;
         case 1: {
-            PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-            page.url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
-            [self.navigationController pushViewController:page animated:YES];
+            NSString * url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
+            if (url) {
+                PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+                page.url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
+                [self.navigationController pushViewController:page animated:YES];
+            }
         }
             break;
     }
 }
 
 #pragma mark - SavedPagesDelegate
--(void) savedPageController:(id)controller didSelectSavedPageWithHTML:(NSString *)html andURL:(NSString*)url {
+-(void) savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {
     [controller dismissViewControllerAnimated:YES completion:nil];
-    PageViewController * page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-    page.url = url;
-    [page loadPageFromHTML:html];
-    [self.navigationController pushViewController:page animated:YES];
+    PageViewController * pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+    pvc.url = page.url;
+    pvc.title = page.title;
+    [pvc loadPageFromHTML:page.html];
+    [self.navigationController pushViewController:pvc animated:YES];
 }
 -(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
     [controller dismissViewControllerAnimated:YES completion:nil];
@@ -147,9 +154,13 @@ IndexData * _indexData;
     }
 }
 
+- (IBAction)home:(UIBarButtonItem *)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (IBAction)random:(UIBarButtonItem *)sender {
     PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-    page.url = @"http://tvtropes.org/pmwiki/randomitem.php?p=1";
+    page.url = RANDOM_URL;
     [self.navigationController pushViewController:page animated:YES];
 }
 

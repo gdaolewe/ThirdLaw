@@ -15,6 +15,7 @@
     NSData *_htmlData;
     NSMutableArray *_categoryHTML;
     NSArray *_exampleHTML;
+    NSString *_homePageHTML;
 }
 
 @end
@@ -76,12 +77,19 @@ static IndexData* _singletonIndexData = nil;
 
 -(NSString *)exampleNameForCategoryIndex:(int)category atIndex:(int) index {
     TFHppleElement *e = [_exampleHTML objectAtIndex:category];
-    return [[[[e children] objectAtIndex:index] firstChildWithTagName:@"a"] firstChild].content;
+    NSString *content = [[[[e children] objectAtIndex:index] firstChildWithTagName:@"a"] firstChild].content;
+    if (content == nil)
+       content = [[[e children] objectAtIndex:index] firstChild].content;
+    return content;
 }
 
 -(NSString *)urlForCategoryIndex:(int)category atIndex:(int)index {
     TFHppleElement *e = [_exampleHTML objectAtIndex:category];
     return [[[[e children] objectAtIndex:index] firstChildWithTagName:@"a"] objectForKey:@"href"];
+}
+
+-(NSString*) homePage {
+    return _homePageHTML;
 }
 
 @end

@@ -9,5 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @protocol GenericSavedPage <NSObject>
-
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * html;
+@property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSDate * date;
 @end
