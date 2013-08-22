@@ -103,11 +103,21 @@ NSMutableSet * _selectedEditRows;
 }
 
 -(IBAction)deleteRows:(UIBarButtonItem *)sender {
-    for (NSIndexPath *indexPath in _selectedEditRows) {
-        Page *page = (Page*)[pages objectAtIndex:indexPath.row];
-        [Page deletePage:page];
+    if (self.tabBar.selectedSegmentIndex == BOOKMARKS) {
+        for (NSIndexPath *indexPath in _selectedEditRows)  {
+            Bookmark *bookmark = [bookmarks objectAtIndex:indexPath.row];
+            [Bookmark deleteBookmark:bookmark];
+        }
+        bookmarks = [Bookmark bookmarks];
     }
-    pages = [Page pages];
+    else if (self.tabBar.selectedSegmentIndex == SAVED_PAGES) {
+        for (NSIndexPath *indexPath in _selectedEditRows) {
+            Page *page = (Page*)[pages objectAtIndex:indexPath.row];
+            [Page deletePage:page];
+        }
+        pages = [Page pages];
+    }
+    _selectedEditRows = [NSMutableSet set];
     [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 

@@ -287,6 +287,7 @@ bool _isFullScreen;
     switch (buttonIndex) {
         case 0:
             [Bookmark saveBookmarkURL:self.url withTitle:self.title];
+            NSLog(@"saved bookmark with title %@ and url %@", self.title, self.url);
             break;
         case 1:
         {
