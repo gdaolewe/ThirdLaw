@@ -62,7 +62,7 @@ NSMutableSet * _selectedEditRows;
         }
             break;
         case SAVED_PAGES: {
-            self.toolbarItems = [NSArray arrayWithObjects:self.editButton, flexibleSpace, self.deleteButton, nil];
+            self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, self.deleteButton, nil];
         }
             break;
     }

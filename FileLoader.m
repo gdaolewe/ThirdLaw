@@ -8,6 +8,9 @@
 
 #import "FileLoader.h"
 
+NSString *const DEV_HOST = @"192.168.1.115:3000";
+
+
 @implementation FileLoader
 NSString* appSupportDir;
 +(void) downloadFiles {

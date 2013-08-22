@@ -21,3 +21,10 @@ Pods
 
 #Images
 *.psd
+
+#Node static files dev server
+/*.js
+node_modules/*
+
+Fonts/*
+jquery.js

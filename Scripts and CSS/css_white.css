@@ -1,0 +1,579 @@
+a {
+  text-decoration:none;
+  border:none;
+}
+a:link, a:visited { color:#191970; }
+img { border:none; }
+div.buttonframe {
+  background:#a6caf0;
+  border:2px solid #e0c080;
+  padding:2px;
+  width:80px;
+  border-radius:12px;
+  -moz-border-radius:12px;
+  -webkit-border-radius:12px;
+}
+div.buttoninterior {
+  color:#292421;
+  background:#a6caf0;
+  text-align:center;
+  font-weight:bolder;
+  font-size:x-small;
+  line-height:1.6;
+  border:1px solid white;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  cursor:pointer;
+}
+div.buttoninterior a:link, div.buttoninterior a:visited { color:#292421; }
+div.buttoninterior a:hover {
+  color:#292421;
+  text-decoration:underline;
+}
+body {
+  position:relative;
+  background:white;
+  color: black;
+  font-family:NoticiaText;
+  line-height:1.2;
+  text-align:center;
+  overflow-x: hidden;  
+}
+
+div.container {
+    clear:left;
+  position:relative;
+  /*padding:8px;*/
+  margin:0 auto;
+  width:100%;
+  text-align:left;
+}
+div.repairbug {
+  background-color:#fffcf1;
+  width:300px;
+  text-align:center;
+  border:1px solid silver;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  padding:4px;
+}
+.notifier {
+  background-color:#cde6bf;
+  text-align:center;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  padding:4px;
+}
+.notifier a {
+  border:thin solid green;
+  padding:2px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+.notifier a:link, .notifier a:hover, .notifier a:visited { color:#007f00; }
+.banner_flame, .banner_you_fail, .banner_subjective, .banner_audience, .banner_fridge {
+  margin-bottom:10px;
+  font-size:small;
+  border:solid chocolate 1px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+div.contributorlead {
+  text-align:center;
+  font-size:large;
+  margin-top:6px;
+  margin-bottom:6px;
+  background-color:#eeeeff;
+  padding:4px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+div.namespacebuttons {
+  text-align:center;
+  padding:2px;
+  padding-bottom:none;
+  margin-bottom:none;
+}
+div.namespacebuttons img { vertical-align:middle; }
+ul.namespaces {
+  margin-left:0px;
+  line-height:1.6;
+  padding:0px;
+}
+ul.namespaces a { text-decoration:none; }
+.namespace_li {
+  display:inline;
+  color:#191970;
+  background-image:url("http://static.tvtropes.org/namespace_sprite.png");
+  background-repeat:no-repeat;
+  background-position:0px 32px;
+  padding-left:19px;
+  padding-right:4px;
+  border:1px silver outset;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+.namespace_li_no_label {
+  display:inline;
+  color:#191970;
+  background-image:url("http://static.tvtropes.org/namespace_sprite.png");
+  background-repeat:no-repeat;
+  background-position:0px 32px;
+  padding-left:19px;
+  padding-left:0px;
+  padding-right:4px;
+  padding-right:2px;
+  border:1px silver outset;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+ul.namespaces li:hover { border-color:#191970; }
+.YMMV_lit { background-position:-8px -7px; }
+.YMMV { background-position:-8px -7px; }
+.Main { background-position:-8px -43px; }
+.News { background-position:-8px -79px; }
+.JustBugsMe { background-position:-8px -115px; }
+.Headscratchers { background-position:-8px -115px; }
+.Quotes { background-position:-8px -151px; }
+.Trivia { background-position:-8px -187px; }
+.Synopsis { background-position:-8px -187px; }
+.PlayingWith { background-position:-8px -223px; }
+.Literature { background-position:-8px -259px; }
+.Series { background-position:-8px -295px; }
+.Film { background-position:-8px -331.5px; }
+.Radar { background-position:-8px -368px; }
+.Characters { background-position:-8px -404px; }
+.FanficRecs { background-position:-8px -440px; }
+.Music { background-position:-8px -476px; }
+.ImageLinks { background-position:-8px -512px; }
+.DarthWiki { background-position:-8px -548px; }
+.SugarWiki { background-position:-8px -584px; }
+.Analysis { background-position:-8px -620px; }
+.Haiku { background-position:-8px -656px; }
+.FetishFuel { background-position:-8px -692.5px; }
+.Fridge { background-position:-8px -729px; }
+.WesternAnimation { background-position:-8px -765px; }
+.HighOctaneNightmareFuel { background-position:-7px -801px; }
+.NightmareFuel { background-position:-8px -837.5px; }
+.Funny { background-position:-7px -874px; }
+.Funny_lit { background-position:-7px -1061px; }
+.Heartwarming { background-position:-8px -910.5px; }
+.Heartwarming_lit { background-position:-8px -1015px; }
+.Awesome { background-position:-9px -947.5px; }
+.Awesome_lit { background-position:-8px -1042px; }
+.TearJerker { background-position:-8px -984px; }
+.comments { background-position:-8px -1080px; }
+.WMG { background-position:-8px -1100px; }
+.hottip { padding-left:8px;background-position:-8px -1282px; }
+.Laconic { padding-left:4px; }
+.TroperTales { padding-left:4px; }
+div.folderlabel {
+  background-color:white;
+  padding:3px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom:8px;
+  border:1px solid #003366;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  font-variant:small-caps;
+  cursor:pointer;
+  width:80%%;
+  text-align:center;
+  /*background-image:url("http://static.tvtropes.org/namespace_sprite.png");*/
+  background-position:-8px -1174px;
+  background-repeat:no-repeat;
+}
+div.folderlabelopen {
+  background-color:#white;
+  padding:3px;
+  margin-bottom:8px;
+  border:1px solid #003366;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  font-variant:small-caps;
+  cursor:pointer;
+  display:inline;
+  /*background-image:url("http://static.tvtropes.org/namespace_sprite.png");*/
+  background-position:-8px -1139px;
+  background-repeat:no-repeat;
+}
+div.folderlabel:hover, div.folderlabelopen:hover { border-color:#444444; }
+div.folder {
+  margin-top:10px;
+  padding:3px;
+}
+.folder li {
+
+}
+table.pathholder {
+  position:relative;
+  font-size:small;
+  width:100%;
+  text-align:center;
+  background-color:#eeeeff;
+  border:1px solid #bbbbc3;
+  margin-top:3px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+}
+td.trail_left, td.trail_center, td.trail_right { width:30%; }
+td.trail_center a { color:black; }
+div.pathholder {
+  width:100%;
+  text-align:center;
+  position:relative;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  margin-top:3px;
+  background-color:#eeeeff;
+  min-height:48px;
+}
+div.pathholder a {
+  font-size:small;
+  font-family:sans-serif;
+}
+div.pathholder a img { border:none; }
+div.pathholder a:hover { text-decoration:underline; }
+div.trail_left {
+  width:30%;
+  float:left;
+}
+div.trail_left a {
+  font-family:sans-serif;
+  font-size:smaller;
+  text-decoration:none;
+  border:none;
+}
+div.trail_center {
+  width:30%;
+  float:left;
+}
+div.trail_center a {
+  font-size:smaller;
+  text-decoration:none;
+  border:none;
+  color:black;
+}
+div.trail_center a:hover { text-decoration:underline; }
+div.trail_right {
+  width:30%;
+  float:left;
+}
+div.trail_right a {
+  font-family:sans-serif;
+  font-size:smaller;
+  text-decoration:none;
+  border:none;
+}
+
+.bulletin_box {
+  color:black;
+  background:white;
+  font-family:serif;
+  width:158px;
+  border:1px solid silver;
+  text-align:left;
+}
+.bulletin {
+  margin:4px;
+  border-bottom:1px solid #eeeeff;
+}
+.bulletin_header {
+  background-color:#eeeeff;
+  text-align:center;
+  margin:2px;
+  padding:0px;
+}
+.dateline { color:chocolate; }
+#wikitext { margin-top:0.5em; background-color: white; }
+#wikifoot {
+  border-top:2px solid #cccccc;
+  font-size:smaller;
+}
+td#wikileft, td#wikibody { vertical-align:top; }
+li.ymmv { list-style-image:url("http://static.tvtropes.org/pmwiki/pub/images/bullet.gif"); }
+li.plus { 
+  list-style-image:url("http://static.mediatropes.info/pmwiki/pub/images/plus.png"); 
+  display: inline;
+}
+div.wmglead, h1 {
+  position:relative;
+  clear:left;
+  background-color:#eeeeff;
+  margin-top:6px;
+  margin-left:0px;
+  margin-bottom:6px;
+  padding:4px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  font-size:large;
+}
+h2 {
+  color: #003366;
+  position:relative;
+  clear:left;
+  margin: 1px;
+  margin-top:6px;
+  margin-bottom:6px;
+  padding-bottom: 6px;
+  text-align: center;
+  font-size:medium;
+  border-bottom: 1px solid rgba(154, 154, 154, 1);
+}
+h3 {
+  position:relative;
+  clear:left;
+  background-color:#eeeeff;
+  margin-top:6px;
+  margin-left:16px;
+  margin-bottom:6px;
+  padding:4px;
+  border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  font-size:small;
+}
+.pagetitle {
+  color: #003366;
+  font-size: large;
+  text-align: center;
+  font-weight: bold;
+}
+.spoiler {
+  border:none;
+  border-top:none;
+  background:black;
+  color:black;
+}
+
+.spoilerClick {
+    background: white;
+    border: 1px dotted black;
+}
+.spoiler a:link, .spoiler a:hover, .spoiler a:visited { color:black; }
+.spoiler a.urllink:link, .spoiler a.urllink:hover, .spoiler a.urllink:visited { color:black; }
+
+.spoilerClick a:link, .spoiler a:hover, .spoiler a:visited { color:#191970; }
+.spoilerClick a.urllink:link, .spoiler a.urllink:hover, .spoiler a.urllink:visited { color:#191970; }
+.supersecret {
+  background:white;
+  color:white;
+}
+.supersecret a:link, .supersecret a:hover, .supersecret a:visited { color:white; }
+.supersecret a.urllink:link, .supersecret a.urllink:hover, .supersecret a.urllink:visited { color:white; }
+a.createlink:link, a.createlink:hover, a.createlink:visited { color:#8c0b0b; }
+a.urllink:link, a.urllink:hover, a.urllink:visited { color:#00008b; }
+a.discussionlink:link, a.discussionlink:hover, a.discussionlink:visited { color:#d2691e; }
+span.tiptag {
+  cursor:pointer;
+  border:1px solid white;
+}
+div.inlinefolder { display:none; }
+div.acaption {
+  position:relative;
+  color:#606060;
+  background:white;
+  border:1px dotted #606060;
+  padding:4px;
+  padding-top:0px;
+  margin:6px;
+  margin-top:0px;
+  width:150px;
+  max-width:350px;
+  text-align:center;
+  float:left;
+  clear:left;
+}
+div.acaptionright {
+  position:relative;
+  color:#606060;
+  background:white;
+  border:none;
+  border-radius: 8px;
+  font-size: small;
+  padding:8px;
+  padding-top:0px;
+  margin:0 auto;
+  margin-top:0px;
+  width:90%;
+  /*max-width:350px;*/
+  text-align:center;
+  float:none;
+  clear:right;
+  z-index:1;
+}
+img.embeddedimage {
+  position:relative;
+  float:left;
+  clear:left;
+  margin:8px;
+  padding:4px;
+  max-width:350px;
+}
+ul, ol, pre, dl {
+  -webkit-padding-start: 6px;
+  margin-top:0px;
+  margin-bottom:0px;
+  list-style-type: none;
+}
+li {
+  /*list-style-position:outside;*/
+  padding:2px;
+  margin-top:6px;
+  margin-bottom: 4px;
+  margin-right: 4px;
+  box-shadow: 2px 5px 3px 1px rgba(119, 119, 119, 0.75);
+  -moz-box-shadow: 2px 5px 3px 1px rgba(119, 119, 119, 0.75);
+  -webkit-box-shadow: 2px 2px 3px 1px rgba(119, 119, 119, 0.75);
+}
+li br { line-height:.5; }
+ul ul {
+  padding:0px;
+  margin-left:10px;
+  padding-left:10px;
+  border:none;
+}
+ul ul li {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  border-left: 1px solid lightgray;
+  margin-bottom:none;
+}
+ul ul ul {
+  margin-left:6px;
+  padding-left:6px;
+}
+ul ul ul li { padding-left:4px; }
+div.quoteright {
+  position:relative;
+  background-color:white;
+  width:90%;
+  margin:6px auto;
+  margin-left: auto;
+  margin-right: auto;
+  /*padding:4px;*/
+  font-size:smaller;
+  float:none;
+  clear:right;
+  padding-bottom:0px;
+  right: 4px;
+  margin-bottom:0px;
+  z-index:4;
+}
+div.quoteright img.embeddedimage {
+    margin: 0 auto;
+    width: 100%;
+}
+div.quoteleft {
+  position:relative;
+  background-color:white;
+  width:150px;
+  margin:6px;
+  padding:4px;
+  font-size:smaller;
+  float:left;
+  clear:left;
+  margin-top:4px;
+  border:1px gray outset;
+}
+div.quoteleft img.embeddedimage { left:-8px; }
+div.quoteright img.embeddedimage, div.quoteleft img.embeddedimage {
+  position:relative;
+  float:left;
+  clear:left;
+  max-width:350px;
+  margin-top:0px;
+}
+div.floatbox {
+  position:relative;
+  /*width:33%;*/
+  float:left;
+  clear:left;
+  left:0px;
+  color:#5b77cc;
+  font-size:x-small;
+  border:1px dotted #d2691e;
+  padding:2px;
+  margin-top:6px;
+  margin-right:6px;
+}
+div.floatboxright {
+  position:relative;
+  width:50%;
+  left:0px;
+  color:#5b77cc;
+  padding:2px;
+  margin-top:14px;
+  /*display: inline;*/
+}
+.floatboxright>ul {
+  background-color: lightgray;
+  width: auto;
+  overflow-x: scroll;
+  white-space: nowrap;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.floatboxright li {
+  float: left;
+  padding-left: 2px;
+  margin-right: 2px;
+  border-right: 1px solid #003366;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+hr { clear:left; }
+
+.indent {
+  margin: 4px;
+  margin-right:8px;
+  font-size:small;
+  padding: 4px;
+  border-radius: 4px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+:not(.indent)>.indent {
+  background-color: #ffcc66;
+  background: #ffcc66; /* fallback */
+  box-shadow: 5px 5px 10px 0px rgba(255, 153, 0, 0.85);
+  -moz-box-shadow: 5px 5px 10px 0px rgba(255, 153, 0, 0.85;
+  -webkit-box-shadow: 1px 1px 1px 0px rgba(255, 153, 0, 0.85);
+}
+span.asscaps {
+  font-variant:small-caps;
+  font-size:small;
+  font-weight:bold;
+}
+#showmetatag {
+  float:left;
+  clear:left;
+  color:#d2691e;
+  font-size:x-small;
+  border:1px dotted #d2691e;
+  padding:2px;
+  margin-top:12px;
+  margin-right:6px;
+  font-weight:bold;
+}
+
+#wikitext ul {
+  list-style-type: none;
+}
