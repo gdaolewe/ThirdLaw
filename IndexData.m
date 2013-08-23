@@ -24,16 +24,11 @@
 
 static IndexData* _singletonIndexData = nil;
 
-@synthesize indexDepth = _indexDepth;
-@synthesize categoryIndex = _categoryIndex;
-
 +(IndexData *)sharedIndexData {
     @synchronized([IndexData class])
 	{
 		if (!_singletonIndexData) {
 			_singletonIndexData = [[self alloc] init];
-            _singletonIndexData.indexDepth = 0;
-            _singletonIndexData.categoryIndex = 0;
             [_singletonIndexData loadHTML];
         }
 		return _singletonIndexData;
@@ -63,8 +58,12 @@ static IndexData* _singletonIndexData = nil;
         } else {
             cat = element.content;
         }
-        
         [_categoryHTML replaceObjectAtIndex:i withObject:cat];
+        NSLog(@"%@", [self categoryNameAtIndex:i]);
+        for (int j=0; j<[self examplesCountForCategoryIndex:i]; j++) {
+            NSLog(@"--%@", [self exampleNameForCategoryIndex:i atIndex:j]);
+            NSLog(@"--%@", [self urlForCategoryIndex:i atIndex:j]);
+        }
     }
 
     

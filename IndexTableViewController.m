@@ -24,15 +24,6 @@ IndexData * _indexData;
 @synthesize indexDepth = _indexDepth;
 @synthesize categoryIndex = _categoryIndex;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        self.categoryIndex = 0;
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,9 +75,11 @@ IndexData * _indexData;
             cell.textLabel.text = [_indexData categoryNameAtIndex:indexPath.row];
             break;
         case 1: {
-            NSString * url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
-            if (!url)
+            NSString * url = [_indexData urlForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
+            if (!url) {
                 cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
             cell.textLabel.text = [_indexData exampleNameForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
         }
             break;
@@ -97,23 +90,22 @@ IndexData * _indexData;
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%d", self.indexDepth);
     switch (self.indexDepth) {
         case 0: {
             IndexTableViewController *newIndexTVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Index"];
             newIndexTVC.indexDepth = self.indexDepth + 1;
-            newIndexTVC.categoryIndex = indexPath.row;
             newIndexTVC.title = [_indexData categoryNameAtIndex:indexPath.row];
+            newIndexTVC.categoryIndex = indexPath.row;
             [self.navigationController pushViewController:newIndexTVC animated:YES];
         }
             break;
         case 1: {
-            NSString * url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
+            NSString * url = [_indexData urlForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
             if (url) {
                 PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-                page.url = [_indexData urlForCategoryIndex:[_indexData categoryIndex] atIndex:indexPath.row];
+                page.url = [_indexData urlForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
                 [self.navigationController pushViewController:page animated:YES];
-            }
+            } 
         }
             break;
     }

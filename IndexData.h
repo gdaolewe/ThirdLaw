@@ -10,9 +10,6 @@
 
 @interface IndexData : NSObject
 
-@property int indexDepth;
-@property int categoryIndex;
-
 +(IndexData *)sharedIndexData;
 
 -(int) categoryCount;

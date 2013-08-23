@@ -32,9 +32,6 @@ NSString* appSupportDir;
             {
                 NSLog(@"Error excluding %@ from backup %@", [url lastPathComponent], error.localizedDescription);
             }
-            else {
-                NSLog(@"Yay");
-            }
         }
     }
     [self downloadScriptToDir:appSupportDir];
