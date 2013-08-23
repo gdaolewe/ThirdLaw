@@ -10,6 +10,7 @@
 #import "IndexData.h"
 #import "FileLoader.h"
 #import "Styles.h"
+#import "Reachability.h"
 
 @implementation LampshadeAppDelegate
 

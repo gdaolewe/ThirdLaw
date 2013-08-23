@@ -41,7 +41,6 @@ NSString* appSupportDir;
         [self downloadCSSToDir:appSupportDir];
         [self downloadHomePageToDir:appSupportDir];
         [self downloadIndexPageToDir:appSupportDir];
-        [[IndexData sharedIndexData] loadHTML];
     });
     
 }
@@ -85,6 +84,7 @@ NSString* appSupportDir;
     if (indexData) {
         NSString* filePath = [NSString stringWithFormat:@"%@/%@", dir, @"index.html"];
         [indexData writeToFile:filePath atomically:YES];
+        [[IndexData sharedIndexData] loadHTML];
     } else {
         NSLog(@"Error downloading index to Application Support directory");
     }

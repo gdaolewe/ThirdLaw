@@ -51,6 +51,8 @@
 		F6CC418217C7E98F006E8117 /* home.html in Resources */ = {isa = PBXBuildFile; fileRef = F6CC418017C7E98F006E8117 /* home.html */; };
 		F6CC418317C7E98F006E8117 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = F6CC418117C7E98F006E8117 /* index.html */; };
 		F6CC418417C7EFE5006E8117 /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = F6CC417D17C7E97F006E8117 /* script.js */; };
+		F6CC418617C7F528006E8117 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6CC418517C7F528006E8117 /* SystemConfiguration.framework */; };
+		F6CC418A17C7F6A9006E8117 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CC418917C7F6A9006E8117 /* Reachability.m */; };
 		F6EC50DA17C44DC400E8876C /* Styles.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC50D917C44DC400E8876C /* Styles.m */; };
 		F6EC50F817C55F3700E8876C /* fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F617C55F3700E8876C /* fullscreen.png */; };
 		F6EC50F917C55F3700E8876C /* fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F717C55F3700E8876C /* fullscreen@2x.png */; };
@@ -134,6 +136,9 @@
 		F6CC417D17C7E97F006E8117 /* script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = script.js; sourceTree = "<group>"; };
 		F6CC418017C7E98F006E8117 /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = home.html; path = "HTML data/home.html"; sourceTree = SOURCE_ROOT; };
 		F6CC418117C7E98F006E8117 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = "HTML data/index.html"; sourceTree = SOURCE_ROOT; };
+		F6CC418517C7F528006E8117 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F6CC418817C7F6A9006E8117 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F6CC418917C7F6A9006E8117 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F6EC50D817C44DC400E8876C /* Styles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Styles.h; sourceTree = "<group>"; };
 		F6EC50D917C44DC400E8876C /* Styles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Styles.m; sourceTree = "<group>"; };
 		F6EC50F617C55F3700E8876C /* fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fullscreen.png; path = Images/fullscreen.png; sourceTree = SOURCE_ROOT; };
@@ -156,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6CC418617C7F528006E8117 /* SystemConfiguration.framework in Frameworks */,
 				F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */,
 				F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */,
 				F642FEBB1640D5AE009080B9 /* libxml2.dylib in Frameworks */,
@@ -171,6 +177,7 @@
 		F642FE3F163E359C009080B9 = {
 			isa = PBXGroup;
 			children = (
+				F6CC418517C7F528006E8117 /* SystemConfiguration.framework */,
 				F6C1F1A517C1D40400E1EDCA /* ExternalWebViewController.h */,
 				F6C1F1A617C1D40400E1EDCA /* ExternalWebViewController.m */,
 				F6C1F1A717C1D40400E1EDCA /* FileLoader.h */,
@@ -178,6 +185,7 @@
 				F6C1F21917C1D66900E1EDCA /* en.lproj */,
 				F6C1F1DD17C1D5F000E1EDCA /* hpple */,
 				F6C1F1AB17C1D40400E1EDCA /* IndexData.h */,
+				F6CC418717C7F6A9006E8117 /* Reachability */,
 				F6C1F1AC17C1D40400E1EDCA /* IndexData.m */,
 				F6C1F1AF17C1D40400E1EDCA /* IndexTableViewController.h */,
 				F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */,
@@ -348,6 +356,15 @@
 			name = "HTML Data";
 			sourceTree = "<group>";
 		};
+		F6CC418717C7F6A9006E8117 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				F6CC418817C7F6A9006E8117 /* Reachability.h */,
+				F6CC418917C7F6A9006E8117 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		F6EC50DD17C552C000E8876C /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +500,7 @@
 				F6C1F21717C1D65600E1EDCA /* LampshadeAppDelegate.m in Sources */,
 				F6C1F21817C1D65600E1EDCA /* main.m in Sources */,
 				F6EC50DA17C44DC400E8876C /* Styles.m in Sources */,
+				F6CC418A17C7F6A9006E8117 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,7 @@
 #import "SearchViewController.h"
 #import "ExternalWebViewController.h"
 #import <dispatch/dispatch.h>
+#import "Reachability.h"
 
 NSString *const RANDOM_URL;
 
@@ -102,12 +103,24 @@ dispatch_queue_t backgroundQueue;
     }
 }
 
+- (void) reachabilityChanged:(NSNotification*) notification
+{
+	Reachability* reachability = notification.object;
+    
+	if(reachability.currentReachabilityStatus == NotReachable)
+		NSLog(@"Internet off");
+	else
+		NSLog(@"Internet on");
+}
+
 -(void) loadURLFromString:(NSString *)urlString {
-    [self setPageHidden:YES];
-	_finishedLoading = NO;
-    _jsInjected = NO;
-    self.url = urlString;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    if ([self checkReachable]) {
+        [self setPageHidden:YES];
+        _finishedLoading = NO;
+        _jsInjected = NO;
+        self.url = urlString;
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    }
 }
 -(void)loadPageFromHTML:(NSString*)html{
     [self setPageHidden:YES];
@@ -116,6 +129,40 @@ dispatch_queue_t backgroundQueue;
     _jsInjected = NO;
     NSURL* baseURL = [[NSBundle mainBundle] resourceURL];
     [self.webView loadHTMLString:html baseURL:baseURL];
+}
+
+-(void) loadRandomURL {
+    if ([self checkReachable]) {
+        [self setPageHidden:YES];
+        backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
+        void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
+            self.url = response.URL.absoluteString;
+            [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]];
+            dispatch_release(backgroundQueue);
+        };
+        dispatch_async(backgroundQueue, ^(void) {
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
+            NSURLResponse *response = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                doneBlock(response, data);
+            });
+        });
+    }
+}
+
+-(BOOL) checkReachable {
+    Reachability *networkReachability = [Reachability reachabilityWithHostName:@"tvtropes.org"];
+    NetworkStatus networkStatus = networkReachability.currentReachabilityStatus;
+    if (networkStatus == NotReachable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No connection to TVTropes.org"
+                                                        message:@"Check your internet connection or browse offline"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    return networkStatus != NotReachable;
 }
 
 #pragma mark - UIWebViewDelegate
@@ -201,23 +248,6 @@ dispatch_queue_t backgroundQueue;
 }
 - (IBAction)home:(UIBarButtonItem *)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
-}
--(void) loadRandomURL {
-    [self setPageHidden:YES];
-    backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
-    void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
-        self.url = response.URL.absoluteString;
-        [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]];
-        dispatch_release(backgroundQueue);
-    };
-    dispatch_async(backgroundQueue, ^(void) {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
-        NSURLResponse *response = nil;
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            doneBlock(response, data);
-        });
-    });
 }
 - (IBAction)random:(UIBarButtonItem *)sender {
     [self loadRandomURL];

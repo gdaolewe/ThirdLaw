@@ -9,7 +9,7 @@
 #import "SearchViewController.h"
 #import "NSString+URLEncoding.h"
 #import "PageViewController.h"
-#import "Styles.h"
+#import "Reachability.h"
 
 @interface SearchViewController ()
     <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIWebViewDelegate>
@@ -32,6 +32,7 @@ BOOL _allSwitchOn;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     _optionsArray = @[@"Tropes",@"Anime & Manga",@"Comicbook",@"Fanfic",@"Film",@"Literature",@"Music",@"Tabletop Games",@"Theater",@"Video Games",@"Web Animation",@"Web Comics",@"Web Original",@"Western Animation",@"Real Life"];
     
     NSMutableArray* tempZeros = [NSMutableArray array];
@@ -63,6 +64,20 @@ BOOL _allSwitchOn;
         dvc.url = _resultURL;
     }
         
+}
+
+-(BOOL) checkReachable {
+    Reachability *networkReachability = [Reachability reachabilityWithHostName:@"google.com"];
+    NetworkStatus networkStatus = networkReachability.currentReachabilityStatus;
+    if (networkStatus == NotReachable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No connection to Google.com"
+                                                        message:@"Check your internet connection or browse offline"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    return networkStatus != NotReachable;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -133,8 +148,6 @@ BOOL _allSwitchOn;
 #define BASE_SITE_QUERY @"+site:tvtropes.org"
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    //NSString* baseURL = @"http://www.google.com/search?q=";
-    //NSString* optionsURL = @"%20site:tvtropes.org";
     NSString* siteQuery = @"";
     if (_allSwitchOn) {
         siteQuery = BASE_SITE_QUERY;
@@ -170,6 +183,7 @@ BOOL _allSwitchOn;
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if ([request.URL.host isEqualToString:@"www.google.com"]) {
+        [self checkReachable];
         return YES;
     } else if ([request.URL.host isEqualToString:@"tvtropes.org"]) {
         _resultURL = request.URL.absoluteString;
@@ -192,7 +206,8 @@ BOOL _allSwitchOn;
 }
 
 -(void) loadURLFromString:(NSString *)urlString {
-    [self.searchWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    if ([self checkReachable])
+        [self.searchWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 }
 
 @end
