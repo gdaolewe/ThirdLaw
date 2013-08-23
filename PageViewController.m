@@ -16,10 +16,11 @@
 #import "SavedPagesController.h"
 #import "SearchViewController.h"
 #import "ExternalWebViewController.h"
+#import <dispatch/dispatch.h>
 
 NSString *const RANDOM_URL;
 
-@interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate>
+@interface PageViewController () <NSURLConnectionDataDelegate,UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -31,7 +32,7 @@ NSString *const RANDOM_URL;
 
 @implementation PageViewController
 
-NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php?p=1";
+NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php";
 
 @synthesize webView = _webView;
 @synthesize fullscreenOffButton = _fullscreenOffButton;
@@ -49,6 +50,8 @@ bool _historySaved;
 
 bool _isFullScreen;
 
+dispatch_queue_t backgroundQueue;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -62,14 +65,22 @@ bool _isFullScreen;
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
-    if (self.url == nil) {
+    if ([self.url isEqualToString:RANDOM_URL]) {
+        [self loadRandomURL];
+    } else if (self.url == nil) {
         _shouldSaveHistory = NO;
         [self loadPageFromHTML: [FileLoader getHomePage]];
-        _loadingSavedPage = NO;
+        //_loadingSavedPage = NO;
     } else {
         [self loadURLFromString:self.url];
     }
 }
+
+-(NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
+    NSLog(@"redirect %@", request.URL.absoluteString);
+    return request;
+}
+
 - (void)viewDidUnload
 {
     [self setWebView:nil];
@@ -78,6 +89,7 @@ bool _isFullScreen;
     [self setBackButton:nil];
     [self setForwardButton:nil];
     [self setBackForwardCancelButton:nil];
+    dispatch_release(backgroundQueue);
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -105,7 +117,7 @@ bool _isFullScreen;
 }
 -(void)loadPageFromHTML:(NSString*)html{
     [self setPageHidden:YES];
-    _loadingSavedPage = YES;
+    //_loadingSavedPage = YES;
 	_finishedLoading = NO;
     _jsInjected = NO;
     NSURL* baseURL = [[NSBundle mainBundle] resourceURL];
@@ -114,11 +126,11 @@ bool _isFullScreen;
 
 #pragma mark - UIWebViewDelegate
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
     NSString *url = request.URL.absoluteString;
+   
     if ([url hasPrefix:@"command://"]) {    //page is finished loading
         [self.webView stringByEvaluatingJavaScriptFromString:@"$('iframe').remove();"];
-        NSLog(@"command done unhid");
+        NSLog(@"%@", [self.webView stringByEvaluatingJavaScriptFromString:@"url"]);
         [self setPageHidden:NO];
         self.title = [request.URL.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [self addToHistory];
@@ -129,12 +141,11 @@ bool _isFullScreen;
     else if ([request.URL.host isEqualToString:@"tvtropes.org"]) {
         [self setPageHidden:YES];
         _jsInjected = NO;
-        self.url = url;
         NSData* htmlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.url]];
         NSString* htmlString = [[NSString alloc] initWithData:htmlData encoding:NSISOLatin1StringEncoding];
         NSURL* baseURL = [[NSBundle mainBundle] resourceURL];
         [webView loadHTMLString:htmlString baseURL:baseURL];
-        NSLog(@"%@", url);
+        
         return NO;
     } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 		NSLog(@"\n\n%@", url);
@@ -142,16 +153,17 @@ bool _isFullScreen;
 		webVC.url = request.URL;
         [self.navigationController pushViewController:webVC animated:YES];
 		return NO;
-    } else {
+    } else if ([url hasPrefix:@"file://"]) {
 		return YES;
-	}
+	} else {
+        return YES;
+    }
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
     [self hideBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self.activityIndicator stopAnimating];
-    NSLog(@"%@, %@", error,self.url);
 }
 -(void) webViewDidFinishLoad:(UIWebView *)webView {
     NSString* documentReadyState = [self.webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
@@ -197,8 +209,24 @@ bool _isFullScreen;
 - (IBAction)home:(UIBarButtonItem *)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+-(void) loadRandomURL {
+    [self setPageHidden:YES];
+    backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
+    void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
+        self.url = response.URL.absoluteString;
+        [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]];
+    };
+    dispatch_async(backgroundQueue, ^(void) {
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
+        NSURLResponse *response = nil;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            doneBlock(response, data);
+        });
+    });
+}
 - (IBAction)random:(UIBarButtonItem *)sender {
-    [self loadURLFromString:RANDOM_URL];
+    [self loadRandomURL];
 }
 
 - (IBAction)cancelBackForward:(UIButton *)sender {
@@ -242,6 +270,7 @@ bool _isFullScreen;
         [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]+1];
         HistoryItem* previous = [history objectAtIndex:[HistoryTracker historyIndex]];
         self.url = previous.url;
+        self.title = previous.title;
         _shouldSaveHistory = NO;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:previous.html];
@@ -253,6 +282,7 @@ bool _isFullScreen;
         [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]-1];
         HistoryItem* next = [history objectAtIndex:[HistoryTracker historyIndex]];
         self.url = next.url;
+        self.title = next.title;
         _shouldSaveHistory = NO;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:next.html];
@@ -267,6 +297,7 @@ bool _isFullScreen;
     self.title = page.title;
     if ([page isKindOfClass:HistoryItem.class])
         _shouldSaveHistory = NO;
+    _loadingSavedPage = YES;
     [self loadPageFromHTML:page.html];
 }
 -(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
@@ -282,14 +313,18 @@ bool _isFullScreen;
     [self loadURLFromString:result];
 }
 
+#define BOOKMARK_BUTTON 0
+#define SAVE_BUTTON 1
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
-        case 0:
+        case BOOKMARK_BUTTON:
+            if ([self.url isEqualToString:RANDOM_URL])
+                self.url = self.webView.request.mainDocumentURL.absoluteString;
             [Bookmark saveBookmarkURL:self.url withTitle:self.title];
             NSLog(@"saved bookmark with title %@ and url %@", self.title, self.url);
             break;
-        case 1:
+        case SAVE_BUTTON:
         {
             NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
             [Page savePageHTML:html withTitle:self.title andURL:self.url];

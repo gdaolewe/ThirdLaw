@@ -44,7 +44,6 @@ NSString* appSupportDir;
 
 +(void) downloadScriptToDir: (NSString*) dir {
     NSURL* scriptURL = [NSURL URLWithString:[_host stringByAppendingPathComponent:@"script.js"]];
-    NSLog(@"%@", scriptURL.absoluteString);
     NSData* scriptData = [NSData dataWithContentsOfURL:scriptURL];
     if (scriptData) {
         NSString  *filePath = [NSString stringWithFormat:@"%@/%@", dir,@"script.js"];

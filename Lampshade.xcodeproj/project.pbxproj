@@ -15,10 +15,6 @@
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
 		F6BE336C17C2794D00E21314 /* POORICH.TTF in Resources */ = {isa = PBXBuildFile; fileRef = F6BE336517C1DC4500E21314 /* POORICH.TTF */; };
-		F6BE336D17C2794D00E21314 /* Rosario-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE336717C2723200E21314 /* Rosario-Bold.ttf */; };
-		F6BE336E17C2794D00E21314 /* Rosario-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE336817C2723200E21314 /* Rosario-BoldItalic.ttf */; };
-		F6BE336F17C2794D00E21314 /* Rosario-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE336917C2723200E21314 /* Rosario-Italic.ttf */; };
-		F6BE337017C2794D00E21314 /* Rosario-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE336A17C2723200E21314 /* Rosario-Regular.ttf */; };
 		F6BE337517C280DC00E21314 /* NoticiaText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE337117C2808800E21314 /* NoticiaText-Bold.ttf */; };
 		F6BE337617C280DC00E21314 /* NoticiaText-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE337217C2808800E21314 /* NoticiaText-BoldItalic.ttf */; };
 		F6BE337717C280DC00E21314 /* NoticiaText-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6BE337317C2808800E21314 /* NoticiaText-Italic.ttf */; };
@@ -27,7 +23,6 @@
 		F6C1F1C917C1D40400E1EDCA /* FileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1A817C1D40400E1EDCA /* FileLoader.m */; };
 		F6C1F1CC17C1D40400E1EDCA /* IndexData.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1AC17C1D40400E1EDCA /* IndexData.m */; };
 		F6C1F1CE17C1D40400E1EDCA /* IndexTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */; };
-		F6C1F1CF17C1D40400E1EDCA /* PageData.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1B217C1D40400E1EDCA /* PageData.m */; };
 		F6C1F1D017C1D40400E1EDCA /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1B417C1D40400E1EDCA /* PageViewController.m */; };
 		F6C1F1D717C1D40400E1EDCA /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1BE17C1D40400E1EDCA /* TTTAttributedLabel.m */; };
 		F6C1F1E817C1D5F000E1EDCA /* Contributor.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1DF17C1D5F000E1EDCA /* Contributor.m */; };
@@ -78,10 +73,6 @@
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
-		F6BE336717C2723200E21314 /* Rosario-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rosario-Bold.ttf"; path = "Fonts/Rosario-Bold.ttf"; sourceTree = SOURCE_ROOT; };
-		F6BE336817C2723200E21314 /* Rosario-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rosario-BoldItalic.ttf"; path = "Fonts/Rosario-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
-		F6BE336917C2723200E21314 /* Rosario-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rosario-Italic.ttf"; path = "Fonts/Rosario-Italic.ttf"; sourceTree = SOURCE_ROOT; };
-		F6BE336A17C2723200E21314 /* Rosario-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Rosario-Regular.ttf"; path = "Fonts/Rosario-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		F6BE337117C2808800E21314 /* NoticiaText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NoticiaText-Bold.ttf"; path = "Fonts/NoticiaText-Bold.ttf"; sourceTree = SOURCE_ROOT; };
 		F6BE337217C2808800E21314 /* NoticiaText-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NoticiaText-BoldItalic.ttf"; path = "Fonts/NoticiaText-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		F6BE337317C2808800E21314 /* NoticiaText-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NoticiaText-Italic.ttf"; path = "Fonts/NoticiaText-Italic.ttf"; sourceTree = SOURCE_ROOT; };
@@ -94,8 +85,6 @@
 		F6C1F1AC17C1D40400E1EDCA /* IndexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexData.m; sourceTree = "<group>"; };
 		F6C1F1AF17C1D40400E1EDCA /* IndexTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexTableViewController.h; sourceTree = "<group>"; };
 		F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexTableViewController.m; sourceTree = "<group>"; };
-		F6C1F1B117C1D40400E1EDCA /* PageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageData.h; sourceTree = "<group>"; };
-		F6C1F1B217C1D40400E1EDCA /* PageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageData.m; sourceTree = "<group>"; };
 		F6C1F1B317C1D40400E1EDCA /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		F6C1F1B417C1D40400E1EDCA /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		F6C1F1BD17C1D40400E1EDCA /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
@@ -190,8 +179,6 @@
 				F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */,
 				F6EC50D817C44DC400E8876C /* Styles.h */,
 				F6EC50D917C44DC400E8876C /* Styles.m */,
-				F6C1F1B117C1D40400E1EDCA /* PageData.h */,
-				F6C1F1B217C1D40400E1EDCA /* PageData.m */,
 				F6C1F1B317C1D40400E1EDCA /* PageViewController.h */,
 				F6C1F1B417C1D40400E1EDCA /* PageViewController.m */,
 				F6C1F20017C1D65600E1EDCA /* Scripts and CSS */,
@@ -252,10 +239,6 @@
 				F6BE337317C2808800E21314 /* NoticiaText-Italic.ttf */,
 				F6BE337417C2808800E21314 /* NoticiaText-Regular.ttf */,
 				F6BE336517C1DC4500E21314 /* POORICH.TTF */,
-				F6BE336717C2723200E21314 /* Rosario-Bold.ttf */,
-				F6BE336817C2723200E21314 /* Rosario-BoldItalic.ttf */,
-				F6BE336917C2723200E21314 /* Rosario-Italic.ttf */,
-				F6BE336A17C2723200E21314 /* Rosario-Regular.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -429,10 +412,6 @@
 				F6BE337717C280DC00E21314 /* NoticiaText-Italic.ttf in Resources */,
 				F6BE337817C280DC00E21314 /* NoticiaText-Regular.ttf in Resources */,
 				F6BE336C17C2794D00E21314 /* POORICH.TTF in Resources */,
-				F6BE336D17C2794D00E21314 /* Rosario-Bold.ttf in Resources */,
-				F6BE336E17C2794D00E21314 /* Rosario-BoldItalic.ttf in Resources */,
-				F6BE336F17C2794D00E21314 /* Rosario-Italic.ttf in Resources */,
-				F6BE337017C2794D00E21314 /* Rosario-Regular.ttf in Resources */,
 				F6BE336617C1E82D00E21314 /* jquery.js in Resources */,
 				F6C1F21E17C1D66900E1EDCA /* InfoPlist.strings in Resources */,
 				F6C1F21F17C1D66900E1EDCA /* MainStoryboard.storyboard in Resources */,
@@ -466,7 +445,6 @@
 				F6C1F1C917C1D40400E1EDCA /* FileLoader.m in Sources */,
 				F6C1F1CC17C1D40400E1EDCA /* IndexData.m in Sources */,
 				F6C1F1CE17C1D40400E1EDCA /* IndexTableViewController.m in Sources */,
-				F6C1F1CF17C1D40400E1EDCA /* PageData.m in Sources */,
 				F6C1F1D017C1D40400E1EDCA /* PageViewController.m in Sources */,
 				F6C1F1D717C1D40400E1EDCA /* TTTAttributedLabel.m in Sources */,
 				F6C1F1E817C1D5F000E1EDCA /* Contributor.m in Sources */,
