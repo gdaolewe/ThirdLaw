@@ -61,7 +61,6 @@ dispatch_queue_t backgroundQueue;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
     _script = [FileLoader getScript];
-    [HistoryItem setHistoryIndex:0];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
@@ -229,6 +228,8 @@ dispatch_queue_t backgroundQueue;
 
 -(void) addToHistory {
     if (_shouldSaveHistory) {
+        [HistoryItem clearHistoryNewerThanIndex:[HistoryItem historyIndex]];
+        [HistoryItem setHistoryIndex:0];
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
         [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title uRL:self.url];
         _historySaved = YES;

@@ -22,6 +22,7 @@
 +(void) addHistoryItemAsyncWithHTML:(NSString*)html title:(NSString*)title uRL:(NSString*)url;
 +(NSArray*) history;
 +(void) clearHistory;
++(void) clearHistoryNewerThanIndex:(int)index;
 
 -(NSString*) dateString;
 

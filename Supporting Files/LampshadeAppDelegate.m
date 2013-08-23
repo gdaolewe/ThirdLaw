@@ -9,6 +9,7 @@
 #import "LampshadeAppDelegate.h"
 #import "IndexData.h"
 #import "FileLoader.h"
+#import "HistoryItem.h"
 #import "Styles.h"
 #import "Reachability.h"
 
@@ -22,8 +23,14 @@
 {
     [FileLoader downloadFiles];
     [[IndexData sharedIndexData] loadHTML];
-    NSDictionary *appDefaults = @{ @"SavedPagesStartingTab" : [NSNumber numberWithInt:0] };
-    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    NSDictionary *appDefaults = @{
+        @"SavedPagesStartingTab" : [NSNumber numberWithInt:0],
+        @"HistoryIndex" : [NSNumber numberWithInt:0]
+    };
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults registerDefaults:appDefaults];
+    int historyIndex = ((NSNumber*)[defaults objectForKey:@"HistoryIndex"]).intValue;
+    [HistoryItem setHistoryIndex:historyIndex];
     return YES;
 }
 							
@@ -110,7 +117,10 @@
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          

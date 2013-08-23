@@ -27,6 +27,7 @@ static int _historyIndex;
 
 +(void)setHistoryIndex:(int)index {
     _historyIndex = index;
+    [[NSUserDefaults standardUserDefaults] setInteger:_historyIndex forKey:@"HistoryIndex"];
 }
 
 +(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title uRL:(NSString*)url {
@@ -85,6 +86,23 @@ static int _historyIndex;
     NSArray *history = [self history];
     for (HistoryItem *item in history) {
         [context deleteObject:item];
+    }
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
+    } else {
+        [self setHistoryIndex:0];
+        _historyCached = [self fetchHistory];
+    }
+}
+
++(void) clearHistoryNewerThanIndex:(int)index {
+    if (index == 0)
+        return;
+    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    NSArray *history = [self history];
+    for (int i=index-1; i>=0; i--) {
+        [context deleteObject:[history objectAtIndex:i]];
     }
     NSError *error = nil;
     if (![context save:&error]) {
