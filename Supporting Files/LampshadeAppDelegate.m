@@ -19,27 +19,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //[[UILabel appearance] setFont:[UIFont fontWithName:@"NoticiaText-Regular" size:20.0]];
     [FileLoader downloadFiles];
     [[IndexData sharedIndexData] loadHTML];
-   // for (NSString* name in [UIFont familyNames])
-     //   NSLog(@"%@", [[UIFont fontNamesForFamilyName:name] objectAtIndex:0]);
-    
-    /*[[UINavigationBar appearance] setTitleTextAttributes:
-        @{
-            UITextAttributeFont : [
-                UIFont fontWithName:[Styles defaultFontFamilyBold] size:18.0]
-        }
-     ];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:
-     @{
-        UITextAttributeFont : [
-                               UIFont fontWithName:[Styles defaultFontFamilyBold] size:14.0]
-     } forState:UIControlStateNormal
-     ];
-    [[UITableViewCell appearance] setFont:[UIFont fontWithName:[Styles defaultFontFamilyBold] size:17.0]];
-    [[UILabel appearance] setFont:[UIFont fontWithName:[Styles defaultFontFamilyBold] size:17.0]];
-    [[UIButton appearance] setFont:[UIFont fontWithName:[Styles defaultFontFamilyBold] size:17.0]];*/
+    NSDictionary *appDefaults = @{ @"SavedPagesStartingTab" : [NSNumber numberWithInt:0] };
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     return YES;
 }
 							

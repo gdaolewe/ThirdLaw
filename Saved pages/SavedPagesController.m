@@ -40,6 +40,7 @@ bool _editing = NO;
 @synthesize toolbar = _toolbar;
 @synthesize tabBar = _tabBar;
 
+NSUserDefaults *defaults;
 NSArray *_history;
 NSArray *_bookmarks;
 NSArray *_pages;
@@ -48,19 +49,12 @@ NSMutableSet * _selectedEditRows;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    /*dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchHistory", NULL);
-    dispatch_async(backgroundQueue, ^{
-        _history = [HistoryItem history];
-        _bookmarks = [Bookmark bookmarks];
-        _pages = [Page pages];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-    });*/
+    defaults = [NSUserDefaults standardUserDefaults];
     _selectedEditRows = [NSMutableSet set];
     NSMutableArray *items = [self.toolbar.items mutableCopy];
     [items removeObjectAtIndex:2];
     [self.toolbar setItems:items animated:YES];
+    self.tabBar.selectedSegmentIndex = ((NSNumber*)[defaults objectForKey:@"SavedPagesStartingTab"]).intValue;
     [self setupTab];
 }
 
@@ -112,6 +106,7 @@ NSMutableSet * _selectedEditRows;
 }
 
 - (IBAction)tabChanged:(UISegmentedControl *)sender {
+    [defaults setInteger:sender.selectedSegmentIndex forKey:@"SavedPagesStartingTab"];
     [self setupTab];
 }
 
@@ -121,15 +116,12 @@ NSMutableSet * _selectedEditRows;
     [self fetchTableDataAsyncForType:tabIndex];
     switch (tabIndex) {
         case HISTORY:
-            NSLog(@"setup tab %d", tabIndex);
             self.toolbar.items = [NSArray arrayWithObjects:self.clearButton, flexibleSpace, nil];
             break;
         case BOOKMARKS:
-            NSLog(@"setup tab %d", tabIndex);
             self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, nil];
             break;
         case SAVED_PAGES:
-            NSLog(@"setup tab %d", tabIndex);
             self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, nil];
             break;
     }
