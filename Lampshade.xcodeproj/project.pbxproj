@@ -32,7 +32,6 @@
 		F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E717C1D5F000E1EDCA /* XPathQuery.m */; };
 		F6C1F1FA17C1D61100E1EDCA /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */; };
 		F6C1F1FB17C1D61100E1EDCA /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */; };
-		F6C1F1FC17C1D61100E1EDCA /* HistoryTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F317C1D61100E1EDCA /* HistoryTracker.m */; };
 		F6C1F1FD17C1D61100E1EDCA /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F517C1D61100E1EDCA /* Page.m */; };
 		F6C1F1FE17C1D61100E1EDCA /* SavedPages.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F617C1D61100E1EDCA /* SavedPages.xcdatamodeld */; };
 		F6C1F1FF17C1D61100E1EDCA /* SavedPagesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F917C1D61100E1EDCA /* SavedPagesController.m */; };
@@ -103,8 +102,6 @@
 		F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		F6C1F1F017C1D61100E1EDCA /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
 		F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
-		F6C1F1F217C1D61100E1EDCA /* HistoryTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryTracker.h; sourceTree = "<group>"; };
-		F6C1F1F317C1D61100E1EDCA /* HistoryTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryTracker.m; sourceTree = "<group>"; };
 		F6C1F1F417C1D61100E1EDCA /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		F6C1F1F517C1D61100E1EDCA /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		F6C1F1F717C1D61100E1EDCA /* SavedPages.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SavedPages.xcdatamodel; sourceTree = "<group>"; };
@@ -276,8 +273,6 @@
 				F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */,
 				F6C1F1F017C1D61100E1EDCA /* HistoryItem.h */,
 				F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */,
-				F6C1F1F217C1D61100E1EDCA /* HistoryTracker.h */,
-				F6C1F1F317C1D61100E1EDCA /* HistoryTracker.m */,
 				F6C1F1F417C1D61100E1EDCA /* Page.h */,
 				F6C1F1F517C1D61100E1EDCA /* Page.m */,
 				F6C1F1F617C1D61100E1EDCA /* SavedPages.xcdatamodeld */,
@@ -454,7 +449,6 @@
 				F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */,
 				F6C1F1FA17C1D61100E1EDCA /* Bookmark.m in Sources */,
 				F6C1F1FB17C1D61100E1EDCA /* HistoryItem.m in Sources */,
-				F6C1F1FC17C1D61100E1EDCA /* HistoryTracker.m in Sources */,
 				F6C1F1FD17C1D61100E1EDCA /* Page.m in Sources */,
 				F6C1F1FE17C1D61100E1EDCA /* SavedPages.xcdatamodeld in Sources */,
 				F6C1F1FF17C1D61100E1EDCA /* SavedPagesController.m in Sources */,

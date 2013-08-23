@@ -17,9 +17,12 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSDate * date;
 
++(int) historyIndex;
++(void) setHistoryIndex:(int)index;
 +(void) addHistoryItemHTML:(NSString*)html withTitle:(NSString*)title andURL:(NSString*)url;
 +(NSArray*) history;
 +(void) clearHistory;
+
 -(NSString*) dateString;
 
 @end

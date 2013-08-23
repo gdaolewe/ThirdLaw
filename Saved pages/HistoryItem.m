@@ -19,6 +19,16 @@
 NSArray *_historyCached;
 NSDateFormatter *_formatter;
 
+static int _historyIndex;
+
++(int) historyIndex {
+    return _historyIndex;
+}
+
++(void)setHistoryIndex:(int)index {
+    _historyIndex = index;
+}
+
 +(void)addHistoryItemHTML:(NSString *)html withTitle:(NSString *)title andURL:(NSString*)url {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     NSError *error = nil;
@@ -39,6 +49,7 @@ NSDateFormatter *_formatter;
     if (![context save:&error]) {
         NSLog(@"Error saving history to Core Data: %@", error.localizedDescription);
     } else {
+        [self setHistoryIndex:0];
         _historyCached = [self fetchHistory];
     }
 }
@@ -75,6 +86,7 @@ NSDateFormatter *_formatter;
     if (![context save:&error]) {
         NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
     } else {
+        [self setHistoryIndex:0];
         _historyCached = [self fetchHistory];
     }
 }

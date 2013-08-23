@@ -8,7 +8,6 @@
 
 #import "SavedPagesController.h"
 #import "HistoryItem.h"
-#import "HistoryTracker.h"
 #import "Bookmark.h"
 #import "Page.h"
 #import "PageViewController.h"
@@ -172,7 +171,7 @@ NSMutableSet * _selectedEditRows;
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"History Item"];
             }
             HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
-            if ([HistoryTracker historyIndex] == indexPath.row)
+            if ([HistoryItem historyIndex] == indexPath.row)
                 cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", @">", item.title];
             else
                 cell.textLabel.text = item.title;
@@ -220,7 +219,7 @@ NSMutableSet * _selectedEditRows;
             case HISTORY:
             {
                 HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
-                [HistoryTracker setHistoryIndex:indexPath.row];
+                [HistoryItem setHistoryIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectSavedPage:item];
             }
                 break;

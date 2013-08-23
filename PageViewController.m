@@ -10,7 +10,6 @@
 #import "IndexData.h"
 #import "FileLoader.h"
 #import "HistoryItem.h"
-#import "HistoryTracker.h"
 #import "Bookmark.h"
 #import "Page.h"
 #import "SavedPagesController.h"
@@ -61,16 +60,16 @@ dispatch_queue_t backgroundQueue;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
     _script = [FileLoader getScript];
-    [HistoryTracker setHistoryIndex:0];
+    [HistoryItem setHistoryIndex:0];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
     if ([self.url isEqualToString:RANDOM_URL]) {
         [self loadRandomURL];
     } else if (self.url == nil) {
-        _shouldSaveHistory = NO;
+        _shouldSaveHistory = YES;
+        self.url = @"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage";
         [self loadPageFromHTML: [FileLoader getHomePage]];
-        //_loadingSavedPage = NO;
     } else {
         [self loadURLFromString:self.url];
     }
@@ -139,6 +138,7 @@ dispatch_queue_t backgroundQueue;
         return NO;
     }
     else if ([request.URL.host isEqualToString:@"tvtropes.org"]) {
+        self.url = url;
         [self setPageHidden:YES];
         _jsInjected = NO;
         NSData* htmlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.url]];
@@ -180,7 +180,6 @@ dispatch_queue_t backgroundQueue;
     if (_loadingSavedPage && _jsInjected) {
         _loadingSavedPage = NO;
         [self setPageHidden:NO];
-        NSLog(@"webviewdidfinishload unhid");
 		_finishedLoading = YES;
         [self addToHistory];
     }
@@ -191,7 +190,6 @@ dispatch_queue_t backgroundQueue;
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
         [HistoryItem addHistoryItemHTML:html withTitle:self.title andURL:self.url];
         _historySaved = YES;
-        [HistoryTracker setHistoryIndex:0];
     } else {
         _shouldSaveHistory = YES;
     }
@@ -246,7 +244,7 @@ dispatch_queue_t backgroundQueue;
 }
 - (IBAction)rightSwipeGesture:(UISwipeGestureRecognizer *)sender {
     NSArray* history = [HistoryItem history];
-    if ([HistoryTracker historyIndex] < history.count-1) {
+    if ([HistoryItem historyIndex] < history.count-1) {
         self.webView.alpha = 0.5;
         self.forwardButton.hidden = YES;
         self.backButton.hidden = NO;
@@ -255,7 +253,7 @@ dispatch_queue_t backgroundQueue;
     }
 }
 - (IBAction)leftSwipeGesture:(UISwipeGestureRecognizer *)sender {
-    if ([HistoryTracker historyIndex] > 0) {
+    if ([HistoryItem historyIndex] > 0) {
         self.webView.alpha = 0.5;
         self.backButton.hidden = YES;
         self.forwardButton.hidden = NO;
@@ -266,9 +264,9 @@ dispatch_queue_t backgroundQueue;
 
 - (IBAction)back:(UIButton *)sender {
     NSArray* history = [HistoryItem history];
-    if ([HistoryTracker historyIndex] < history.count-1) {
-        [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]+1];
-        HistoryItem* previous = [history objectAtIndex:[HistoryTracker historyIndex]];
+    if ([HistoryItem historyIndex] < history.count-1) {
+        [HistoryItem setHistoryIndex:[HistoryItem historyIndex]+1];
+        HistoryItem* previous = [history objectAtIndex:[HistoryItem historyIndex]];
         self.url = previous.url;
         self.title = previous.title;
         _shouldSaveHistory = NO;
@@ -277,10 +275,10 @@ dispatch_queue_t backgroundQueue;
     }
 }
 - (IBAction)forward:(UIButton *)sender {
-    if ([HistoryTracker historyIndex] > 0) {
+    if ([HistoryItem historyIndex] > 0) {
         NSArray* history = [HistoryItem history];
-        [HistoryTracker setHistoryIndex:[HistoryTracker historyIndex]-1];
-        HistoryItem* next = [history objectAtIndex:[HistoryTracker historyIndex]];
+        [HistoryItem setHistoryIndex:[HistoryItem historyIndex]-1];
+        HistoryItem* next = [history objectAtIndex:[HistoryItem historyIndex]];
         self.url = next.url;
         self.title = next.title;
         _shouldSaveHistory = NO;
