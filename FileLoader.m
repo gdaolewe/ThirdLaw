@@ -37,6 +37,7 @@ NSString* appSupportDir;
     [self downloadScriptToDir:appSupportDir];
     [self downloadCSSToDir:appSupportDir];
     [self downloadHomePageToDir:appSupportDir];
+    [self downloadIndexPageToDir:appSupportDir];
 }
 
 +(void) downloadScriptToDir: (NSString*) dir {
@@ -72,6 +73,17 @@ NSString* appSupportDir;
     }
 }
 
++(void) downloadIndexPageToDir:(NSString*)dir {
+    NSURL *indexURL = [NSURL URLWithString:@"http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes"];
+    NSData *indexData = [NSData dataWithContentsOfURL:indexURL];
+    if (indexData) {
+        NSString* filePath = [NSString stringWithFormat:@"%@/%@", dir, @"index.html"];
+        [indexData writeToFile:filePath atomically:YES];
+    } else {
+        NSLog(@"Error downloading index to Application Support directory");
+    }
+}
+
 +(NSString*) getScript {
     NSString  *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir,@"script.js"];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
@@ -84,6 +96,10 @@ NSString* appSupportDir;
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"home.html"];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
     return [[NSString alloc] initWithData:fileData encoding:NSASCIIStringEncoding];
+}
++(NSData*) getIndexData {
+    NSString* filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"index.html"];
+    return [NSData dataWithContentsOfFile:filePath];
 }
 
 @end

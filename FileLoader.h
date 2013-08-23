@@ -14,4 +14,6 @@
 +(NSString*) getScript;
 +(NSString*) getCSSPath;
 +(NSString*) getHomePage;
++(NSData*) getIndexData;
+
 @end

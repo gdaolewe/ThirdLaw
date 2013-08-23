@@ -10,6 +10,7 @@
 #import "TFHpple.h"
 #import "Parser.h"
 #import "Contributor.h"
+#import "FileLoader.h"
 
 @interface IndexData () {
     NSData *_htmlData;
@@ -45,8 +46,7 @@ static IndexData* _singletonIndexData = nil;
 }
 
 -(void) loadHTML {
-    NSURL *url = [NSURL URLWithString:@"http://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes"];
-    _htmlData = [NSData dataWithContentsOfURL:url];
+    _htmlData = [FileLoader getIndexData];
     TFHpple *parser = [TFHpple hppleWithHTMLData:_htmlData];
     _categoryHTML = [[parser searchWithXPathQuery:@"//div[@id='wikitext']/h2/span"] mutableCopy];
     _exampleHTML = [parser searchWithXPathQuery:@"//div[@id='wikitext']/ul"];
@@ -59,15 +59,7 @@ static IndexData* _singletonIndexData = nil;
             cat = element.content;
         }
         [_categoryHTML replaceObjectAtIndex:i withObject:cat];
-        NSLog(@"%@", [self categoryNameAtIndex:i]);
-        for (int j=0; j<[self examplesCountForCategoryIndex:i]; j++) {
-            NSLog(@"--%@", [self exampleNameForCategoryIndex:i atIndex:j]);
-            NSLog(@"--%@", [self urlForCategoryIndex:i atIndex:j]);
-        }
     }
-
-    
-    
 }
 
 -(NSString *)categoryNameAtIndex:(int)index {
