@@ -7,6 +7,7 @@
 //
 
 #import "FileLoader.h"
+#import "IndexData.h"
 
 NSString *const DEV_HOST = @"http://192.168.1.115:3000";
 NSString *_host;
@@ -34,10 +35,15 @@ NSString* appSupportDir;
             }
         }
     }
-    [self downloadScriptToDir:appSupportDir];
-    [self downloadCSSToDir:appSupportDir];
-    [self downloadHomePageToDir:appSupportDir];
-    [self downloadIndexPageToDir:appSupportDir];
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.LaunchFileDownload", NULL);
+    dispatch_async(backgroundQueue, ^{
+        [self downloadScriptToDir:appSupportDir];
+        [self downloadCSSToDir:appSupportDir];
+        [self downloadHomePageToDir:appSupportDir];
+        [self downloadIndexPageToDir:appSupportDir];
+        [[IndexData sharedIndexData] loadHTML];
+    });
+    
 }
 
 +(void) downloadScriptToDir: (NSString*) dir {
@@ -87,19 +93,42 @@ NSString* appSupportDir;
 +(NSString*) getScript {
     NSString  *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir,@"script.js"];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    if (!fileData) {    //not in app support, getting from bundle instead
+        filePath = [[NSBundle mainBundle] pathForResource:@"script" ofType:@"js"];
+        NSLog(@"getting script from bundle");
+        fileData = [NSData dataWithContentsOfFile:filePath];
+    }
     return [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
 }
 +(NSString*) getCSSPath {
-    return [NSString stringWithFormat:@"%@/%@", appSupportDir,@"css_white.css"];
+    NSString  *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir,@"css_white.css"];
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    if (!fileData) {
+        filePath = [[NSBundle mainBundle] pathForResource:@"css_white" ofType:@"css"];
+        NSLog(@"getting css from bundle");
+        fileData = [NSData dataWithContentsOfFile:filePath];
+    }
+    return filePath;
 }
 +(NSString*) getHomePage {
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"home.html"];
     NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    if (!fileData) {
+        filePath = [[NSBundle mainBundle] pathForResource:@"home" ofType:@"html"];
+        NSLog(@"getting home page from bundle");
+        fileData = [NSData dataWithContentsOfFile:filePath];
+    }
     return [[NSString alloc] initWithData:fileData encoding:NSASCIIStringEncoding];
 }
 +(NSData*) getIndexData {
     NSString* filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"index.html"];
-    return [NSData dataWithContentsOfFile:filePath];
+    NSData* fileData = [NSData dataWithContentsOfFile:filePath];
+    if (!fileData) {
+        filePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+        NSLog(@"getting index from bundle");
+        fileData = [NSData dataWithContentsOfFile:filePath];
+    }
+    return fileData;
 }
 
 @end

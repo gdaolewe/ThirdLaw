@@ -30,7 +30,7 @@ static IndexData* _singletonIndexData = nil;
 	{
 		if (!_singletonIndexData) {
 			_singletonIndexData = [[self alloc] init];
-            [_singletonIndexData loadHTML];
+            //[_singletonIndexData loadHTML];
         }
 		return _singletonIndexData;
 	}
