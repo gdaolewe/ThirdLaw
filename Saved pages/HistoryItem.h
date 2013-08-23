@@ -19,7 +19,7 @@
 
 +(int) historyIndex;
 +(void) setHistoryIndex:(int)index;
-+(void) addHistoryItemHTML:(NSString*)html withTitle:(NSString*)title andURL:(NSString*)url;
++(void) addHistoryItemAsyncWithHTML:(NSString*)html title:(NSString*)title uRL:(NSString*)url;
 +(NSArray*) history;
 +(void) clearHistory;
 

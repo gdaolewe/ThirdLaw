@@ -9,7 +9,6 @@
 #import "Bookmark.h"
 #import "LampshadeAppDelegate.h"
 
-
 @implementation Bookmark
 
 @dynamic url;
@@ -17,17 +16,20 @@
 
 NSArray *_bookmarksCached;
 
-+(void) saveBookmarkURL:(NSString*)url withTitle:(NSString*)title {
-    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    Bookmark *bookmark = [NSEntityDescription insertNewObjectForEntityForName:@"Bookmark" inManagedObjectContext:context];
-    bookmark.url = url;
-    bookmark.title = title;
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Error saving bookmark to Core Data: %@", error.localizedDescription);
-    } else {
-        _bookmarksCached = [self fetchBookMarks];
-    }
++(void) saveBookmarkAsyncWithURL:(NSString*)url title:(NSString*)title {
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.SaveBookmark", NULL);
+    dispatch_async(backgroundQueue, ^{
+        NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        Bookmark *bookmark = [NSEntityDescription insertNewObjectForEntityForName:@"Bookmark" inManagedObjectContext:context];
+        bookmark.url = url;
+        bookmark.title = title;
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Error saving bookmark to Core Data: %@", error.localizedDescription);
+        } else {
+            _bookmarksCached = [self fetchBookMarks];
+        }
+    });
 }
 +(void) deleteBookmark:(Bookmark*)bookmark {
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;

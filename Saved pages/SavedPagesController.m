@@ -40,10 +40,76 @@ bool _editing = NO;
 @synthesize toolbar = _toolbar;
 @synthesize tabBar = _tabBar;
 
-NSArray *history;
-NSArray *bookmarks;
-NSArray *pages;
+NSArray *_history;
+NSArray *_bookmarks;
+NSArray *_pages;
 NSMutableSet * _selectedEditRows;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    /*dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchHistory", NULL);
+    dispatch_async(backgroundQueue, ^{
+        _history = [HistoryItem history];
+        _bookmarks = [Bookmark bookmarks];
+        _pages = [Page pages];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });*/
+    _selectedEditRows = [NSMutableSet set];
+    NSMutableArray *items = [self.toolbar.items mutableCopy];
+    [items removeObjectAtIndex:2];
+    [self.toolbar setItems:items animated:YES];
+    [self setupTab];
+}
+
+-(void) fetchTableDataAsyncForType:(int)type {
+    switch (type) {
+        case HISTORY: {
+                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchHistory", NULL);
+                dispatch_async(backgroundQueue, ^{
+                    _history = [HistoryItem history];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (_history.count == 0)
+                            self.clearButton.enabled = NO;
+                        else
+                            self.clearButton.enabled = YES;
+                        [self.tableView reloadData];
+                    });
+                });
+        }
+        break;
+        case BOOKMARKS: {
+                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchBookmarks", NULL);
+                dispatch_async(backgroundQueue, ^{
+                    _bookmarks = [Bookmark bookmarks];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (_bookmarks.count == 0)
+                            self.editButton.enabled = NO;
+                        else
+                            self.editButton.enabled = YES;
+                        [self.tableView reloadData];
+                    });
+                });
+        }
+        break;
+        case SAVED_PAGES: {
+                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchPages", NULL);
+                dispatch_async(backgroundQueue, ^{
+                    _pages = [Page pages];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (_pages.count == 0)
+                            self.editButton.enabled = NO;
+                        else
+                            self.editButton.enabled = YES;
+                        [self.tableView reloadData];
+                    });
+                });
+        }
+        break;
+    }
+}
 
 - (IBAction)tabChanged:(UISegmentedControl *)sender {
     [self setupTab];
@@ -51,18 +117,20 @@ NSMutableSet * _selectedEditRows;
 
 -(void) setupTab {
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    switch (self.tabBar.selectedSegmentIndex) {
-        case HISTORY: {
+    int tabIndex = self.tabBar.selectedSegmentIndex;
+    [self fetchTableDataAsyncForType:tabIndex];
+    switch (tabIndex) {
+        case HISTORY:
+            NSLog(@"setup tab %d", tabIndex);
             self.toolbar.items = [NSArray arrayWithObjects:self.clearButton, flexibleSpace, nil];
-        }
             break;
-        case BOOKMARKS: {
-            self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, self.deleteButton, nil];
-        }
+        case BOOKMARKS:
+            NSLog(@"setup tab %d", tabIndex);
+            self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, nil];
             break;
-        case SAVED_PAGES: {
-            self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, self.deleteButton, nil];
-        }
+        case SAVED_PAGES:
+            NSLog(@"setup tab %d", tabIndex);
+            self.toolbar.items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, nil];
             break;
     }
     [self.tableView reloadData];
@@ -72,6 +140,7 @@ NSMutableSet * _selectedEditRows;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (IBAction)edit:(UIBarButtonItem *)sender {
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     if (self.tableView.editing) {   // done editing
         [self.tableView setEditing:NO animated:YES];
         sender.style = UIBarButtonItemStyleBordered;
@@ -80,59 +149,62 @@ NSMutableSet * _selectedEditRows;
         self.navigationItem.rightBarButtonItem = self.doneButton;
         self.doneButton.enabled = YES;
         self.tabBar.enabled = YES;
-        NSMutableArray *items = [self.toolbar.items mutableCopy];
-        [items removeObjectAtIndex:2];
+        NSArray *items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, nil];
         [self.toolbar setItems:items animated:YES];
-    } else {                        // start editing
+    } else if ([self tableView:self.tableView numberOfRowsInSection:0] > 0) {                        // start editing
         [self.tableView setEditing:YES animated:YES];
         sender.style = UIBarButtonItemStyleDone;
         sender.title = @"Done";
         self.doneButton.enabled = NO;
         self.tabBar.enabled = NO;
-        NSMutableArray* items = [self.toolbar.items mutableCopy];
-        [items addObject:self.deleteButton];
+        NSArray *items = [NSArray arrayWithObjects:self.editButton, flexibleSpace, self.deleteButton, nil];
         [self.toolbar setItems:items animated:YES];
     }
 }
 
 - (IBAction)clearHistory:(UIBarButtonItem *)sender {
-    [HistoryItem clearHistory];
-    history = [HistoryItem history];
-    [self.tableView reloadData];
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.ClearHistory", NULL);
+    dispatch_async(backgroundQueue, ^{
+        [HistoryItem clearHistory];
+        _history = [HistoryItem history];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_history.count == 0)
+                self.clearButton.enabled = NO;
+            [self.tableView reloadData];
+        });
+    });
 }
 
 -(IBAction)deleteRows:(UIBarButtonItem *)sender {
-    if (self.tabBar.selectedSegmentIndex == BOOKMARKS) {
-        for (NSIndexPath *indexPath in _selectedEditRows)  {
-            Bookmark *bookmark = [bookmarks objectAtIndex:indexPath.row];
-            [Bookmark deleteBookmark:bookmark];
+    int tabIndex = self.tabBar.selectedSegmentIndex;
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.DeletePages", NULL);
+    dispatch_async(backgroundQueue, ^ {
+        if (tabIndex == BOOKMARKS) {
+            for (NSIndexPath *indexPath in _selectedEditRows)  {
+                Bookmark *bookmark = [_bookmarks objectAtIndex:indexPath.row];
+                [Bookmark deleteBookmark:bookmark];
+            }
+            _bookmarks = [Bookmark bookmarks];
         }
-        bookmarks = [Bookmark bookmarks];
-    }
-    else if (self.tabBar.selectedSegmentIndex == SAVED_PAGES) {
-        for (NSIndexPath *indexPath in _selectedEditRows) {
-            Page *page = (Page*)[pages objectAtIndex:indexPath.row];
-            [Page deletePage:page];
+        else if (tabIndex == SAVED_PAGES) {
+            for (NSIndexPath *indexPath in _selectedEditRows) {
+                Page *page = (Page*)[_pages objectAtIndex:indexPath.row];
+                [Page deletePage:page];
+            }
+            _pages = [Page pages];
         }
-        pages = [Page pages];
-    }
-    [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
-    _selectedEditRows = [NSMutableSet set];
-
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
+            _selectedEditRows = [NSMutableSet set];
+            self.deleteButton.enabled = NO;
+            if ([self tableView:self.tableView numberOfRowsInSection:0] == 0) {
+                [self edit:self.editButton];
+                self.editButton.enabled = NO;
+            };
+        });
+    });
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    history = [HistoryItem history];
-    bookmarks = [Bookmark bookmarks];
-    pages = [Page pages];
-    _selectedEditRows = [NSMutableSet set];
-    NSMutableArray *items = [self.toolbar.items mutableCopy];
-    [items removeObjectAtIndex:2];
-    [self.toolbar setItems:items animated:YES];
-    [self setupTab];
-}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -144,13 +216,13 @@ NSMutableSet * _selectedEditRows;
     // Return the number of rows in the section.
     switch (self.tabBar.selectedSegmentIndex) {
         case HISTORY:
-            return [history count];
+            return [_history count];
             break;
         case BOOKMARKS:
-            return [bookmarks count];
+            return [_bookmarks count];
             break;
         case SAVED_PAGES:
-            return [pages count];
+            return [_pages count];
             break;
         default:
             return 0;
@@ -170,7 +242,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"History Item"];
             }
-            HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
+            HistoryItem *item = (HistoryItem*)[_history objectAtIndex:indexPath.row];
             if ([HistoryItem historyIndex] == indexPath.row)
                 cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", @">", item.title];
             else
@@ -186,7 +258,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Bookmark"];
             }
-            Bookmark *bookmark = (Bookmark*)[bookmarks objectAtIndex:indexPath.row];
+            Bookmark *bookmark = (Bookmark*)[_bookmarks objectAtIndex:indexPath.row];
             cell.textLabel.text = bookmark.title;
         }
             break;
@@ -198,7 +270,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Saved Page"];
             }
-            Page* page = (Page*)[pages objectAtIndex:indexPath.row];
+            Page* page = (Page*)[_pages objectAtIndex:indexPath.row];
             cell.textLabel.text = page.title;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"Added %@", [page dateString]];
         }
@@ -218,7 +290,7 @@ NSMutableSet * _selectedEditRows;
         switch (self.tabBar.selectedSegmentIndex) {
             case HISTORY:
             {
-                HistoryItem *item = (HistoryItem*)[history objectAtIndex:indexPath.row];
+                HistoryItem *item = (HistoryItem*)[_history objectAtIndex:indexPath.row];
                 [HistoryItem setHistoryIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectSavedPage:item];
             }
@@ -226,14 +298,14 @@ NSMutableSet * _selectedEditRows;
             case BOOKMARKS:
             {
                 NSLog(@"bookmark selected");
-                Bookmark *bookmark = (Bookmark*)[bookmarks objectAtIndex:indexPath.row];
+                Bookmark *bookmark = (Bookmark*)[_bookmarks objectAtIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectBookmarkWithURL:bookmark.url];
                 
             }
                 break;
             case SAVED_PAGES:
             {
-                Page* page = (Page*)[pages objectAtIndex:indexPath.row];
+                Page* page = (Page*)[_pages objectAtIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectSavedPage:page];
             }
                 break;

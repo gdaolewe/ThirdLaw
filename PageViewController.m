@@ -75,11 +75,6 @@ dispatch_queue_t backgroundQueue;
     }
 }
 
--(NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
-    NSLog(@"redirect %@", request.URL.absoluteString);
-    return request;
-}
-
 - (void)viewDidUnload
 {
     [self setWebView:nil];
@@ -188,7 +183,7 @@ dispatch_queue_t backgroundQueue;
 -(void) addToHistory {
     if (_shouldSaveHistory) {
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
-        [HistoryItem addHistoryItemHTML:html withTitle:self.title andURL:self.url];
+        [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title uRL:self.url];
         _historySaved = YES;
     } else {
         _shouldSaveHistory = YES;
@@ -213,6 +208,7 @@ dispatch_queue_t backgroundQueue;
     void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
         self.url = response.URL.absoluteString;
         [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]];
+        dispatch_release(backgroundQueue);
     };
     dispatch_async(backgroundQueue, ^(void) {
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
@@ -319,13 +315,13 @@ dispatch_queue_t backgroundQueue;
         case BOOKMARK_BUTTON:
             if ([self.url isEqualToString:RANDOM_URL])
                 self.url = self.webView.request.mainDocumentURL.absoluteString;
-            [Bookmark saveBookmarkURL:self.url withTitle:self.title];
+            [Bookmark saveBookmarkAsyncWithURL:self.url title:self.title];
             NSLog(@"saved bookmark with title %@ and url %@", self.title, self.url);
             break;
         case SAVE_BUTTON:
         {
             NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
-            [Page savePageHTML:html withTitle:self.title andURL:self.url];
+            [Page savePageAsyncWithHTML:html title:self.title andURL:self.url];
         }
             break;
         default:

@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSDate * date;
 
-+(void) savePageHTML:(NSString*)html withTitle:(NSString*)title andURL:(NSString*)url;
++(void) savePageAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url;
 +(void) deletePage:(Page*)page;
 +(NSArray*) pages;
 -(NSString*) dateString;

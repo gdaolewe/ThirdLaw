@@ -29,29 +29,33 @@ static int _historyIndex;
     _historyIndex = index;
 }
 
-+(void)addHistoryItemHTML:(NSString *)html withTitle:(NSString *)title andURL:(NSString*)url {
-    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    NSError *error = nil;
-    NSArray* historyArray = [self history];
-    if (historyArray.count > 29) {
-        //delete oldest history item,
-        HistoryItem *oldest = (HistoryItem*)[historyArray lastObject];
-        [context deleteObject:oldest];
-    }
-    //insert new item,
-    HistoryItem *item = [NSEntityDescription insertNewObjectForEntityForName:@"HistoryItem" inManagedObjectContext:context];
-    item.html = html;
-    item.title = title;
-    item.url = url;
-    NSDate *date = [NSDate date];
-    item.date = date;
-    //then save
-    if (![context save:&error]) {
-        NSLog(@"Error saving history to Core Data: %@", error.localizedDescription);
-    } else {
-        [self setHistoryIndex:0];
-        _historyCached = [self fetchHistory];
-    }
++(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title uRL:(NSString*)url {
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.AddHistory", NULL);
+    dispatch_async(backgroundQueue, ^{
+        NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        NSError *error = nil;
+        NSArray* historyArray = [self history];
+        if (historyArray.count > 29) {
+            //delete oldest history item,
+            HistoryItem *oldest = (HistoryItem*)[historyArray lastObject];
+            [context deleteObject:oldest];
+        }
+        //insert new item,
+        HistoryItem *item = [NSEntityDescription insertNewObjectForEntityForName:@"HistoryItem" inManagedObjectContext:context];
+        item.html = html;
+        item.title = title;
+        item.url = url;
+        NSDate *date = [NSDate date];
+        item.date = date;
+        //then save
+        if (![context save:&error]) {
+            NSLog(@"Error saving history to Core Data: %@", error.localizedDescription);
+        } else {
+            [self setHistoryIndex:0];
+            _historyCached = [self fetchHistory];
+        }
+
+    });
 }
 
 +(NSArray*) fetchHistory {

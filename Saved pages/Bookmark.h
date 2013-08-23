@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * title;
 
-+(void) saveBookmarkURL:(NSString*)url withTitle:(NSString*)title;
++(void) saveBookmarkAsyncWithURL:(NSString*)url title:(NSString*)title;
 +(void) deleteBookmark:(Bookmark*)bookmark;
 +(NSArray*) bookmarks;
 

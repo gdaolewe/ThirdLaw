@@ -19,20 +19,23 @@
 
 NSArray *_pagesCached;
 
-+(void)savePageHTML:(NSString*)html withTitle:(NSString*)title andURL:(NSString*)url {
-    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    Page *page = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
-    page.html = html;
-    page.title = title;
-    page.url = url;
-    NSDate *date = [NSDate date];
-    page.date = date;
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Error saving page to Core Data: %@", error.localizedDescription);
-    } else {
-        _pagesCached = [self fetchPages];
-    }
++(void)savePageAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url {
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.SavePage", NULL);
+    dispatch_async(backgroundQueue, ^{
+        NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        Page *page = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
+        page.html = html;
+        page.title = title;
+        page.url = url;
+        NSDate *date = [NSDate date];
+        page.date = date;
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Error saving page to Core Data: %@", error.localizedDescription);
+        } else {
+            _pagesCached = [self fetchPages];
+        }
+    });
 }
 
 +(void) deletePage:(Page *)page {
