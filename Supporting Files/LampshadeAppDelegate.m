@@ -25,7 +25,7 @@
     [[IndexData sharedIndexData] loadHTML];
     NSDictionary *appDefaults = @{
         @"SavedPagesStartingTab" : [NSNumber numberWithInt:0],
-        @"HistoryIndex" : [NSNumber numberWithInt:0]
+        @"HistoryIndex" : [NSNumber numberWithInt:-1]
     };
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:appDefaults];

@@ -67,9 +67,17 @@ dispatch_queue_t backgroundQueue;
     if ([self.url isEqualToString:RANDOM_URL]) {
         [self loadRandomURL];
     } else if (self.url == nil) {
-        _shouldSaveHistory = YES;
-        self.url = @"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage";
-        [self loadPageFromHTML: [FileLoader getHomePage]];
+        NSArray *history = [HistoryItem history];
+        HistoryItem *item;
+        if (history.count > 0)
+            item = [history objectAtIndex:[HistoryItem historyIndex]];
+        if (item) { //load page where we last where
+            [self savedPageController:nil didSelectSavedPage:item];
+        } else {    //load home page
+            _shouldSaveHistory = YES;
+            self.url = @"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage";
+            [self loadPageFromHTML: [FileLoader getHomePage]];
+        }
     } else {
         [self loadURLFromString:self.url];
     }
