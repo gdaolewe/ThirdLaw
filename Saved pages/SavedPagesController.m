@@ -252,6 +252,7 @@ NSMutableSet * _selectedEditRows;
             }
             Bookmark *bookmark = (Bookmark*)[_bookmarks objectAtIndex:indexPath.row];
             cell.textLabel.text = bookmark.title;
+            cell.detailTextLabel.text = bookmark.url;
         }
             break;
         case SAVED_PAGES: {
