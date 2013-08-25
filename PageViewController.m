@@ -151,7 +151,7 @@ dispatch_queue_t backgroundQueue;
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
             NSURLResponse *response = nil;
             NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 doneBlock(response, data);
             });
         });
@@ -236,10 +236,8 @@ dispatch_queue_t backgroundQueue;
 
 -(void) addToHistory {
     if (_shouldSaveHistory) {
-        [HistoryItem clearHistoryNewerThanIndex:[HistoryItem historyIndex]];
-        [HistoryItem setHistoryIndex:0];
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
-        [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title uRL:self.url];
+        [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title andURL:self.url];
         _historySaved = YES;
     } else {
         _shouldSaveHistory = YES;

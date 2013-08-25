@@ -55,51 +55,57 @@ NSMutableSet * _selectedEditRows;
     [items removeObjectAtIndex:2];
     [self.toolbar setItems:items animated:YES];
     self.tabBar.selectedSegmentIndex = ((NSNumber*)[defaults objectForKey:@"SavedPagesStartingTab"]).intValue;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHistory:) name:HISTORY_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBookmarks:) name:BOOKMARKS_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePages:) name:PAGES_NOTIFICATION_NAME object:nil];
     [self setupTab];
+}
+
+-(void) updateHistory:(NSNotification*)notification {
+    _history = [HistoryItem history];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+-(void) updateBookmarks:(NSNotification*)notification {
+    _bookmarks = [Bookmark bookmarks];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+
+}
+-(void) updatePages:(NSNotification*)notification {
+    _pages = [Page pages];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+
 }
 
 -(void) fetchTableDataAsyncForType:(int)type {
     switch (type) {
         case HISTORY: {
-                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchHistory", NULL);
-                dispatch_async(backgroundQueue, ^{
-                    _history = [HistoryItem history];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (_history.count == 0)
-                            self.clearButton.enabled = NO;
-                        else
-                            self.clearButton.enabled = YES;
-                        [self.tableView reloadData];
-                    });
-                });
+            [HistoryItem fetchHistoryAsync];
+            _bookmarks = nil;
+            _pages = nil;
+            [Bookmark clearCache];
+            [Page clearCache];
         }
         break;
         case BOOKMARKS: {
-                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchBookmarks", NULL);
-                dispatch_async(backgroundQueue, ^{
-                    _bookmarks = [Bookmark bookmarks];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (_bookmarks.count == 0)
-                            self.editButton.enabled = NO;
-                        else
-                            self.editButton.enabled = YES;
-                        [self.tableView reloadData];
-                    });
-                });
+            [Bookmark fetchBookmarksAsync];
+            _history = nil;
+            _pages = nil;
+            [HistoryItem clearCache];
+            [Page clearCache];
         }
         break;
         case SAVED_PAGES: {
-                dispatch_queue_t backgroundQueue =  dispatch_queue_create("com.georgedw.Lampshade.FetchPages", NULL);
-                dispatch_async(backgroundQueue, ^{
-                    _pages = [Page pages];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (_pages.count == 0)
-                            self.editButton.enabled = NO;
-                        else
-                            self.editButton.enabled = YES;
-                        [self.tableView reloadData];
-                    });
-                });
+            [Page fetchPagesAsync];
+            _history = nil;
+            _bookmarks = nil;
+            [HistoryItem clearCache];
+            [Bookmark clearCache];
         }
         break;
     }
@@ -155,46 +161,40 @@ NSMutableSet * _selectedEditRows;
 }
 
 - (IBAction)clearHistory:(UIBarButtonItem *)sender {
-    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.ClearHistory", NULL);
-    dispatch_async(backgroundQueue, ^{
-        [HistoryItem clearHistory];
-        _history = [HistoryItem history];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_history.count == 0)
-                self.clearButton.enabled = NO;
-            [self.tableView reloadData];
-        });
-    });
+        [HistoryItem clearHistoryAsync];
 }
 
 -(IBAction)deleteRows:(UIBarButtonItem *)sender {
     int tabIndex = self.tabBar.selectedSegmentIndex;
-    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.DeletePages", NULL);
-    dispatch_async(backgroundQueue, ^ {
-        if (tabIndex == BOOKMARKS) {
-            for (NSIndexPath *indexPath in _selectedEditRows)  {
-                Bookmark *bookmark = [_bookmarks objectAtIndex:indexPath.row];
-                [Bookmark deleteBookmark:bookmark];
-            }
-            _bookmarks = [Bookmark bookmarks];
+    if (tabIndex == BOOKMARKS) {
+        NSMutableArray *bookmarksToDelete = [NSMutableArray array];
+        NSMutableArray *bookmarksMutable = [_bookmarks mutableCopy];
+        for (NSIndexPath *indexPath in _selectedEditRows)
+            [bookmarksToDelete addObject:[_bookmarks objectAtIndex:indexPath.row]];
+        for (Bookmark *b in bookmarksToDelete)
+            [bookmarksMutable removeObject:b];
+        
+        _bookmarks = [bookmarksMutable copy];
+        [Bookmark deleteBookmarksAsync:bookmarksToDelete];
+    }
+    else if (tabIndex == SAVED_PAGES) {
+        NSMutableArray *pagesToDelete = [NSMutableArray array];
+        NSMutableArray *pagesMutable = [_pages mutableCopy];
+        for (NSIndexPath *indexPath in _selectedEditRows)
+            [pagesToDelete addObject:[_pages objectAtIndex:indexPath.row]];
+        for (Page *p in pagesToDelete)
+            [pagesMutable removeObject:p];
+        _pages = [pagesMutable copy];
+        [Page deletePagesAsync:pagesToDelete];
+    }
+        [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
+        _selectedEditRows = [NSMutableSet set];
+        self.deleteButton.enabled = NO;
+        if ([self tableView:self.tableView numberOfRowsInSection:0] == 0) {
+            [self edit:self.editButton];
+            self.editButton.enabled = NO;
         }
-        else if (tabIndex == SAVED_PAGES) {
-            for (NSIndexPath *indexPath in _selectedEditRows) {
-                Page *page = (Page*)[_pages objectAtIndex:indexPath.row];
-                [Page deletePage:page];
-            }
-            _pages = [Page pages];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView deleteRowsAtIndexPaths:[_selectedEditRows allObjects] withRowAnimation:UITableViewRowAnimationAutomatic];
-            _selectedEditRows = [NSMutableSet set];
-            self.deleteButton.enabled = NO;
-            if ([self tableView:self.tableView numberOfRowsInSection:0] == 0) {
-                [self edit:self.editButton];
-                self.editButton.enabled = NO;
-            };
-        });
-    });
+    
 }
 
 
@@ -208,13 +208,13 @@ NSMutableSet * _selectedEditRows;
     // Return the number of rows in the section.
     switch (self.tabBar.selectedSegmentIndex) {
         case HISTORY:
-            return [_history count];
+            return _history.count;
             break;
         case BOOKMARKS:
-            return [_bookmarks count];
+            return _bookmarks.count;
             break;
         case SAVED_PAGES:
-            return [_pages count];
+            return _pages.count;
             break;
         default:
             return 0;
@@ -234,7 +234,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"History Item"];
             }
-            HistoryItem *item = (HistoryItem*)[_history objectAtIndex:indexPath.row];
+            HistoryItem *item = [_history objectAtIndex:indexPath.row];
             if ([HistoryItem historyIndex] == indexPath.row)
                 cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", @">", item.title];
             else
@@ -250,7 +250,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Bookmark"];
             }
-            Bookmark *bookmark = (Bookmark*)[_bookmarks objectAtIndex:indexPath.row];
+            Bookmark *bookmark = [_bookmarks objectAtIndex:indexPath.row];
             cell.textLabel.text = bookmark.title;
             cell.detailTextLabel.text = bookmark.url;
         }
@@ -263,7 +263,7 @@ NSMutableSet * _selectedEditRows;
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Saved Page"];
             }
-            Page* page = (Page*)[_pages objectAtIndex:indexPath.row];
+            Page* page = [_pages objectAtIndex:indexPath.row];
             cell.textLabel.text = page.title;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"Added %@", [page dateString]];
         }
@@ -283,6 +283,8 @@ NSMutableSet * _selectedEditRows;
         switch (self.tabBar.selectedSegmentIndex) {
             case HISTORY:
             {
+                if (!_history)
+                    _history = [HistoryItem history];
                 HistoryItem *item = (HistoryItem*)[_history objectAtIndex:indexPath.row];
                 [HistoryItem setHistoryIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectSavedPage:item];
@@ -290,6 +292,8 @@ NSMutableSet * _selectedEditRows;
                 break;
             case BOOKMARKS:
             {
+                if (!_bookmarks)
+                    _bookmarks = [Bookmark bookmarks];
                 NSLog(@"bookmark selected");
                 Bookmark *bookmark = (Bookmark*)[_bookmarks objectAtIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectBookmarkWithURL:bookmark.url];
@@ -298,6 +302,8 @@ NSMutableSet * _selectedEditRows;
                 break;
             case SAVED_PAGES:
             {
+                if (!_pages)
+                    _pages = [Page pages];
                 Page* page = (Page*)[_pages objectAtIndex:indexPath.row];
                 [self.delegate savedPageController:self didSelectSavedPage:page];
             }
@@ -318,7 +324,25 @@ NSMutableSet * _selectedEditRows;
     return UITableViewCellEditingStyleDelete;
 }
 
+-(void)didReceiveMemoryWarning {
+    _history = nil;
+    _bookmarks = nil;
+    _pages = nil;
+    [HistoryItem clearCache];
+    [Bookmark clearCache];
+    [Page clearCache];
+}
+
 - (void)viewDidUnload {
+    _history = nil;
+    _bookmarks = nil;
+    _pages = nil;
+    [HistoryItem clearCache];
+    [Bookmark clearCache];
+    [Page clearCache];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:HISTORY_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BOOKMARKS_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PAGES_NOTIFICATION_NAME object:nil];    
     [self setTableView:nil];
     [self setDoneButton:nil];
     [self setToolbar:nil];

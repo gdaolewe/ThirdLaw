@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#define BOOKMARKS_NOTIFICATION_NAME @"com.georgedw.lampshade.bookmarksupdated"
 
 @interface Bookmark : NSManagedObject
 
@@ -16,7 +17,9 @@
 @property (nonatomic, retain) NSString * title;
 
 +(void) saveBookmarkAsyncWithURL:(NSString*)url title:(NSString*)title;
-+(void) deleteBookmark:(Bookmark*)bookmark;
++(void) deleteBookmarksAsync:(NSArray*)bookmarks;
++(void) fetchBookmarksAsync;
 +(NSArray*) bookmarks;
++(void) clearCache;
 
 @end

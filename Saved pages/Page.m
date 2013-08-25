@@ -17,11 +17,14 @@
 @dynamic url;
 @dynamic date;
 
+dispatch_queue_t queue;
+
 NSArray *_pagesCached;
 
 +(void)savePageAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url {
-    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.SavePage", NULL);
-    dispatch_async(backgroundQueue, ^{
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.pages", NULL);
+    dispatch_async(queue, ^{
         NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
         Page *page = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
         page.html = html;
@@ -34,19 +37,26 @@ NSArray *_pagesCached;
             NSLog(@"Error saving page to Core Data: %@", error.localizedDescription);
         } else {
             _pagesCached = [self fetchPages];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PAGES_NOTIFICATION_NAME object:self];
         }
     });
 }
 
-+(void) deletePage:(Page *)page {
-    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    [context deleteObject:page];
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Error deleting page from Core Data: %@", error.localizedDescription);
-    } else {
-        _pagesCached = [self fetchPages];
-    }
++(void) deletePagesAsync:(NSArray*)pages {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.pages", NULL);
+    dispatch_async(queue, ^{
+        NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        for (Page* page in pages)
+            [context deleteObject:page];
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Error deleting page from Core Data: %@", error.localizedDescription);
+        } else {
+            _pagesCached = [self fetchPages];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PAGES_NOTIFICATION_NAME object:self];
+        }
+    });
 }
 
 +(NSArray*) fetchPages {
@@ -65,10 +75,26 @@ NSArray *_pagesCached;
     return results;
 }
 
++(void) fetchPagesAsync {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.pages", NULL);
+    dispatch_async(queue, ^{
+        _pagesCached = [self fetchPages];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PAGES_NOTIFICATION_NAME object:self];
+    });
+}
+
 +(NSArray*) pages {
     if (_pagesCached == nil)
         _pagesCached = [self fetchPages];
     return _pagesCached;
+}
++(void) clearCache {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.pages", NULL);
+    dispatch_async(queue, ^{
+        _pagesCached = nil;
+    });
 }
 
 -(NSString*) dateString {

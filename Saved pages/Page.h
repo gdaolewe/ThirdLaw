@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "GenericSavedPage.h"
 
+#define PAGES_NOTIFICATION_NAME @"com.georgedw.lampshade.pagesupdated"
 
 @interface Page : NSManagedObject <GenericSavedPage>
 
@@ -19,7 +20,10 @@
 @property (nonatomic, retain) NSDate * date;
 
 +(void) savePageAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url;
-+(void) deletePage:(Page*)page;
++(void) deletePagesAsync:(NSArray*)pages;
++(void) fetchPagesAsync;
 +(NSArray*) pages;
++(void) clearCache;
+
 -(NSString*) dateString;
 @end

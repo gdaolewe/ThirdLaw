@@ -20,6 +20,7 @@ NSArray *_historyCached;
 NSDateFormatter *_formatter;
 
 static int _historyIndex;
+dispatch_queue_t queue;
 
 +(int) historyIndex {
     return _historyIndex;
@@ -30,9 +31,11 @@ static int _historyIndex;
     [[NSUserDefaults standardUserDefaults] setInteger:_historyIndex forKey:@"HistoryIndex"];
 }
 
-+(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title uRL:(NSString*)url {
-    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.AddHistory", NULL);
-    dispatch_async(backgroundQueue, ^{
++(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title andURL:(NSString*)url {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
+    dispatch_async(queue, ^{
+        [self clearHistoryNewerThanIndex:[self historyIndex]];
         NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
         NSError *error = nil;
         NSArray* historyArray = [self history];
@@ -54,6 +57,7 @@ static int _historyIndex;
         } else {
             [self setHistoryIndex:0];
             _historyCached = [self fetchHistory];
+            [[NSNotificationCenter defaultCenter] postNotificationName:HISTORY_NOTIFICATION_NAME object:self];
         }
 
     });
@@ -75,25 +79,39 @@ static int _historyIndex;
     return results;
 }
 
++(void) fetchHistoryAsync {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
+    dispatch_async(queue, ^{
+        _historyCached = [self fetchHistory];
+        [[NSNotificationCenter defaultCenter] postNotificationName:HISTORY_NOTIFICATION_NAME object:self];
+    });
+}
+
 +(NSArray*) history {
     if (_historyCached == nil)
         _historyCached = [self fetchHistory];
     return _historyCached;
 }
 
-+(void) clearHistory {
-    NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-    NSArray *history = [self history];
-    for (HistoryItem *item in history) {
-        [context deleteObject:item];
-    }
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
-    } else {
-        [self setHistoryIndex:0];
-        _historyCached = [self fetchHistory];
-    }
++(void) clearHistoryAsync {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
+    dispatch_async(queue, ^{
+        NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+        NSArray *history = [self history];
+        for (HistoryItem *item in history) {
+            [context deleteObject:item];
+        }
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
+        } else {
+            [self setHistoryIndex:0];
+            _historyCached = [self fetchHistory];
+            [[NSNotificationCenter defaultCenter] postNotificationName:HISTORY_NOTIFICATION_NAME object:self];
+        }
+    });
 }
 
 +(void) clearHistoryNewerThanIndex:(int)index {
@@ -110,7 +128,16 @@ static int _historyIndex;
     } else {
         [self setHistoryIndex:0];
         _historyCached = [self fetchHistory];
+        [[NSNotificationCenter defaultCenter] postNotificationName:HISTORY_NOTIFICATION_NAME object:self];
     }
+}
+
++(void) clearCache {
+    if (!queue)
+        queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
+    dispatch_async(queue, ^{
+        _historyCached = nil;
+    });
 }
 
 -(NSString*) dateString {

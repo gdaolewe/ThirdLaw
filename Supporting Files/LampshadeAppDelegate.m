@@ -24,8 +24,9 @@
     [FileLoader downloadFiles];
     [[IndexData sharedIndexData] loadHTML];
     NSDictionary *appDefaults = @{
+        @"HistoryIndex" : [NSNumber numberWithInt:-1],
         @"SavedPagesStartingTab" : [NSNumber numberWithInt:0],
-        @"HistoryIndex" : [NSNumber numberWithInt:-1]
+        @"SearchString" : @""
     };
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:appDefaults];

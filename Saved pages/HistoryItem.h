@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "GenericSavedPage.h"
 
+#define HISTORY_NOTIFICATION_NAME @"com.georgedw.lampshade.historyupdated"
+
 @interface HistoryItem : NSManagedObject <GenericSavedPage>
 
 @property (nonatomic, retain) NSString * title;
@@ -19,10 +21,12 @@
 
 +(int) historyIndex;
 +(void) setHistoryIndex:(int)index;
-+(void) addHistoryItemAsyncWithHTML:(NSString*)html title:(NSString*)title uRL:(NSString*)url;
++(void) addHistoryItemAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url;
++(void) fetchHistoryAsync;
 +(NSArray*) history;
-+(void) clearHistory;
++(void) clearHistoryAsync;
 +(void) clearHistoryNewerThanIndex:(int)index;
++(void) clearCache;
 
 -(NSString*) dateString;
 

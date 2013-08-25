@@ -12,12 +12,14 @@
 #import "Reachability.h"
 
 @interface SearchViewController ()
-    <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIWebViewDelegate>
+    <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIWebViewDelegate>
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIWebView *searchWebView;
 @end
 
 @implementation SearchViewController
 
+@synthesize searchBar = _searchBar;
 @synthesize searchWebView = _searchWebView;
 @synthesize delegate = _delegate;
 
@@ -32,6 +34,9 @@ BOOL _allSwitchOn;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSString *searchString = [[NSUserDefaults standardUserDefaults] objectForKey:@"SearchString"];
+    if (![searchString isEqualToString:@""])
+        self.searchBar.text = searchString;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     _optionsArray = @[@"Tropes",@"Anime & Manga",@"Comicbook",@"Fanfic",@"Film",@"Literature",@"Music",@"Tabletop Games",@"Theater",@"Video Games",@"Web Animation",@"Web Comics",@"Web Original",@"Western Animation",@"Real Life"];
     
@@ -46,6 +51,8 @@ BOOL _allSwitchOn;
 
 - (void)viewDidUnload
 {
+    [self setSearchWebView:nil];
+    [self setSearchBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -148,6 +155,7 @@ BOOL _allSwitchOn;
 #define BASE_SITE_QUERY @"+site:tvtropes.org"
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [[NSUserDefaults standardUserDefaults] setObject:searchBar.text forKey:@"SearchString"];
     NSString* siteQuery = @"";
     if (_allSwitchOn) {
         siteQuery = BASE_SITE_QUERY;
