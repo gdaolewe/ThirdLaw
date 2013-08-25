@@ -41,7 +41,11 @@ NSString* appSupportDir;
         [self downloadCSSToDir:appSupportDir];
         [self downloadHomePageToDir:appSupportDir];
         [self downloadIndexPageToDir:appSupportDir];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILES_NOTIFICATION_NAME object:self];
+        });
     });
+    dispatch_release(backgroundQueue);
     
 }
 

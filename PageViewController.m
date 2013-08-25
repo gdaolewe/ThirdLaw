@@ -27,7 +27,6 @@ NSString *const RANDOM_URL;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *backForwardCancelButton;
 
-
 @end
 
 @implementation PageViewController
@@ -81,6 +80,7 @@ dispatch_queue_t backgroundQueue;
     } else {
         [self loadURLFromString:self.url];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesUpdated:) name:FILES_NOTIFICATION_NAME object:nil];
 }
 
 - (void)viewDidUnload
@@ -108,6 +108,10 @@ dispatch_queue_t backgroundQueue;
     } else {
         [self.activityIndicator stopAnimating];
     }
+}
+
+-(void) filesUpdated:(NSNotification*)notification {
+    _script = [FileLoader getScript];
 }
 
 - (void) reachabilityChanged:(NSNotification*) notification
@@ -238,6 +242,7 @@ dispatch_queue_t backgroundQueue;
     if (_shouldSaveHistory) {
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
         [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title andURL:self.url];
+        [HistoryItem clearCache];
         _historySaved = YES;
     } else {
         _shouldSaveHistory = YES;
@@ -306,6 +311,7 @@ dispatch_queue_t backgroundQueue;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:previous.html];
     }
+    [HistoryItem clearCache];
 }
 - (IBAction)forward:(UIButton *)sender {
     if ([HistoryItem historyIndex] > 0) {
@@ -318,6 +324,7 @@ dispatch_queue_t backgroundQueue;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:next.html];
     }
+    [HistoryItem clearCache];
 }
 
 #pragma mark - SavedPagesDelegate

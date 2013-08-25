@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define FILES_NOTIFICATION_NAME @"com.georgedw.lampshade.filesdownloaded"
+
 @interface FileLoader : NSObject
 
 +(void) downloadFiles;

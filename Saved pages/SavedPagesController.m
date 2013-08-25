@@ -333,13 +333,16 @@ NSMutableSet * _selectedEditRows;
     [Page clearCache];
 }
 
-- (void)viewDidUnload {
+-(void)viewWillDisappear:(BOOL)animated {
     _history = nil;
     _bookmarks = nil;
     _pages = nil;
     [HistoryItem clearCache];
     [Bookmark clearCache];
     [Page clearCache];
+}
+
+- (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:HISTORY_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:BOOKMARKS_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PAGES_NOTIFICATION_NAME object:nil];    

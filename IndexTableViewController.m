@@ -8,6 +8,7 @@
 
 #import "IndexTableViewController.h"
 #import "IndexData.h"
+#import "FileLoader.h"
 #import "PageViewController.h"
 #import "SavedPagesController.h"
 #import "SearchViewController.h"
@@ -28,10 +29,16 @@ IndexData * _indexData;
 {
     [super viewDidLoad];
     _indexData = [IndexData sharedIndexData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesUpdated:) name:FILES_NOTIFICATION_NAME object:nil];
 }
 
 -(void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+}
+
+-(void) filesUpdated:(NSNotification*)notification {
+    [_indexData loadHTML];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
