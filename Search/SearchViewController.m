@@ -10,11 +10,13 @@
 #import "NSString+URLEncoding.h"
 #import "PageViewController.h"
 #import "Reachability.h"
+#import "UserDefaultsHelper.h"
 
 @interface SearchViewController ()
     <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIWebViewDelegate>
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIWebView *searchWebView;
+@property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
 @end
 
 @implementation SearchViewController
@@ -22,7 +24,9 @@
 @synthesize searchBar = _searchBar;
 @synthesize searchWebView = _searchWebView;
 @synthesize delegate = _delegate;
+@synthesize rotationLockButton = _rotationLockButton;
 
+NSUserDefaults *_defaults;
 NSArray* _optionsArray;
 NSMutableDictionary* _optionsDictionary;
 NSString* _resultURL;
@@ -46,13 +50,15 @@ BOOL _allSwitchOn;
     _optionsDictionary = [NSMutableDictionary dictionaryWithObjects:tempZeros forKeys:_optionsArray];
     _titleSwitchOn = NO;
     _allSwitchOn = YES;
-    
+	_defaults = [NSUserDefaults standardUserDefaults];
+    [self setupRotationLockButton];
 }
 
 - (void)viewDidUnload
 {
     [self setSearchWebView:nil];
     [self setSearchBar:nil];
+	[self setRotationLockButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -85,11 +91,6 @@ BOOL _allSwitchOn;
         [alert show];
     }
     return networkStatus != NotReachable;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Table view data source
@@ -217,5 +218,47 @@ BOOL _allSwitchOn;
     if ([self checkReachable])
         [self.searchWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 }
+
+- (IBAction)toggleRotationLock:(UIButton *)sender {
+	BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {   //unlock rotation
+        [_defaults setBool:NO forKey:USER_PREF_ROTATION_LOCKED];
+        [self.class attemptRotationToDeviceOrientation];
+    } else {    //lock rotation to current orientation
+        [_defaults setBool:YES forKey:USER_PREF_ROTATION_LOCKED];
+        [_defaults setInteger:self.interfaceOrientation forKey:USER_PREF_ROTATION_ORIENTATION];
+    }
+    [_defaults synchronize];
+    [self setupRotationLockButton];
+}
+
+
+-(void)setupRotationLockButton {
+    BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {
+        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+    } else {
+        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    NSInteger rotationOrientation = [_defaults integerForKey:USER_PREF_ROTATION_ORIENTATION];
+    if (rotationLocked) {
+        if (interfaceOrientation == rotationOrientation)
+            return YES;
+        else if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
+                 && (rotationOrientation == UIInterfaceOrientationLandscapeLeft || rotationOrientation == UIInterfaceOrientationLandscapeRight))
+            return YES;
+        else
+            return NO;
+        return (UIInterfaceOrientationPortrait == interfaceOrientation);
+    } else {
+        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    }
+}
+
 
 @end

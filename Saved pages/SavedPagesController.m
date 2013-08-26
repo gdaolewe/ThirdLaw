@@ -11,6 +11,7 @@
 #import "Bookmark.h"
 #import "Page.h"
 #import "PageViewController.h"
+#import "UserDefaultsHelper.h"
 
 #define HISTORY     0
 #define BOOKMARKS   1
@@ -24,6 +25,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *clearButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *tabBar;
+@property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
 
 @end
 
@@ -39,6 +41,7 @@ bool _editing = NO;
 @synthesize deleteButton = _deleteButton;
 @synthesize toolbar = _toolbar;
 @synthesize tabBar = _tabBar;
+@synthesize rotationLockButton = _rotationLockButton;
 
 NSUserDefaults *defaults;
 NSArray *_history;
@@ -54,10 +57,11 @@ NSMutableSet * _selectedEditRows;
     NSMutableArray *items = [self.toolbar.items mutableCopy];
     [items removeObjectAtIndex:2];
     [self.toolbar setItems:items animated:YES];
-    self.tabBar.selectedSegmentIndex = ((NSNumber*)[defaults objectForKey:@"SavedPagesStartingTab"]).intValue;
+    self.tabBar.selectedSegmentIndex = [defaults integerForKey:USER_PREF_SAVED_PAGES_STARTING_TAB];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHistory:) name:HISTORY_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBookmarks:) name:BOOKMARKS_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePages:) name:PAGES_NOTIFICATION_NAME object:nil];
+	[self setupRotationLockButton];
     [self setupTab];
 }
 
@@ -72,14 +76,12 @@ NSMutableSet * _selectedEditRows;
     dispatch_sync(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
-
 }
 -(void) updatePages:(NSNotification*)notification {
     _pages = [Page pages];
     dispatch_sync(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
-
 }
 
 -(void) fetchTableDataAsyncForType:(int)type {
@@ -353,7 +355,53 @@ NSMutableSet * _selectedEditRows;
     [self setTabBar:nil];
     [self setEditButton:nil];
     [self setClearButton:nil];
+	[self setRotationLockButton:nil];
     [super viewDidUnload];
 }
+
+
+- (IBAction)toggleRotationLock:(UIButton *)sender {
+	BOOL rotationLocked = [defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {   //unlock rotation
+        [defaults setBool:NO forKey:USER_PREF_ROTATION_LOCKED];
+		[self.class attemptRotationToDeviceOrientation];
+    } else {    //lock rotation to current orientation
+        [defaults setBool:YES forKey:USER_PREF_ROTATION_LOCKED];
+        [defaults setInteger:self.interfaceOrientation forKey:USER_PREF_ROTATION_ORIENTATION];
+    }
+    [defaults synchronize];
+    [self setupRotationLockButton];
+}
+
+-(void)setupRotationLockButton {
+    BOOL rotationLocked = [defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {
+        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+    } else {
+        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    NSLog(@"rotated");
+    BOOL rotationLocked = [defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    NSInteger rotationOrientation = [defaults integerForKey:USER_PREF_ROTATION_ORIENTATION];
+    if (rotationLocked) {
+        NSLog(@"rotated with orientaton locked");
+        if (interfaceOrientation == rotationOrientation)
+            return YES;
+        else if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
+                 && (rotationOrientation == UIInterfaceOrientationLandscapeLeft || rotationOrientation == UIInterfaceOrientationLandscapeRight))
+            return YES;
+        else
+            return NO;
+        return (UIInterfaceOrientationPortrait == interfaceOrientation);
+    } else {
+        NSLog(@"rotated with orientation unlocked");
+        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    }
+}
+
 
 @end

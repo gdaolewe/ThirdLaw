@@ -70,7 +70,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="Index" id="PWF-3I-eV0" customClass="IndexTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ScF-sw-4ey">
-                        <rect key="frame" x="0.0" y="20" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -126,11 +126,11 @@
             <objects>
                 <viewController storyboardIdentifier="Page" id="2" customClass="PageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="20" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView hidden="YES" contentMode="scaleToFill" scalesPageToFit="YES" id="YPl-Bz-xws">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
@@ -143,12 +143,12 @@
                                 </connections>
                             </webView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sgZ-Xb-TD7">
-                                <rect key="frame" x="142" y="190" width="37" height="37"/>
+                                <rect key="frame" x="142" y="168" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                             <button opaque="NO" alpha="0.60000000000000009" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rND-wr-EdE">
-                                <rect key="frame" x="280" y="374" width="40" height="40"/>
+                                <rect key="frame" x="280" y="330" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <size key="titleShadowOffset" width="1" height="1"/>
@@ -164,7 +164,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="q1u-PK-lKc">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="373"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -180,7 +180,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2Yu-7U-lYV">
-                                <rect key="frame" x="0.0" y="89" width="69" height="235"/>
+                                <rect key="frame" x="0.0" y="67" width="69" height="235"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="back_large.png">
@@ -195,7 +195,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Oc0-zb-xha">
-                                <rect key="frame" x="251" y="90" width="69" height="236"/>
+                                <rect key="frame" x="251" y="68" width="69" height="236"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="fwd_large.png">
@@ -209,6 +209,21 @@
                                     <action selector="back:" destination="2" eventType="touchUpInside" id="OAM-7t-vF9"/>
                                     <action selector="forward:" destination="2" eventType="touchUpInside" id="9kd-Iu-sCN"/>
                                     <action selector="forward:" destination="2" eventType="touchDown" id="hgE-fD-6mC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="odU-Tz-tez">
+                                <rect key="frame" x="0.0" y="330" width="73" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Lock">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleRotationLock:" destination="2" eventType="touchDown" id="g5J-NT-4dJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -258,6 +273,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="sgZ-Xb-TD7" id="IQk-9F-QXs"/>
@@ -265,6 +281,7 @@
                         <outlet property="backForwardCancelButton" destination="q1u-PK-lKc" id="vUG-s0-YfI"/>
                         <outlet property="forwardButton" destination="Oc0-zb-xha" id="GUB-MW-WB9"/>
                         <outlet property="fullscreenOffButton" destination="rND-wr-EdE" id="NQz-Sf-DQt"/>
+                        <outlet property="rotationLockButton" destination="odU-Tz-tez" id="4Wl-uy-Xhm"/>
                         <outlet property="webView" destination="YPl-Bz-xws" id="xfO-oR-rEj"/>
                         <segue destination="jr5-0F-GYp" kind="push" identifier="Page to external web view" id="w5H-su-O8C"/>
                     </connections>
@@ -433,6 +450,21 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZsR-4t-tTs">
+                                <rect key="frame" x="0.0" y="373" width="60" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Lock">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleRotationLock:" destination="cyQ-83-4jx" eventType="touchDown" id="iTq-F4-Urn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -441,6 +473,7 @@
                         <outlet property="deleteButton" destination="xZ2-Vr-lmU" id="KZx-BK-sdE"/>
                         <outlet property="doneButton" destination="xcO-Zh-Cin" id="rJC-cF-eao"/>
                         <outlet property="editButton" destination="oGP-Yh-Lk7" id="RPn-ll-96U"/>
+                        <outlet property="rotationLockButton" destination="ZsR-4t-tTs" id="cXl-cc-92a"/>
                         <outlet property="tabBar" destination="7wU-qP-k7X" id="VXY-XK-iFh"/>
                         <outlet property="tableView" destination="1OB-Rc-2Q0" id="tyc-4Y-4jF"/>
                         <outlet property="toolbar" destination="y6Z-rx-7Xg" id="efg-bt-wXW"/>
@@ -455,11 +488,11 @@
             <objects>
                 <viewController storyboardIdentifier="External web view" id="jr5-0F-GYp" customClass="ExternalWebViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d3a-uX-VSJ">
-                        <rect key="frame" x="0.0" y="20" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" id="s0o-ns-RL4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
@@ -467,11 +500,28 @@
                                     <outlet property="delegate" destination="jr5-0F-GYp" id="F2S-WQ-J4q"/>
                                 </connections>
                             </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="upK-Ik-Rwt">
+                                <rect key="frame" x="0.0" y="329" width="73" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Lock">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleRotationLock:" destination="2" eventType="touchDown" id="57X-BH-4yv"/>
+                                    <action selector="toggleRotationLock:" destination="jr5-0F-GYp" eventType="touchDown" id="Avm-MT-oWk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="pui-JE-Cz3"/>
                     <connections>
+                        <outlet property="rotationLockButton" destination="upK-Ik-Rwt" id="zCc-HN-VUd"/>
                         <outlet property="webView" destination="s0o-ns-RL4" id="G7R-Ve-TiJ"/>
                     </connections>
                 </viewController>
@@ -507,6 +557,21 @@
                                     <outlet property="delegate" destination="xDN-yt-Ddx" id="tzi-RQ-LcN"/>
                                 </connections>
                             </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mEQ-cv-7qH">
+                                <rect key="frame" x="0.0" y="373" width="60" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Lock">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleRotationLock:" destination="xDN-yt-Ddx" eventType="touchDown" id="90t-bF-Ear"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -535,6 +600,7 @@
                     <navigationItem key="navigationItem" title="Search" id="MhE-P8-fhX"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="rotationLockButton" destination="mEQ-cv-7qH" id="oUV-Ws-enM"/>
                         <outlet property="searchBar" destination="qlZ-qR-365" id="CMV-xB-AFi"/>
                         <outlet property="searchWebView" destination="nbt-1x-duV" id="act-bN-a5E"/>
                         <segue destination="2" kind="push" identifier="Load page from search" id="UAr-7G-L2p"/>
@@ -601,6 +667,66 @@
         <image name="index.png" width="24" height="24"/>
         <image name="unfullscreen.png" width="24" height="24"/>
     </resources>
+    <classes>
+        <class className="ExternalWebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="IndexTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="PageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="SavedPagesController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
+            <relationships>
+                <relationship kind="action" name="clearHistory:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="edit:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="editButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="tabBar" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="SearchOptionsTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchOptionsTVC.h"/>
+        </class>
+        <class className="SearchViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="searchWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -608,7 +734,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="UAr-7G-L2p"/>
-        <segue reference="zaA-DJ-eV7"/>
-        <segue reference="hIl-9p-fhN"/>
+        <segue reference="jF8-bL-F2p"/>
+        <segue reference="77L-gb-68x"/>
     </inferredMetricsTieBreakers>
 </document>

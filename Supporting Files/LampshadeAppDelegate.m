@@ -12,6 +12,7 @@
 #import "HistoryItem.h"
 #import "Styles.h"
 #import "Reachability.h"
+#import "UserDefaultsHelper.h"
 
 @implementation LampshadeAppDelegate
 
@@ -19,18 +20,22 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+NSUserDefaults *_defaults;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [FileLoader downloadFiles];
     [[IndexData sharedIndexData] loadHTML];
     NSDictionary *appDefaults = @{
-        @"HistoryIndex" : [NSNumber numberWithInt:-1],
-        @"SavedPagesStartingTab" : [NSNumber numberWithInt:0],
-        @"SearchString" : @""
+        USER_PREF_HISTORY_INDEX             : [NSNumber numberWithInt:-1],
+        USER_PREF_ROTATION_LOCKED			: [NSNumber numberWithBool:NO],
+        USER_PREF_ROTATION_ORIENTATION      : [NSNumber numberWithInt:UIInterfaceOrientationPortrait],
+        USER_PREF_SAVED_PAGES_STARTING_TAB	: [NSNumber numberWithInt:0],
+        USER_PREF_SEARCH_STRING             : @""
     };
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults registerDefaults:appDefaults];
-    int historyIndex = ((NSNumber*)[defaults objectForKey:@"HistoryIndex"]).intValue;
+    _defaults = [NSUserDefaults standardUserDefaults];
+    [_defaults registerDefaults:appDefaults];
+    int historyIndex = [_defaults integerForKey:@"HistoryIndex"];
     [HistoryItem setHistoryIndex:historyIndex];
     return YES;
 }
@@ -60,6 +65,20 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    BOOL rotationLocked = [_defaults boolForKey:@"RotationLocked"];
+    NSUInteger rotationOrientation = [_defaults integerForKey:@"RotationOrientation"];
+    if (rotationLocked) {
+        if (rotationOrientation == UIInterfaceOrientationLandscapeLeft || rotationOrientation == UIInterfaceOrientationLandscapeRight)
+            return UIInterfaceOrientationMaskLandscape;
+        else
+            return UIInterfaceOrientationMaskPortrait;
+    } else {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+        
 }
 
 - (void)saveContext

@@ -17,6 +17,7 @@
 #import "ExternalWebViewController.h"
 #import <dispatch/dispatch.h>
 #import "Reachability.h"
+#import "UserDefaultsHelper.h"
 
 NSString *const RANDOM_URL;
 
@@ -26,6 +27,7 @@ NSString *const RANDOM_URL;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *backForwardCancelButton;
+@property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
 
 @end
 
@@ -37,9 +39,12 @@ NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php";
 @synthesize fullscreenOffButton = _fullscreenOffButton;
 @synthesize backButton = _backButton;
 @synthesize forwardButton = _forwardButton;
-
+@synthesize rotationLockButton = _rotationLockButton;
 @synthesize url = _url;
+
 NSString* _script;
+NSUserDefaults *_defaults;
+
 bool _backForwardButtonsShowing;
 bool _jsInjected;
 bool _finishedLoading;
@@ -54,11 +59,13 @@ dispatch_queue_t backgroundQueue;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.webView.delegate = self;
-    self.navigationController.toolbarHidden = NO;
+    //self.webView.delegate = self;
+    //self.navigationController.toolbarHidden = NO;
     _isFullScreen = NO;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
+    _defaults = [NSUserDefaults standardUserDefaults];
+    [self setupRotationLockButton];
     _script = [FileLoader getScript];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
@@ -92,6 +99,7 @@ dispatch_queue_t backgroundQueue;
     [self setForwardButton:nil];
     [self setBackForwardCancelButton:nil];
     dispatch_release(backgroundQueue);
+    [self setRotationLockButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -395,9 +403,44 @@ dispatch_queue_t backgroundQueue;
     }
 }
 
+- (IBAction)toggleRotationLock:(UIButton *)sender {
+    BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {   //unlock rotation
+        [_defaults setBool:NO forKey:USER_PREF_ROTATION_LOCKED];
+        [self.class attemptRotationToDeviceOrientation];
+    } else {    //lock rotation to current orientation
+        [_defaults setBool:YES forKey:USER_PREF_ROTATION_LOCKED];
+        [_defaults setInteger:self.interfaceOrientation forKey:USER_PREF_ROTATION_ORIENTATION];
+    }
+    [_defaults synchronize];
+    [self setupRotationLockButton];
+}
+
+-(void)setupRotationLockButton {
+    BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    if (rotationLocked) {
+        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+    } else {
+        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
+    NSInteger rotationOrientation = [_defaults integerForKey:USER_PREF_ROTATION_ORIENTATION];
+    if (rotationLocked) {
+        if (interfaceOrientation == rotationOrientation)
+            return YES;
+        else if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
+                 && (rotationOrientation == UIInterfaceOrientationLandscapeLeft || rotationOrientation == UIInterfaceOrientationLandscapeRight))
+            return YES;
+        else
+            return NO;
+        return (UIInterfaceOrientationPortrait == interfaceOrientation);
+    } else {
+        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    }
 }
 
 @end
