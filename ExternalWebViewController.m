@@ -82,7 +82,7 @@ NSTimer *_timer;
 		[_timer invalidate];
 	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
 }
--(void) hideRotationLockButtonAfterTimer:(NSTimer*)timer {
+-(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	[self.rotationLockButton setHidden:YES];
 }
 
