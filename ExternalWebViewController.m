@@ -24,12 +24,18 @@ NSUserDefaults *_defaults;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.webView = [[UIWebView alloc] init];
-    
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     self.webView.hidden = NO;
 	_defaults = [NSUserDefaults standardUserDefaults];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 	[self setupRotationLockButton];
+	[super viewDidAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(showRotationLockButton)
+												 name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidUnload
@@ -43,7 +49,7 @@ NSUserDefaults *_defaults;
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
-    //self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
 - (IBAction)toggleRotationLock:(UIButton *)sender {
@@ -59,14 +65,25 @@ NSUserDefaults *_defaults;
     [self setupRotationLockButton];
 }
 
-
 -(void)setupRotationLockButton {
     BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
     if (rotationLocked) {
-        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"locked.png"] forState:UIControlStateNormal];
     } else {
-        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"unlocked.png"] forState:UIControlStateNormal];
     }
+}
+
+NSTimer *_timer;
+
+-(void) showRotationLockButton {
+	self.rotationLockButton.hidden = NO;
+	if (_timer != nil)
+		[_timer invalidate];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+}
+-(void) hideRotationLockButtonAfterTimer:(NSTimer*)timer {
+	[self.rotationLockButton setHidden:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

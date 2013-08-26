@@ -51,7 +51,6 @@ BOOL _allSwitchOn;
     _titleSwitchOn = NO;
     _allSwitchOn = YES;
 	_defaults = [NSUserDefaults standardUserDefaults];
-    [self setupRotationLockButton];
 }
 
 - (void)viewDidUnload
@@ -62,6 +61,16 @@ BOOL _allSwitchOn;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self setupRotationLockButton];
+	[super viewDidAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(showRotationLockButton)
+												 name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
 - (IBAction)done:(UIBarButtonItem *)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -236,12 +245,25 @@ BOOL _allSwitchOn;
 -(void)setupRotationLockButton {
     BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
     if (rotationLocked) {
-        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"locked.png"] forState:UIControlStateNormal];
     } else {
-        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"unlocked.png"] forState:UIControlStateNormal];
     }
 }
 
+NSTimer *_timer;
+
+-(void) showRotationLockButton {
+	self.rotationLockButton.hidden = NO;
+	if (_timer != nil)
+		[_timer invalidate];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+}
+-(void) hideRotationLockButtonAfterTimer:(NSTimer*)timer {
+	[self.rotationLockButton setHidden:YES];
+}
+
+//iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];

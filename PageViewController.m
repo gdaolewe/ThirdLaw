@@ -65,7 +65,6 @@ dispatch_queue_t backgroundQueue;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
     _defaults = [NSUserDefaults standardUserDefaults];
-    [self setupRotationLockButton];
     _script = [FileLoader getScript];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
@@ -87,7 +86,17 @@ dispatch_queue_t backgroundQueue;
     } else {
         [self loadURLFromString:self.url];
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filesUpdated:) name:FILES_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(filesUpdated:)
+												 name:FILES_NOTIFICATION_NAME object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self setupRotationLockButton];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(showRotationLockButton)
+												 name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidUnload
@@ -419,12 +428,25 @@ dispatch_queue_t backgroundQueue;
 -(void)setupRotationLockButton {
     BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];
     if (rotationLocked) {
-        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"locked.png"] forState:UIControlStateNormal];
     } else {
-        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"unlocked.png"] forState:UIControlStateNormal];
     }
 }
 
+NSTimer *_timer;
+
+-(void) showRotationLockButton {
+	self.rotationLockButton.hidden = NO;
+	if (_timer != nil)
+		[_timer invalidate];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+}
+-(void) hideRotationLockButtonAfterTimer:(NSTimer*)timer {
+	[self.rotationLockButton setHidden:YES];
+}
+
+//iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     BOOL rotationLocked = [_defaults boolForKey:USER_PREF_ROTATION_LOCKED];

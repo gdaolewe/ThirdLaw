@@ -61,8 +61,16 @@ NSMutableSet * _selectedEditRows;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHistory:) name:HISTORY_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBookmarks:) name:BOOKMARKS_NOTIFICATION_NAME object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePages:) name:PAGES_NOTIFICATION_NAME object:nil];
-	[self setupRotationLockButton];
     [self setupTab];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self setupRotationLockButton];
+	[super viewDidAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(showRotationLockButton)
+												 name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 -(void) updateHistory:(NSNotification*)notification {
@@ -376,19 +384,30 @@ NSMutableSet * _selectedEditRows;
 -(void)setupRotationLockButton {
     BOOL rotationLocked = [defaults boolForKey:USER_PREF_ROTATION_LOCKED];
     if (rotationLocked) {
-        [self.rotationLockButton setTitle:@"Unlock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"locked.png"] forState:UIControlStateNormal];
     } else {
-        [self.rotationLockButton setTitle:@"Lock" forState:UIControlStateNormal];
+        [self.rotationLockButton setImage:[UIImage imageNamed:@"unlocked.png"] forState:UIControlStateNormal];
     }
 }
 
+NSTimer *_timer;
+
+-(void) showRotationLockButton {
+	self.rotationLockButton.hidden = NO;
+	if (_timer != nil)
+		[_timer invalidate];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+}
+-(void) hideRotationLockButtonAfterTimer:(NSTimer*)timer {
+	[self.rotationLockButton setHidden:YES];
+}
+
+//iOS 5
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    NSLog(@"rotated");
     BOOL rotationLocked = [defaults boolForKey:USER_PREF_ROTATION_LOCKED];
     NSInteger rotationOrientation = [defaults integerForKey:USER_PREF_ROTATION_ORIENTATION];
     if (rotationLocked) {
-        NSLog(@"rotated with orientaton locked");
         if (interfaceOrientation == rotationOrientation)
             return YES;
         else if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
@@ -398,7 +417,6 @@ NSMutableSet * _selectedEditRows;
             return NO;
         return (UIInterfaceOrientationPortrait == interfaceOrientation);
     } else {
-        NSLog(@"rotated with orientation unlocked");
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     }
 }

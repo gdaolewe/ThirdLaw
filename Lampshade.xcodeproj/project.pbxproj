@@ -12,6 +12,10 @@
 		F642FE53163E359C009080B9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F642FE52163E359C009080B9 /* CoreGraphics.framework */; };
 		F642FEBB1640D5AE009080B9 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F642FEBA1640D5AE009080B9 /* libxml2.dylib */; };
 		F6672DD317CB0018007F0F70 /* UserDefaultsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DD217CB0018007F0F70 /* UserDefaultsHelper.m */; };
+		F6672DD917CB1718007F0F70 /* locked.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD517CB1718007F0F70 /* locked.png */; };
+		F6672DDA17CB1718007F0F70 /* locked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD617CB1718007F0F70 /* locked@2x.png */; };
+		F6672DDB17CB1718007F0F70 /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD717CB1718007F0F70 /* unlocked.png */; };
+		F6672DDC17CB1718007F0F70 /* unlocked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD817CB1718007F0F70 /* unlocked@2x.png */; };
 		F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69FCD4517BB275500C3A43D /* CoreData.framework */; };
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
@@ -77,6 +81,10 @@
 		F642FEBA1640D5AE009080B9 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F6672DD117CB0018007F0F70 /* UserDefaultsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDefaultsHelper.h; path = ../UserDefaultsHelper.h; sourceTree = "<group>"; };
 		F6672DD217CB0018007F0F70 /* UserDefaultsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDefaultsHelper.m; path = ../UserDefaultsHelper.m; sourceTree = "<group>"; };
+		F6672DD517CB1718007F0F70 /* locked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = locked.png; path = Images/locked.png; sourceTree = SOURCE_ROOT; };
+		F6672DD617CB1718007F0F70 /* locked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "locked@2x.png"; path = "Images/locked@2x.png"; sourceTree = SOURCE_ROOT; };
+		F6672DD717CB1718007F0F70 /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unlocked.png; path = Images/unlocked.png; sourceTree = SOURCE_ROOT; };
+		F6672DD817CB1718007F0F70 /* unlocked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unlocked@2x.png"; path = "Images/unlocked@2x.png"; sourceTree = SOURCE_ROOT; };
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
@@ -382,6 +390,10 @@
 		F6EC50DD17C552C000E8876C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F6672DD517CB1718007F0F70 /* locked.png */,
+				F6672DD617CB1718007F0F70 /* locked@2x.png */,
+				F6672DD717CB1718007F0F70 /* unlocked.png */,
+				F6672DD817CB1718007F0F70 /* unlocked@2x.png */,
 				F6CC416E17C5B899006E8117 /* launch-568h@2x.png */,
 				F6CC416917C5B742006E8117 /* launch.png */,
 				F6CC416A17C5B742006E8117 /* launch@2x.png */,
@@ -481,6 +493,10 @@
 				F6CC417E17C7E97F006E8117 /* css_white.css in Resources */,
 				F6CC418217C7E98F006E8117 /* home.html in Resources */,
 				F6CC418317C7E98F006E8117 /* index.html in Resources */,
+				F6672DD917CB1718007F0F70 /* locked.png in Resources */,
+				F6672DDA17CB1718007F0F70 /* locked@2x.png in Resources */,
+				F6672DDB17CB1718007F0F70 /* unlocked.png in Resources */,
+				F6672DDC17CB1718007F0F70 /* unlocked@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -37,6 +37,7 @@ NSUserDefaults *_defaults;
     [_defaults registerDefaults:appDefaults];
     int historyIndex = [_defaults integerForKey:@"HistoryIndex"];
     [HistoryItem setHistoryIndex:historyIndex];
+	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     return YES;
 }
 							
