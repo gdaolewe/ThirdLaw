@@ -63,7 +63,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bL5-9C-gGi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4151" y="-608"/>
+            <point key="canvasLocation" x="4151" y="-649"/>
         </scene>
         <!--Index Table View Controller - Main Index-->
         <scene sceneID="i6A-kc-UbT">
@@ -119,7 +119,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lcv-gt-QOP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3956" y="58"/>
+            <point key="canvasLocation" x="3910" y="-64"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="5">
@@ -303,7 +303,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3403" y="158"/>
+            <point key="canvasLocation" x="3409" y="158"/>
         </scene>
         <!--Saved Pages Controller-->
         <scene sceneID="cfA-s8-1Ga">
@@ -481,7 +481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tx0-UK-PeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3987" y="729"/>
+            <point key="canvasLocation" x="3830" y="762"/>
         </scene>
         <!--External Web View Controller-->
         <scene sceneID="v96-4R-dGc">
@@ -516,18 +516,66 @@
                                     <action selector="toggleRotationLock:" destination="jr5-0F-GYp" eventType="touchDown" id="Avm-MT-oWk"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="o8H-pS-zNn">
+                                <rect key="frame" x="280" y="332" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="unfullscreen.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleFullscreen:" destination="jr5-0F-GYp" eventType="touchDown" id="zd4-vK-epP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="pui-JE-Cz3"/>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" title="◂" style="plain" id="799-xs-YSi">
+                            <connections>
+                                <action selector="back:" destination="jr5-0F-GYp" id="Yyh-IG-lL4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="lOU-MK-KV3"/>
+                        <barButtonItem enabled="NO" title="▸" style="plain" id="NUI-Mz-GLg">
+                            <connections>
+                                <action selector="forward:" destination="jr5-0F-GYp" id="Spk-zA-asb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Mrl-Xo-hKi"/>
+                        <barButtonItem style="plain" systemItem="action" id="Z8C-eK-H0t">
+                            <connections>
+                                <action selector="actions:" destination="jr5-0F-GYp" id="s1g-xL-5Zg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="rpy-eu-8sj"/>
+                        <barButtonItem image="fullscreen.png" style="plain" id="75y-gq-f13">
+                            <connections>
+                                <action selector="toggleFullscreen:" destination="jr5-0F-GYp" id="91U-O2-Usy"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="pui-JE-Cz3">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Kye-Zl-02f"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="actionsButton" destination="Z8C-eK-H0t" id="avt-jP-wZ0"/>
+                        <outlet property="backButton" destination="799-xs-YSi" id="qeE-gW-sde"/>
+                        <outlet property="forwardButton" destination="NUI-Mz-GLg" id="0ah-Gq-4WA"/>
+                        <outlet property="fullscreenButton" destination="75y-gq-f13" id="V2U-g3-OuU"/>
+                        <outlet property="fullscreenOffButton" destination="o8H-pS-zNn" id="7Ls-KS-TDk"/>
                         <outlet property="rotationLockButton" destination="upK-Ik-Rwt" id="zCc-HN-VUd"/>
                         <outlet property="webView" destination="s0o-ns-RL4" id="G7R-Ve-TiJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AS5-Ps-hhA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3505" y="793"/>
+            <point key="canvasLocation" x="4417" y="657"/>
         </scene>
         <!--Search View Controller - Search-->
         <scene sceneID="2Eo-Bc-wUm">
@@ -608,7 +656,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p38-PV-zo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3553" y="-608"/>
+            <point key="canvasLocation" x="3553" y="-649"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gJQ-c3-UdH">
@@ -668,6 +716,69 @@
         <image name="unfullscreen.png" width="24" height="24"/>
         <image name="unlocked.png" width="40" height="40"/>
     </resources>
+    <classes>
+        <class className="ExternalWebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="forward:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="actionsButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="fullscreenButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="IndexTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="PageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="SavedPagesController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
+            <relationships>
+                <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="tabChanged:" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="editButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="tabBar" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="SearchOptionsTVC" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchOptionsTVC.h"/>
+        </class>
+        <class className="SearchViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="searchWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -675,7 +786,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="UAr-7G-L2p"/>
-        <segue reference="zaA-DJ-eV7"/>
-        <segue reference="hIl-9p-fhN"/>
+        <segue reference="jF8-bL-F2p"/>
+        <segue reference="77L-gb-68x"/>
     </inferredMetricsTieBreakers>
 </document>

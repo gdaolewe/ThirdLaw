@@ -9,8 +9,15 @@
 #import "ExternalWebViewController.h"
 #import "UserDefaultsHelper.h"
 
-@interface ExternalWebViewController () <UIWebViewDelegate>
+@interface ExternalWebViewController () <UIWebViewDelegate, UIActionSheetDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
+@property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
+
+//toolbar items
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *actionsButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *fullscreenButton;
 
 @end
 
@@ -18,6 +25,8 @@
 
 @synthesize url = _url;
 @synthesize webView = _webView;
+@synthesize rotationLockButton = _rotationLockButton;
+@synthesize fullscreenOffButton = _fullScreenOffButton;
 
 NSUserDefaults *_defaults;
 
@@ -44,11 +53,76 @@ NSUserDefaults *_defaults;
     [self setWebView:nil];
     [self setWebView:nil];
 	[self setRotationLockButton:nil];
+	[self setFullscreenOffButton:nil];
+	[self setBackButton:nil];
+	[self setForwardButton:nil];
+	[self setActionsButton:nil];
+	[self setFullscreenButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
+- (IBAction)back:(UIBarButtonItem *)sender {
+	if (self.webView.canGoBack)
+		[self.webView goBack];
+}
+- (IBAction)forward:(UIBarButtonItem *)sender {
+	if (self.webView.canGoForward)
+		[self.webView goForward];
+}
 
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == 0)
+		if (![[UIApplication sharedApplication] openURL:self.url])
+			NSLog(@"%@%@",@"Failed to open url:",self.url);
+}
+
+
+- (IBAction)actions:(UIBarButtonItem *)sender {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open in Safari", nil];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
+BOOL _isFullScreen = NO;
+
+- (IBAction)toggleFullscreen:(id)sender {
+	if (_isFullScreen) {
+        _isFullScreen = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        self.fullscreenOffButton.hidden = YES;
+    } else {
+        _isFullScreen = YES;
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:YES animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        self.fullscreenOffButton.hidden = NO;
+    }
+}
+
+#pragma mark - UIWebViewDelegate
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+	if (navigationType != UIWebViewNavigationTypeOther)
+		self.url = request.mainDocumentURL;
+	return YES;
+}
+-(void)webViewDidStartLoad:(UIWebView *)webView {
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:webView action:@selector(stopLoading)];
+	if (webView.canGoBack)
+		self.backButton.enabled = YES;
+	else
+		self.backButton.enabled = NO;
+	if (webView.canGoForward)
+		self.forwardButton.enabled = YES;
+	else
+		self.forwardButton.enabled = NO;
+	UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	self.navigationController.toolbarItems = [NSArray arrayWithObjects:self.backButton, flexSpace, self.forwardButton, flexSpace, self.actionsButton, flexSpace, self.fullscreenButton, nil];
+}
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:webView action:@selector(reload)];
+
     self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
@@ -74,13 +148,13 @@ NSUserDefaults *_defaults;
     }
 }
 
-NSTimer *_timer;
+NSTimer *_webviewLockHidetimer;
 
 -(void) showRotationLockButton {
 	self.rotationLockButton.hidden = NO;
-	if (_timer != nil)
-		[_timer invalidate];
-	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+	if (_webviewLockHidetimer != nil)
+		[_webviewLockHidetimer invalidate];
+	_webviewLockHidetimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
 }
 -(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	[self.rotationLockButton setHidden:YES];
