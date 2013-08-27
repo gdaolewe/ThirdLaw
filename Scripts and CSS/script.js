@@ -32,23 +32,21 @@ function run() {
   container.before(acaptionright);
   container.append(indent);
   container.append(wikitext);
-  
   quoteright.css('width', '90%');
   acaptionright.css('width', '90%');
-  
+  $(document.body).prepend('<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><!— app banner ad —> <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-6610802604051523" data-ad-slot="5436588855"></ins> <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>');
   var meta = document.createElement('meta');
   meta.name="viewport";
   meta.content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no";
-  $('body').prepend(meta);
-
+  $(document.body).prepend(meta);
   window.location.href = 'command://done?' + title;
   
-  $('.spoiler').live('click tap', function(event) {
+  $('.spoiler').bind('click tap', function(event) {
     if (!$(this).hasClass('spoilerClick')) {
       event.preventDefault();
     }
       $(this).toggleClass('spoilerClick');
       alert($(this).attr('class'));
-    });
+  });
   };
 })()

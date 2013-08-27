@@ -193,8 +193,6 @@ dispatch_queue_t backgroundQueue;
     return networkStatus != NotReachable;
 }
 
-NSSet *const wikiPaths;
-
 #pragma mark - UIWebViewDelegate
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *url = request.URL.absoluteString;
