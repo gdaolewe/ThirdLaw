@@ -372,7 +372,9 @@ dispatch_queue_t backgroundQueue;
 }
 
 #define BOOKMARK_BUTTON 0
-#define SAVE_BUTTON 1
+#define SAVE_BUTTON		1
+#define SAFARI_BUTTON	2
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
@@ -388,6 +390,10 @@ dispatch_queue_t backgroundQueue;
             [Page savePageAsyncWithHTML:html title:self.title andURL:self.url];
         }
             break;
+		case SAFARI_BUTTON:
+			if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.url]])
+				NSLog(@"%@%@",@"Failed to open url:",self.url);
+			break;
         default:
             NSLog(@"Cancelled");
             break;
@@ -395,7 +401,7 @@ dispatch_queue_t backgroundQueue;
 }
 
 - (IBAction)saveActions:(UIBarButtonItem *)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add Bookmark", @"Save for offline reading", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add Bookmark", @"Save for offline reading", @"Open in Safari", nil];
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
@@ -466,6 +472,9 @@ NSTimer *_pageLockHideTimer;
     } else {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     }
+	
 }
+
+
 
 @end
