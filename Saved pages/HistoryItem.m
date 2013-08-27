@@ -2,7 +2,7 @@
 //  HistoryItem.m
 //  Lampshade
 //
-//  Created by George Daole-Wellman on 8/15/13.
+//  Created by George Daole-Wellman on 8/26/13.
 //  Copyright (c) 2013 George Daole-Wellman. All rights reserved.
 //
 
@@ -11,10 +11,10 @@
 
 @implementation HistoryItem
 
-@dynamic title;
-@dynamic html;
-@dynamic url;
 @dynamic date;
+@dynamic htmlPath;
+@dynamic title;
+@dynamic url;
 
 NSArray *_historyCached;
 NSDateFormatter *_formatter;
@@ -22,13 +22,51 @@ NSDateFormatter *_formatter;
 static int _historyIndex;
 dispatch_queue_t queue;
 
-+(int) historyIndex {
-    return _historyIndex;
+- (NSString*) generatePath
+{
+	NSTimeInterval timeIntervalSeconds = [NSDate timeIntervalSinceReferenceDate];
+	unsigned long long nanoseconds = (unsigned long long) floor(timeIntervalSeconds * 1000000);
+	
+	return [NSString stringWithFormat:@"History/%qu.html", nanoseconds];
+}
+
+- (NSString*) fullHTMLPath
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [(NSString*)[paths objectAtIndex:0] stringByAppendingPathComponent:self.htmlPath];
+}
+
+-(void)setHtml:(NSString *)html {
+	self.htmlPath = [self generatePath];
+	NSError *error;
+	NSData *htmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
+	[htmlData writeToFile:[self fullHTMLPath] atomically:YES];
+	if (error) {
+		NSLog(@"Error saving history item html file to disk: %@", error);
+		[[NSFileManager defaultManager] removeItemAtPath:self.htmlPath error:nil];
+		self.htmlPath = nil;
+	}
+}
+
+-(NSString*) html {
+	if (!self.htmlPath)
+		return nil;
+	NSError *error;
+	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSASCIIStringEncoding error:&error];
+	if (error) {
+		NSLog(@"Error retrieving history html file from disk: %@", error);
+		return nil;
+	}
+	return html;
 }
 
 +(void)setHistoryIndex:(int)index {
     _historyIndex = index;
     [[NSUserDefaults standardUserDefaults] setInteger:_historyIndex forKey:@"HistoryIndex"];
+}
+
++(int) historyIndex {
+    return _historyIndex;
 }
 
 +(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title andURL:(NSString*)url {
@@ -59,7 +97,7 @@ dispatch_queue_t queue;
             _historyCached = [self fetchHistory];
             [[NSNotificationCenter defaultCenter] postNotificationName:HISTORY_NOTIFICATION_NAME object:self];
         }
-
+		
     });
 }
 
@@ -99,11 +137,16 @@ dispatch_queue_t queue;
         queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
     dispatch_async(queue, ^{
         NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+		NSFileManager *fileMgr = [NSFileManager defaultManager];
         NSArray *history = [self history];
+		NSError *error;
         for (HistoryItem *item in history) {
+			[fileMgr removeItemAtPath:[item fullHTMLPath] error:&error];
+			if (error)
+				NSLog(@"Error deleting history item's HTML from disk");
             [context deleteObject:item];
         }
-        NSError *error = nil;
+        error = nil;
         if (![context save:&error]) {
             NSLog(@"Error clearing history from Core Data: %@", error.localizedDescription);
         } else {
@@ -118,9 +161,15 @@ dispatch_queue_t queue;
     if (index == 0)
         return;
     NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+	NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSArray *history = [self history];
     for (int i=index-1; i>=0; i--) {
-        [context deleteObject:[history objectAtIndex:i]];
+		NSError *error;
+		HistoryItem *item = [history objectAtIndex:i];
+		[fileMgr removeItemAtPath:[item fullHTMLPath] error:&error];
+		if (error)
+			NSLog(@"Error clearing history item's html file from disk: %@", error);
+        [context deleteObject:item];
     }
     NSError *error = nil;
     if (![context save:&error]) {

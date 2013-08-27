@@ -262,7 +262,7 @@ dispatch_queue_t backgroundQueue;
     if (_shouldSaveHistory) {
         NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
         [HistoryItem addHistoryItemAsyncWithHTML:html title:self.title andURL:self.url];
-        [HistoryItem clearCache];
+        //[HistoryItem clearCache];
         _historySaved = YES;
     } else {
         _shouldSaveHistory = YES;

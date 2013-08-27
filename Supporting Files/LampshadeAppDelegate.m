@@ -26,6 +26,30 @@ NSUserDefaults *_defaults;
 {
     [FileLoader downloadFiles];
     [[IndexData sharedIndexData] loadHTML];
+	
+	//create history and saved pages documents directories if they don't already exist
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *historyPath = [(NSString*)[paths objectAtIndex:0] stringByAppendingPathComponent:@"History"];
+	NSString *savedPath = [(NSString*)[paths objectAtIndex:0] stringByAppendingPathComponent:@"SavedPages"];
+	NSFileManager *fileMgr = [NSFileManager defaultManager];
+	NSError * error = nil;
+	if (![fileMgr fileExistsAtPath:historyPath]) {
+		[[NSFileManager defaultManager] createDirectoryAtPath:historyPath
+								  withIntermediateDirectories:NO
+												   attributes:nil
+														error:&error];
+		if (error)
+			NSLog(@"error creating directory: %@", error);
+	}
+	if (![fileMgr fileExistsAtPath:savedPath]) {
+		[[NSFileManager defaultManager] createDirectoryAtPath:savedPath
+								  withIntermediateDirectories:NO
+												   attributes:nil
+														error:&error];
+		if (error)
+			NSLog(@"error creating directory: %@", error);
+	}
+	
     NSDictionary *appDefaults = @{
         USER_PREF_HISTORY_INDEX             : [NSNumber numberWithInt:-1],
         USER_PREF_ROTATION_LOCKED			: [NSNumber numberWithBool:NO],

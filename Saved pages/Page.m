@@ -2,7 +2,7 @@
 //  Page.m
 //  Lampshade
 //
-//  Created by George Daole-Wellman on 8/13/13.
+//  Created by George Daole-Wellman on 8/26/13.
 //  Copyright (c) 2013 George Daole-Wellman. All rights reserved.
 //
 
@@ -12,14 +12,53 @@
 
 @implementation Page
 
-@dynamic title;
-@dynamic html;
-@dynamic url;
 @dynamic date;
+@dynamic title;
+@dynamic url;
+@dynamic htmlPath;
 
 dispatch_queue_t queue;
 
 NSArray *_pagesCached;
+
+- (NSString*) generatePath
+{
+	NSTimeInterval timeIntervalSeconds = [NSDate timeIntervalSinceReferenceDate];
+	unsigned long long nanoseconds = (unsigned long long) floor(timeIntervalSeconds * 1000000);
+	
+	return [NSString stringWithFormat:@"SavedPages/%qu.html", nanoseconds];
+}
+
+- (NSString*) fullHTMLPath
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [(NSString*)[paths objectAtIndex:0] stringByAppendingPathComponent:self.htmlPath];
+}
+
+-(void)setHtml:(NSString *)html {
+	self.htmlPath = [self generatePath];
+	NSError *error;
+	NSData *htmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
+	[htmlData writeToFile:[self fullHTMLPath] atomically:YES];
+	if (error) {
+		NSLog(@"Error saving history item html file to disk: %@", error);
+		[[NSFileManager defaultManager] removeItemAtPath:self.htmlPath error:nil];
+		self.htmlPath = nil;
+	}
+}
+
+-(NSString*) html {
+	if (!self.htmlPath)
+		return nil;
+	NSError *error;
+	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSASCIIStringEncoding error:&error];
+	if (error) {
+		NSLog(@"Error retrieving page html file from disk: %@", error);
+		return nil;
+	}
+	return html;
+}
+
 
 +(void)savePageAsyncWithHTML:(NSString*)html title:(NSString*)title andURL:(NSString*)url {
     if (!queue)
@@ -47,9 +86,15 @@ NSArray *_pagesCached;
         queue = dispatch_queue_create("com.georgedw.lampshade.pages", NULL);
     dispatch_async(queue, ^{
         NSManagedObjectContext *context = ((LampshadeAppDelegate*)[[UIApplication sharedApplication] delegate]).managedObjectContext;
-        for (Page* page in pages)
+		NSFileManager *fileMgr = [NSFileManager defaultManager];
+		NSError *error;
+        for (Page* page in pages) {
+			[fileMgr removeItemAtPath:[page fullHTMLPath] error:&error];
+			if (error)
+				NSLog(@"Error deleting page's HTML from disk");
             [context deleteObject:page];
-        NSError *error = nil;
+		}
+        error = nil;
         if (![context save:&error]) {
             NSLog(@"Error deleting page from Core Data: %@", error.localizedDescription);
         } else {

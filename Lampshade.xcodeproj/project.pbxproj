@@ -16,6 +16,7 @@
 		F6672DDA17CB1718007F0F70 /* locked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD617CB1718007F0F70 /* locked@2x.png */; };
 		F6672DDB17CB1718007F0F70 /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD717CB1718007F0F70 /* unlocked.png */; };
 		F6672DDC17CB1718007F0F70 /* unlocked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD817CB1718007F0F70 /* unlocked@2x.png */; };
+		F6672DF117CC4D3B007F0F70 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DF017CC4D3B007F0F70 /* Page.m */; };
 		F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69FCD4517BB275500C3A43D /* CoreData.framework */; };
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
@@ -37,7 +38,6 @@
 		F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E717C1D5F000E1EDCA /* XPathQuery.m */; };
 		F6C1F1FA17C1D61100E1EDCA /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */; };
 		F6C1F1FB17C1D61100E1EDCA /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */; };
-		F6C1F1FD17C1D61100E1EDCA /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F517C1D61100E1EDCA /* Page.m */; };
 		F6C1F1FE17C1D61100E1EDCA /* SavedPages.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F617C1D61100E1EDCA /* SavedPages.xcdatamodeld */; };
 		F6C1F1FF17C1D61100E1EDCA /* SavedPagesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1F917C1D61100E1EDCA /* SavedPagesController.m */; };
 		F6C1F21217C1D65600E1EDCA /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F20417C1D65600E1EDCA /* NSString+URLEncoding.m */; };
@@ -85,6 +85,8 @@
 		F6672DD617CB1718007F0F70 /* locked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "locked@2x.png"; path = "Images/locked@2x.png"; sourceTree = SOURCE_ROOT; };
 		F6672DD717CB1718007F0F70 /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unlocked.png; path = Images/unlocked.png; sourceTree = SOURCE_ROOT; };
 		F6672DD817CB1718007F0F70 /* unlocked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unlocked@2x.png"; path = "Images/unlocked@2x.png"; sourceTree = SOURCE_ROOT; };
+		F6672DEF17CC4D3B007F0F70 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
+		F6672DF017CC4D3B007F0F70 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
@@ -118,8 +120,6 @@
 		F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		F6C1F1F017C1D61100E1EDCA /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
 		F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
-		F6C1F1F417C1D61100E1EDCA /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
-		F6C1F1F517C1D61100E1EDCA /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		F6C1F1F717C1D61100E1EDCA /* SavedPages.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SavedPages.xcdatamodel; sourceTree = "<group>"; };
 		F6C1F1F817C1D61100E1EDCA /* SavedPagesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedPagesController.h; sourceTree = "<group>"; };
 		F6C1F1F917C1D61100E1EDCA /* SavedPagesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedPagesController.m; sourceTree = "<group>"; };
@@ -188,23 +188,22 @@
 		F642FE3F163E359C009080B9 = {
 			isa = PBXGroup;
 			children = (
+				F6C1F21C17C1D66900E1EDCA /* MainStoryboard.storyboard */,
+				F6CC417017C5BB55006E8117 /* MainStoryboard_iPad.storyboard */,
 				F6CC418517C7F528006E8117 /* SystemConfiguration.framework */,
+				F6C1F21917C1D66900E1EDCA /* en.lproj */,
+				F6672DD417CB015F007F0F70 /* Helpers */,
+				F6C1F1DD17C1D5F000E1EDCA /* hpple */,
+				F6672DDF17CC48D2007F0F70 /* Index */,
 				F6C1F1A517C1D40400E1EDCA /* ExternalWebViewController.h */,
 				F6C1F1A617C1D40400E1EDCA /* ExternalWebViewController.m */,
 				F6C1F1A717C1D40400E1EDCA /* FileLoader.h */,
 				F6C1F1A817C1D40400E1EDCA /* FileLoader.m */,
-				F6C1F21917C1D66900E1EDCA /* en.lproj */,
-				F6672DD417CB015F007F0F70 /* Helpers */,
-				F6C1F1DD17C1D5F000E1EDCA /* hpple */,
-				F6CC418717C7F6A9006E8117 /* Reachability */,
-				F6C1F1AB17C1D40400E1EDCA /* IndexData.h */,
-				F6C1F1AC17C1D40400E1EDCA /* IndexData.m */,
-				F6C1F1AF17C1D40400E1EDCA /* IndexTableViewController.h */,
-				F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */,
-				F6EC50D817C44DC400E8876C /* Styles.h */,
-				F6EC50D917C44DC400E8876C /* Styles.m */,
 				F6C1F1B317C1D40400E1EDCA /* PageViewController.h */,
 				F6C1F1B417C1D40400E1EDCA /* PageViewController.m */,
+				F6EC50D817C44DC400E8876C /* Styles.h */,
+				F6EC50D917C44DC400E8876C /* Styles.m */,
+				F6CC418717C7F6A9006E8117 /* Reachability */,
 				F6C1F20217C1D65600E1EDCA /* Search */,
 				F6C1F1ED17C1D61100E1EDCA /* Saved pages */,
 				F6BE336B17C2726700E21314 /* TTTAttributedLabel */,
@@ -253,6 +252,17 @@
 			);
 			name = Helpers;
 			path = Search;
+			sourceTree = "<group>";
+		};
+		F6672DDF17CC48D2007F0F70 /* Index */ = {
+			isa = PBXGroup;
+			children = (
+				F6C1F1AB17C1D40400E1EDCA /* IndexData.h */,
+				F6C1F1AC17C1D40400E1EDCA /* IndexData.m */,
+				F6C1F1AF17C1D40400E1EDCA /* IndexTableViewController.h */,
+				F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */,
+			);
+			name = Index;
 			sourceTree = "<group>";
 		};
 		F6AA220916B3BA2300C7A6D4 /* Resources */ = {
@@ -307,12 +317,12 @@
 		F6C1F1ED17C1D61100E1EDCA /* Saved pages */ = {
 			isa = PBXGroup;
 			children = (
-				F6C1F1EE17C1D61100E1EDCA /* Bookmark.h */,
-				F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */,
 				F6C1F1F017C1D61100E1EDCA /* HistoryItem.h */,
 				F6C1F1F117C1D61100E1EDCA /* HistoryItem.m */,
-				F6C1F1F417C1D61100E1EDCA /* Page.h */,
-				F6C1F1F517C1D61100E1EDCA /* Page.m */,
+				F6C1F1EE17C1D61100E1EDCA /* Bookmark.h */,
+				F6C1F1EF17C1D61100E1EDCA /* Bookmark.m */,
+				F6672DEF17CC4D3B007F0F70 /* Page.h */,
+				F6672DF017CC4D3B007F0F70 /* Page.m */,
 				F6C1F1F617C1D61100E1EDCA /* SavedPages.xcdatamodeld */,
 				F6C1F1F817C1D61100E1EDCA /* SavedPagesController.h */,
 				F6C1F1F917C1D61100E1EDCA /* SavedPagesController.m */,
@@ -363,8 +373,6 @@
 			isa = PBXGroup;
 			children = (
 				F6C1F21A17C1D66900E1EDCA /* InfoPlist.strings */,
-				F6C1F21C17C1D66900E1EDCA /* MainStoryboard.storyboard */,
-				F6CC417017C5BB55006E8117 /* MainStoryboard_iPad.storyboard */,
 			);
 			path = en.lproj;
 			sourceTree = "<group>";
@@ -520,7 +528,6 @@
 				F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */,
 				F6C1F1FA17C1D61100E1EDCA /* Bookmark.m in Sources */,
 				F6C1F1FB17C1D61100E1EDCA /* HistoryItem.m in Sources */,
-				F6C1F1FD17C1D61100E1EDCA /* Page.m in Sources */,
 				F6C1F1FE17C1D61100E1EDCA /* SavedPages.xcdatamodeld in Sources */,
 				F6C1F1FF17C1D61100E1EDCA /* SavedPagesController.m in Sources */,
 				F6C1F21217C1D65600E1EDCA /* NSString+URLEncoding.m in Sources */,
@@ -532,6 +539,7 @@
 				F6EC50DA17C44DC400E8876C /* Styles.m in Sources */,
 				F6CC418A17C7F6A9006E8117 /* Reachability.m in Sources */,
 				F6672DD317CB0018007F0F70 /* UserDefaultsHelper.m in Sources */,
+				F6672DF117CC4D3B007F0F70 /* Page.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,6 +560,7 @@
 				F6C1F21D17C1D66900E1EDCA /* en */,
 			);
 			name = MainStoryboard.storyboard;
+			path = en.lproj;
 			sourceTree = "<group>";
 		};
 		F6CC417017C5BB55006E8117 /* MainStoryboard_iPad.storyboard */ = {
@@ -560,6 +569,7 @@
 				F6CC417117C5BB55006E8117 /* en */,
 			);
 			name = MainStoryboard_iPad.storyboard;
+			path = en.lproj;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
