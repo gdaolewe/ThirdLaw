@@ -193,6 +193,8 @@ dispatch_queue_t backgroundQueue;
     return networkStatus != NotReachable;
 }
 
+NSSet *const wikiPaths;
+
 #pragma mark - UIWebViewDelegate
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *url = request.URL.absoluteString;
@@ -207,7 +209,8 @@ dispatch_queue_t backgroundQueue;
         NSLog(@"command done");
         return NO;
     }
-    else if ([request.URL.host isEqualToString:@"tvtropes.org"]) {
+    else if ([request.URL.host isEqualToString:@"tvtropes.org"] && [[request.URL.pathComponents objectAtIndex:2] isEqualToString:@"pmwiki.php"]) {
+		NSLog(@"%@", [request.URL.pathComponents objectAtIndex:2]);
         self.url = url;
         [self setPageHidden:YES];
         _jsInjected = NO;
@@ -217,8 +220,7 @@ dispatch_queue_t backgroundQueue;
         [webView loadHTMLString:htmlString baseURL:baseURL];
         
         return NO;
-    } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-		NSLog(@"\n\n%@", url);
+    } else if (navigationType == UIWebViewNavigationTypeLinkClicked || [request.URL.host isEqualToString:@"tvtropes.org"]) {
 		ExternalWebViewController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"External web view"];
 		webVC.url = request.URL;
         [self.navigationController pushViewController:webVC animated:YES];
