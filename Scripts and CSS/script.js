@@ -34,7 +34,7 @@ function run() {
   container.append(wikitext);
   quoteright.css('width', '90%');
   acaptionright.css('width', '90%');
-  $(document.body).prepend('<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><!— app banner ad —> <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-6610802604051523" data-ad-slot="5436588855"></ins> <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>');
+  $(document.body).prepend('<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><!— app banner ad —> <ins class="adsbygoogle" style="display:inline-block;width:100%;height:50px" data-ad-client="ca-pub-6610802604051523" data-ad-slot="5436588855"></ins> <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>');
   var meta = document.createElement('meta');
   meta.name="viewport";
   meta.content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no";
@@ -46,7 +46,6 @@ function run() {
       event.preventDefault();
     }
       $(this).toggleClass('spoilerClick');
-      alert($(this).attr('class'));
   });
   };
 })()
