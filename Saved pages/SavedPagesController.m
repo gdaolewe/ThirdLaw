@@ -390,16 +390,17 @@ NSMutableSet * _selectedEditRows;
     }
 }
 
-NSTimer *_timer;
+NSTimer *_savedLockHideTimer;
 
 -(void) showRotationLockButton {
 	self.rotationLockButton.hidden = NO;
-	if (_timer != nil)
-		[_timer invalidate];
-	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+	if (_savedLockHideTimer != nil)
+		[_savedLockHideTimer invalidate];
+	_savedLockHideTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
 }
 -(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	[self.rotationLockButton setHidden:YES];
+	_savedLockHideTimer = nil;
 }
 
 //iOS 5

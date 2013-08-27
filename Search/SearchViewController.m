@@ -251,17 +251,18 @@ BOOL _allSwitchOn;
     }
 }
 
-NSTimer *_lockHideTimer;
+NSTimer *_searchLockHideTimer;
 
 -(void) showRotationLockButton {
 	self.rotationLockButton.hidden = NO;
-	if (_lockHideTimer != nil)
-		[_lockHideTimer invalidate];
-	_lockHideTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+	if (_searchLockHideTimer != nil)
+		[_searchLockHideTimer invalidate];
+	_searchLockHideTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
 }
 
 -(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	self.rotationLockButton.hidden = YES;
+	_searchLockHideTimer = nil;
 }
 
 //iOS 5

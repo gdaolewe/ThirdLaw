@@ -248,8 +248,11 @@ dispatch_queue_t backgroundQueue;
          _jsInjected = YES;
     }
     if (_loadingSavedPage && _jsInjected) {
+		NSLog(@"%d", _script.length);
         _loadingSavedPage = NO;
         [self setPageHidden:NO];
+		//hacky fix to make spoilers function on saved pages
+		[self.webView stringByEvaluatingJavaScriptFromString:@"$('.spoiler').bind('click tap', function(){if (!$(this).hasClass('spoilerClick')){event.preventDefault();}$(this).toggleClass('spoilerClick');});"];
 		_finishedLoading = YES;
         [self addToHistory];
     }
@@ -434,13 +437,13 @@ dispatch_queue_t backgroundQueue;
     }
 }
 
-NSTimer *_timer;
+NSTimer *_pageLockHideTimer;
 
 -(void) showRotationLockButton {
 	self.rotationLockButton.hidden = NO;
-	if (_timer != nil)
-		[_timer invalidate];
-	_timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
+	if (_pageLockHideTimer != nil)
+		[_pageLockHideTimer invalidate];
+	_pageLockHideTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(hideRotationLockButtonAfterTimer:) userInfo:nil repeats:NO];
 }
 -(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	[self.rotationLockButton setHidden:YES];

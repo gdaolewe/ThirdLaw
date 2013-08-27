@@ -43,11 +43,12 @@ function run() {
 
   window.location.href = 'command://done?' + title;
   
-  $('.spoiler').bind('click tap', function(event) {
+  $('.spoiler').live('click tap', function(event) {
     if (!$(this).hasClass('spoilerClick')) {
       event.preventDefault();
     }
       $(this).toggleClass('spoilerClick');
+      alert($(this).attr('class'));
     });
   };
 })()
