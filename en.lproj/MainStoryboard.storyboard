@@ -139,7 +139,6 @@
                                     <outlet property="delegate" destination="2" id="mqk-4i-0lf"/>
                                     <outletCollection property="gestureRecognizers" destination="jKN-gl-q9L" appends="YES" id="KfA-T3-DPe"/>
                                     <outletCollection property="gestureRecognizers" destination="SLe-Hw-O18" appends="YES" id="wpJ-A9-tjR"/>
-                                    <outletCollection property="gestureRecognizers" destination="WIp-TT-LX6" appends="YES" id="oLK-RI-rZS"/>
                                 </connections>
                             </webView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sgZ-Xb-TD7">
@@ -226,13 +225,16 @@
                                     <action selector="toggleRotationLock:" destination="2" eventType="touchDown" id="g5J-NT-4dJ"/>
                                 </connections>
                             </button>
+                            <searchBar hidden="YES" opaque="NO" contentMode="redraw" placeholder="Search" showsCancelButton="YES" id="FOK-4g-6gY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="2" id="Mat-NI-SbP"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="jKN-gl-q9L" appends="YES" id="bhp-gS-p7r"/>
-                            <outletCollection property="gestureRecognizers" destination="SLe-Hw-O18" appends="YES" id="Xec-LJ-3z8"/>
-                            <outletCollection property="gestureRecognizers" destination="WIp-TT-LX6" appends="YES" id="Je9-e5-eHb"/>
-                        </connections>
                     </view>
                     <toolbarItems>
                         <barButtonItem image="index.png" style="plain" id="AYw-wg-jgO">
@@ -269,7 +271,7 @@
                     <navigationItem key="navigationItem" id="nFe-jE-FdJ">
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Ql0-nO-G0y">
                             <connections>
-                                <segue destination="jnj-YG-1AH" kind="modal" identifier="PageToSearchSegue" id="jF8-bL-F2p"/>
+                                <action selector="showSearch:" destination="2" id="5nD-r9-J5E"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -282,26 +284,31 @@
                         <outlet property="forwardButton" destination="Oc0-zb-xha" id="GUB-MW-WB9"/>
                         <outlet property="fullscreenOffButton" destination="rND-wr-EdE" id="NQz-Sf-DQt"/>
                         <outlet property="rotationLockButton" destination="odU-Tz-tez" id="4Wl-uy-Xhm"/>
+                        <outlet property="searchDisplayController" destination="fYe-87-cEL" id="36Q-TU-K6d"/>
                         <outlet property="webView" destination="YPl-Bz-xws" id="xfO-oR-rEj"/>
                         <segue destination="jr5-0F-GYp" kind="push" identifier="Page to external web view" id="w5H-su-O8C"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="left" id="jKN-gl-q9L">
+                <searchDisplayController id="fYe-87-cEL">
                     <connections>
-                        <action selector="leftSwipeGesture:" destination="2" id="mCJ-47-6eM"/>
+                        <outlet property="delegate" destination="2" id="4Vu-nG-sbi"/>
+                        <outlet property="searchBar" destination="FOK-4g-6gY" id="i7H-Dm-3w5"/>
+                        <outlet property="searchContentsController" destination="2" id="BMo-y1-LyI"/>
+                        <outlet property="searchResultsDataSource" destination="2" id="o37-lT-JwH"/>
+                        <outlet property="searchResultsDelegate" destination="2" id="yQ8-bZ-dxr"/>
                     </connections>
-                </swipeGestureRecognizer>
+                </searchDisplayController>
                 <swipeGestureRecognizer direction="right" id="SLe-Hw-O18">
                     <connections>
                         <action selector="rightSwipeGesture:" destination="2" id="4aD-Uv-0gp"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <tapGestureRecognizer id="WIp-TT-LX6">
+                <swipeGestureRecognizer direction="left" id="jKN-gl-q9L">
                     <connections>
-                        <action selector="tapGesture:" destination="2" id="GsL-Yv-Rpk"/>
+                        <action selector="leftSwipeGesture:" destination="2" id="rHl-ps-dGw"/>
                     </connections>
-                </tapGestureRecognizer>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3409" y="158"/>
         </scene>
@@ -720,7 +727,11 @@
         <class className="ExternalWebViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
             <relationships>
+                <relationship kind="action" name="actions:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="back:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="forward:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="toggleFullscreen:"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="actionsButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
@@ -740,7 +751,8 @@
         <class className="PageViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
             <relationships>
-                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="back:" candidateClass="UIButton"/>
+                <relationship kind="action" name="rightSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
                 <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
@@ -754,7 +766,6 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
             <relationships>
                 <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="tabChanged:" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
@@ -767,12 +778,13 @@
         </class>
         <class className="SearchOptionsTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchOptionsTVC.h"/>
+            <relationships>
+                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
+            </relationships>
         </class>
         <class className="SearchViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
             <relationships>
-                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
                 <relationship kind="outlet" name="searchWebView" candidateClass="UIWebView"/>
@@ -785,8 +797,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UAr-7G-L2p"/>
-        <segue reference="jF8-bL-F2p"/>
+        <segue reference="KF0-yJ-7kT"/>
         <segue reference="77L-gb-68x"/>
     </inferredMetricsTieBreakers>
 </document>

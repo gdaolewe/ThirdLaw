@@ -17,6 +17,8 @@
 		F6672DDB17CB1718007F0F70 /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD717CB1718007F0F70 /* unlocked.png */; };
 		F6672DDC17CB1718007F0F70 /* unlocked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6672DD817CB1718007F0F70 /* unlocked@2x.png */; };
 		F6672DF117CC4D3B007F0F70 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DF017CC4D3B007F0F70 /* Page.m */; };
+		F6672DF617CDA160007F0F70 /* Poly-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */; };
+		F6672DF717CDA160007F0F70 /* Poly-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */; };
 		F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69FCD4517BB275500C3A43D /* CoreData.framework */; };
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
@@ -74,7 +76,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F642FE4A163E359C009080B9 /* Lampshade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lampshade.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F642FE4A163E359C009080B9 /* ThirdLaw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThirdLaw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F642FE4E163E359C009080B9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F642FE50163E359C009080B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F642FE52163E359C009080B9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -87,6 +89,8 @@
 		F6672DD817CB1718007F0F70 /* unlocked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unlocked@2x.png"; path = "Images/unlocked@2x.png"; sourceTree = SOURCE_ROOT; };
 		F6672DEF17CC4D3B007F0F70 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		F6672DF017CC4D3B007F0F70 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
+		F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poly-Italic.ttf"; path = "Fonts/Poly-Italic.ttf"; sourceTree = SOURCE_ROOT; };
+		F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poly-Regular.ttf"; path = "Fonts/Poly-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
@@ -132,8 +136,8 @@
 		F6C1F20817C1D65600E1EDCA /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		F6C1F20917C1D65600E1EDCA /* SearchViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewControllerOld.h; sourceTree = "<group>"; };
 		F6C1F20A17C1D65600E1EDCA /* SearchViewControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewControllerOld.m; sourceTree = "<group>"; };
-		F6C1F20C17C1D65600E1EDCA /* Lampshade-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lampshade-Info.plist"; sourceTree = "<group>"; };
-		F6C1F20D17C1D65600E1EDCA /* Lampshade-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lampshade-Prefix.pch"; sourceTree = "<group>"; };
+		F6C1F20C17C1D65600E1EDCA /* ThirdLaw-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ThirdLaw-Info.plist"; sourceTree = "<group>"; };
+		F6C1F20D17C1D65600E1EDCA /* ThirdLaw-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ThirdLaw-Prefix.pch"; sourceTree = "<group>"; };
 		F6C1F20E17C1D65600E1EDCA /* LampshadeAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LampshadeAppDelegate.h; sourceTree = "<group>"; };
 		F6C1F20F17C1D65600E1EDCA /* LampshadeAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LampshadeAppDelegate.m; sourceTree = "<group>"; };
 		F6C1F21017C1D65600E1EDCA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -220,7 +224,7 @@
 		F642FE4B163E359C009080B9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F642FE4A163E359C009080B9 /* Lampshade.app */,
+				F642FE4A163E359C009080B9 /* ThirdLaw.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -279,6 +283,8 @@
 		F6AA220B16B3BA2E00C7A6D4 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */,
+				F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */,
 				F6BE337117C2808800E21314 /* NoticiaText-Bold.ttf */,
 				F6BE337217C2808800E21314 /* NoticiaText-BoldItalic.ttf */,
 				F6BE337317C2808800E21314 /* NoticiaText-Italic.ttf */,
@@ -360,8 +366,8 @@
 		F6C1F20B17C1D65600E1EDCA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F6C1F20C17C1D65600E1EDCA /* Lampshade-Info.plist */,
-				F6C1F20D17C1D65600E1EDCA /* Lampshade-Prefix.pch */,
+				F6C1F20C17C1D65600E1EDCA /* ThirdLaw-Info.plist */,
+				F6C1F20D17C1D65600E1EDCA /* ThirdLaw-Prefix.pch */,
 				F6C1F20E17C1D65600E1EDCA /* LampshadeAppDelegate.h */,
 				F6C1F20F17C1D65600E1EDCA /* LampshadeAppDelegate.m */,
 				F6C1F21017C1D65600E1EDCA /* main.m */,
@@ -424,9 +430,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F642FE49163E359C009080B9 /* Lampshade */ = {
+		F642FE49163E359C009080B9 /* ThirdLaw */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F642FE68163E359C009080B9 /* Build configuration list for PBXNativeTarget "Lampshade" */;
+			buildConfigurationList = F642FE68163E359C009080B9 /* Build configuration list for PBXNativeTarget "ThirdLaw" */;
 			buildPhases = (
 				F642FE46163E359C009080B9 /* Sources */,
 				F642FE47163E359C009080B9 /* Frameworks */,
@@ -436,9 +442,9 @@
 			);
 			dependencies = (
 			);
-			name = Lampshade;
+			name = ThirdLaw;
 			productName = TVTropes;
-			productReference = F642FE4A163E359C009080B9 /* Lampshade.app */;
+			productReference = F642FE4A163E359C009080B9 /* ThirdLaw.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -451,7 +457,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "George Daole-Wellman";
 			};
-			buildConfigurationList = F642FE44163E359C009080B9 /* Build configuration list for PBXProject "Lampshade" */;
+			buildConfigurationList = F642FE44163E359C009080B9 /* Build configuration list for PBXProject "ThirdLaw" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -463,7 +469,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F642FE49163E359C009080B9 /* Lampshade */,
+				F642FE49163E359C009080B9 /* ThirdLaw */,
 			);
 		};
 /* End PBXProject section */
@@ -473,6 +479,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6672DF617CDA160007F0F70 /* Poly-Italic.ttf in Resources */,
+				F6672DF717CDA160007F0F70 /* Poly-Regular.ttf in Resources */,
 				F6CC418417C7EFE5006E8117 /* script.js in Resources */,
 				F6BE337517C280DC00E21314 /* NoticiaText-Bold.ttf in Resources */,
 				F6BE337617C280DC00E21314 /* NoticiaText-BoldItalic.ttf in Resources */,
@@ -634,11 +642,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Supporting Files/Lampshade-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
-				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Lampshade-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				PRODUCT_NAME = Lampshade;
+				PRODUCT_NAME = ThirdLaw;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -648,11 +656,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Supporting Files/Lampshade-Prefix.pch";
+				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
-				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Lampshade-Info.plist";
+				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				PRODUCT_NAME = Lampshade;
+				PRODUCT_NAME = ThirdLaw;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -661,7 +669,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F642FE44163E359C009080B9 /* Build configuration list for PBXProject "Lampshade" */ = {
+		F642FE44163E359C009080B9 /* Build configuration list for PBXProject "ThirdLaw" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F642FE66163E359C009080B9 /* Debug */,
@@ -670,7 +678,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F642FE68163E359C009080B9 /* Build configuration list for PBXNativeTarget "Lampshade" */ = {
+		F642FE68163E359C009080B9 /* Build configuration list for PBXNativeTarget "ThirdLaw" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F642FE69163E359C009080B9 /* Debug */,

@@ -12,6 +12,7 @@
 #import "HistoryItem.h"
 #import "Bookmark.h"
 #import "Page.h"
+#import "NSString+URLEncoding.h"
 #import "SavedPagesController.h"
 #import "SearchViewController.h"
 #import "ExternalWebViewController.h"
@@ -21,7 +22,7 @@
 
 NSString *const RANDOM_URL;
 
-@interface PageViewController () <NSURLConnectionDataDelegate,UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate>
+@interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -61,6 +62,8 @@ dispatch_queue_t backgroundQueue;
     [super viewDidLoad];
     //self.webView.delegate = self;
     //self.navigationController.toolbarHidden = NO;
+	
+	
     _isFullScreen = NO;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
@@ -285,6 +288,7 @@ dispatch_queue_t backgroundQueue;
     [self loadRandomURL];
 }
 
+#pragma mark - Navigation
 - (IBAction)cancelBackForward:(UIButton *)sender {
     [self hideBackForwardButtons];
 }
@@ -369,6 +373,87 @@ dispatch_queue_t backgroundQueue;
     NSLog(@"select search result");
     [controller dismissViewControllerAnimated:YES completion:nil];
     [self loadURLFromString:result];
+}
+
+- (IBAction)showSearch:(UIBarButtonItem *)sender {
+	self.searchDisplayController.searchBar.hidden = NO;
+	[self.searchDisplayController setActive:YES animated:YES];
+}
+
+#pragma mark - Search
+NSArray *searchResults;
+
+#pragma mark - UISearchDisplayDelegate
+
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+	//[self.searchDisplayController setActive:NO animated:YES];
+	self.searchDisplayController.searchBar.hidden = YES;
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+	if (searchString.length == 0)
+		return NO;
+	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0)
+		return NO;
+	searchString = [searchString urlEncode];
+	void (^doneBlock)(NSArray*) = ^(NSArray *results) {
+		searchResults = results;
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	};
+	dispatch_queue_t queue = dispatch_queue_create("com.georgedw.lampshade.googlesearch", NULL);
+	dispatch_async(queue, ^ {
+		NSString *baseURL = @"https://www.googleapis.com/customsearch/v1?&cx=015068427299164704748:bmgwrdpjki8&q=";
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, searchString]];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		NSURLResponse *response;
+		NSError *error;
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+		if (error)
+			NSLog(@"error downloading data %@", error);
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+		if (error)
+			NSLog(@"error serializing json %@", error);
+		NSDictionary *jsonError = [json objectForKey:@"error"];
+		if (jsonError)
+			NSLog(@"JSON returned with error response status: %@", [jsonError objectForKey:@"code"]);
+		NSArray *items = [json objectForKey:@"items"];
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			doneBlock(items);
+		});
+	});
+	return NO;
+}
+
+#pragma mark - UITableViewDataSource
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return searchResults.count;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = nil;
+	
+	static NSString *cellIdentifier = @"Search Result";
+	cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
+	}
+	NSDictionary *result = [searchResults objectAtIndex:indexPath.row];
+	NSString *title = [result objectForKey:@"title"];
+	
+	title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms - TV Tropes" withString:@""];
+	title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms" withString:@""];
+	cell.textLabel.text = title;
+	return cell;
+}
+
+#pragma mark - UITableViewDelegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self.searchDisplayController setActive:NO animated:YES];
+	self.searchDisplayController.searchBar.hidden = YES;
+	NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
+	
+	[self loadURLFromString:[selectedResult objectForKey:@"link"]];
 }
 
 #define BOOKMARK_BUTTON 0

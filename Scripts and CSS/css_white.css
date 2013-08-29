@@ -35,8 +35,8 @@ body {
   position:relative;
   background:white;
   color: black;
-  font-family:NoticiaText;
-  line-height:1.2;
+  font-family:Georgia;
+  line-height:1.3;
   text-align:center;
   overflow-x: hidden;  
 }

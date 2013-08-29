@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>gdaolewe.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.georgedw.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -33,6 +33,8 @@
 		<string>Rosario-Regular.ttf</string>
 		<string>Rosario-Bold.ttf</string>
 		<string>Rosario-Italic.ttf</string>
+		<string>Poly-Regular.ttf</string>
+		<string>Poly-Italic.ttf</string>
 		<string>POORICH.TTF</string>
 	</array>
 	<key>UILaunchImageFile</key>
