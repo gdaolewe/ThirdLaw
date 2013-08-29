@@ -14,6 +14,7 @@
 #import "Page.h"
 #import "NSString+URLEncoding.h"
 #import "SavedPagesController.h"
+#import "SearchResultData.h"
 #import "SearchViewController.h"
 #import "ExternalWebViewController.h"
 #import <dispatch/dispatch.h>
@@ -381,6 +382,7 @@ dispatch_queue_t backgroundQueue;
 }
 
 #pragma mark - Search
+NSString *const BASE_SEARCH_URL = @"https://www.google.com/search?q=site:tvtropes.org+";
 NSArray *searchResults;
 
 #pragma mark - UISearchDisplayDelegate
@@ -402,23 +404,18 @@ NSArray *searchResults;
 	};
 	dispatch_queue_t queue = dispatch_queue_create("com.georgedw.lampshade.googlesearch", NULL);
 	dispatch_async(queue, ^ {
-		NSString *baseURL = @"https://www.googleapis.com/customsearch/v1?&cx=015068427299164704748:bmgwrdpjki8&q=";
-		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseURL, searchString]];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", BASE_SEARCH_URL, searchString]];
 		NSURLRequest *request = [NSURLRequest requestWithURL:url];
 		NSURLResponse *response;
 		NSError *error;
 		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 		if (error)
 			NSLog(@"error downloading data %@", error);
-		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-		if (error)
-			NSLog(@"error serializing json %@", error);
-		NSDictionary *jsonError = [json objectForKey:@"error"];
-		if (jsonError)
-			NSLog(@"JSON returned with error response status: %@", [jsonError objectForKey:@"code"]);
-		NSArray *items = [json objectForKey:@"items"];
+		else
+			NSLog(@"downloaded google search data");
+		NSArray * results = [SearchResultData parseData:data];
 		dispatch_sync(dispatch_get_main_queue(), ^{
-			doneBlock(items);
+			doneBlock(results);
 		});
 	});
 	return NO;
@@ -452,7 +449,7 @@ NSArray *searchResults;
 	[self.searchDisplayController setActive:NO animated:YES];
 	self.searchDisplayController.searchBar.hidden = YES;
 	NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
-	
+	NSLog(@"loading link: %@", [selectedResult objectForKey:@"link"]);
 	[self loadURLFromString:[selectedResult objectForKey:@"link"]];
 }
 

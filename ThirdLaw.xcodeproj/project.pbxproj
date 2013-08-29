@@ -19,6 +19,7 @@
 		F6672DF117CC4D3B007F0F70 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DF017CC4D3B007F0F70 /* Page.m */; };
 		F6672DF617CDA160007F0F70 /* Poly-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */; };
 		F6672DF717CDA160007F0F70 /* Poly-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */; };
+		F6672DFA17CEFE80007F0F70 /* SearchResultData.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DF917CEFE80007F0F70 /* SearchResultData.m */; };
 		F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69FCD4517BB275500C3A43D /* CoreData.framework */; };
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
@@ -91,6 +92,8 @@
 		F6672DF017CC4D3B007F0F70 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poly-Italic.ttf"; path = "Fonts/Poly-Italic.ttf"; sourceTree = SOURCE_ROOT; };
 		F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poly-Regular.ttf"; path = "Fonts/Poly-Regular.ttf"; sourceTree = SOURCE_ROOT; };
+		F6672DF817CEFE80007F0F70 /* SearchResultData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultData.h; sourceTree = "<group>"; };
+		F6672DF917CEFE80007F0F70 /* SearchResultData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultData.m; sourceTree = "<group>"; };
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
@@ -351,6 +354,8 @@
 		F6C1F20217C1D65600E1EDCA /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				F6672DF817CEFE80007F0F70 /* SearchResultData.h */,
+				F6672DF917CEFE80007F0F70 /* SearchResultData.m */,
 				F6C1F20317C1D65600E1EDCA /* NSString+URLEncoding.h */,
 				F6C1F20417C1D65600E1EDCA /* NSString+URLEncoding.m */,
 				F6C1F20517C1D65600E1EDCA /* SearchOptionsTVC.h */,
@@ -548,6 +553,7 @@
 				F6CC418A17C7F6A9006E8117 /* Reachability.m in Sources */,
 				F6672DD317CB0018007F0F70 /* UserDefaultsHelper.m in Sources */,
 				F6672DF117CC4D3B007F0F70 /* Page.m in Sources */,
+				F6672DFA17CEFE80007F0F70 /* SearchResultData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
