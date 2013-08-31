@@ -9,22 +9,42 @@
 #import "SearchResultData.h"
 #import "TFHpple.h"
 #import "Parser.h"
+#import "NSString+URLEncoding.h"
 
 @interface SearchResultData ()
-
-@property NSData *data;
 
 @end
 
 @implementation SearchResultData
 
-@synthesize data = _data;
++(NSString*)siteQueryForNamespaceDictionaries:(NSDictionary*)arg1, ... {
+	va_list args;
+    va_start(args, arg1);
+	NSString* siteQuery = @"";
+	BOOL usePipeChar = NO;
+	for (NSDictionary *arg = arg1; arg != nil; arg = va_arg(args, NSDictionary*)) {
+		for (NSString *namespace in [arg allKeys]) {
+			if ([[arg objectForKey:namespace] isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+				if(usePipeChar)
+					siteQuery = [siteQuery stringByAppendingString:@" |"];
+				else {
+					usePipeChar = YES;
+				}
+				siteQuery = [siteQuery stringByAppendingFormat:@"%@%@",@" site:tvtropes.org/pmwiki/pmwiki.php/", namespace];
+			}
+		}
+	}
+	va_end(args);
+	if (siteQuery.length == 0)
+		siteQuery = BASE_SITE_QUERY;
+	return [siteQuery urlEncode];
+}
 
 +(NSArray*)parseData:(NSData*)data {
 	NSMutableArray *results = [NSMutableArray array];
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSMutableArray *titles = [NSMutableArray array];
-	NSArray *titleElements = [parser searchWithXPathQuery:@"//h3[@class='r']/a"];
+	NSArray *titleElements = [parser searchWithXPathQuery:@"//h3[@class='r']//a"];
 	for (TFHppleElement *e in titleElements) {
 		NSMutableString *title = [NSMutableString string];
 		for (TFHppleElement *c in e.children) {
@@ -33,10 +53,11 @@
 			else if (c.text)
 				[title appendString:c.text];
 		}
+		NSLog(@"%@", title);
 		[titles addObject:title];
 	}
 	NSMutableArray *links = [NSMutableArray array];
-	NSArray *linkElements = [parser searchWithXPathQuery:@"//h3[@class='r']/a"];
+	NSArray *linkElements = [parser searchWithXPathQuery:@"//h3[@class='r']//a"];
 	for (TFHppleElement *e in linkElements) {
 		NSString *link = [e objectForKey:@"href"];
 		for (NSString *param in [link componentsSeparatedByString:@"&"]) {
@@ -58,11 +79,14 @@
 			else if (c.text)
 				[desc appendString:c.text];
 		}
+		NSLog(@"%@", desc);
 		[descriptions addObject:desc];
 	}
-	NSLog(@"titles count: %d", titles.count);
-	NSLog(@"links count: %d", links.count);
-	NSLog(@"descriptions count: %d", descriptions.count);
+	if (descElements.count == 0 || linkElements.count == 0) {
+		NSArray *	errorElements = [parser searchWithXPathQuery:@"//div[@id='infoDiv']/text()"];
+		for (TFHppleElement *e in errorElements)
+			NSLog(@"%@", e.content);
+	}
 	for (int i=0; i<titles.count; i++) {
 		[results addObject:
 			@{
