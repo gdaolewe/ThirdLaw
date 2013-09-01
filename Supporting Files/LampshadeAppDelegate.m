@@ -62,6 +62,9 @@ NSUserDefaults *_defaults;
     int historyIndex = [_defaults integerForKey:@"HistoryIndex"];
     [HistoryItem setHistoryIndex:historyIndex];
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
+	UIViewController *startingController = [[navController viewControllers] objectAtIndex:0];
+	[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
     return YES;
 }
 							

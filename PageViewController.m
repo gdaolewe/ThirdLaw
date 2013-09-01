@@ -26,6 +26,8 @@ NSString *const RANDOM_URL;
 
 @interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
+
+@property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
@@ -116,6 +118,7 @@ dispatch_queue_t backgroundQueue;
     [self setBackForwardCancelButton:nil];
     dispatch_release(backgroundQueue);
     [self setRotationLockButton:nil];
+	[self setMainView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

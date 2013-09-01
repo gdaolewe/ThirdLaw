@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zu2-j5-UVH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Q7E-67-WC9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -59,14 +59,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bL5-9C-gGi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4089" y="-661"/>
+            <point key="canvasLocation" x="4569" y="-129"/>
         </scene>
         <!--Index Table View Controller - Main Index-->
         <scene sceneID="i6A-kc-UbT">
             <objects>
                 <tableViewController storyboardIdentifier="Index" id="PWF-3I-eV0" customClass="IndexTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ScF-sw-4ey">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -85,37 +85,17 @@
                             <outlet property="delegate" destination="PWF-3I-eV0" id="4sE-bK-7NH"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem image="home.png" style="plain" id="Zns-vb-ae3">
-                            <connections>
-                                <action selector="home:" destination="PWF-3I-eV0" id="03l-tX-tPh"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="FJ0-88-Ow5"/>
-                        <barButtonItem style="plain" systemItem="bookmarks" id="ZWh-gK-jmU">
-                            <connections>
-                                <segue destination="cyQ-83-4jx" kind="modal" identifier="IndexToSavedPagesSegue" id="hIl-9p-fhN"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Q9H-hy-Jfs"/>
-                        <barButtonItem title="?" style="plain" id="n9s-cN-qkG">
-                            <connections>
-                                <action selector="random:" destination="PWF-3I-eV0" id="osx-vw-gkI"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Main Index" id="6l4-wb-VQa">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="g0g-8F-lCw">
-                            <connections>
-                                <segue destination="jnj-YG-1AH" kind="modal" identifier="IndexToSearchSegue" id="zaA-DJ-eV7"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Main Index" id="6l4-wb-VQa"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="2" kind="push" identifier="IndexToPageSegue" id="iv4-iH-smF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lcv-gt-QOP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3910" y="-64"/>
+            <point key="canvasLocation" x="2971" y="158"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="5">
@@ -221,7 +201,7 @@
                                     <action selector="toggleRotationLock:" destination="2" eventType="touchDown" id="g5J-NT-4dJ"/>
                                 </connections>
                             </button>
-                            <searchBar hidden="YES" opaque="NO" contentMode="redraw" placeholder="Search" showsSearchResultsButton="YES" showsCancelButton="YES" id="FOK-4g-6gY">
+                            <searchBar hidden="YES" opaque="NO" contentMode="redraw" placeholder="Search" showsCancelButton="YES" id="FOK-4g-6gY">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -236,7 +216,6 @@
                         <barButtonItem image="index.png" style="plain" id="AYw-wg-jgO">
                             <connections>
                                 <action selector="home:" destination="2" id="GuU-Lq-agR"/>
-                                <segue destination="PWF-3I-eV0" kind="push" id="T6T-vw-u1O"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="9eH-Eu-G7i"/>
@@ -581,138 +560,34 @@
             </objects>
             <point key="canvasLocation" x="4417" y="657"/>
         </scene>
-        <!--Search View Controller - Search-->
-        <scene sceneID="2Eo-Bc-wUm">
-            <objects>
-                <viewController id="xDN-yt-Ddx" customClass="SearchViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="DAQ-ol-khc">
-                        <rect key="frame" x="0.0" y="20" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search All" showsCancelButton="YES" id="qlZ-qR-365">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                                <connections>
-                                    <outlet property="delegate" destination="xDN-yt-Ddx" id="oBI-ve-iT7"/>
-                                </connections>
-                            </searchBar>
-                            <webView contentMode="scaleToFill" id="nbt-1x-duV">
-                                <rect key="frame" x="0.0" y="44" width="320" height="372"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="xDN-yt-Ddx" id="tzi-RQ-LcN"/>
-                                </connections>
-                            </webView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mEQ-cv-7qH">
-                                <rect key="frame" x="0.0" y="376" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="unlocked.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="toggleRotationLock:" destination="xDN-yt-Ddx" eventType="touchDown" id="90t-bF-Ear"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems>
-                        <barButtonItem style="plain" id="PyH-09-a2H">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="n4Q-ec-N3L">
-                                <rect key="frame" x="12" y="13" width="18" height="19"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal">
-                                    <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="cqP-dB-Ry1"/>
-                        <barButtonItem style="done" systemItem="done" id="n6y-At-gvr">
-                            <connections>
-                                <action selector="done:" destination="xDN-yt-Ddx" id="hE3-sV-uy1"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Search" id="MhE-P8-fhX"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="rotationLockButton" destination="mEQ-cv-7qH" id="oUV-Ws-enM"/>
-                        <outlet property="searchBar" destination="qlZ-qR-365" id="CMV-xB-AFi"/>
-                        <outlet property="searchWebView" destination="nbt-1x-duV" id="act-bN-a5E"/>
-                        <segue destination="2" kind="push" identifier="Load page from search" id="UAr-7G-L2p"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="p38-PV-zo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3553" y="-649"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="gJQ-c3-UdH">
+        <scene sceneID="P6K-gg-5gA">
             <objects>
-                <navigationController navigationBarHidden="YES" toolbarHidden="NO" id="jnj-YG-1AH" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="Q7E-67-WC9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="gAK-wH-oZF"/>
-                    <nil key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rHK-Yt-hVX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HMO-bq-DXW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="gEi-rx-37h">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="7Kc-7k-UA3">
                         <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="xDN-yt-Ddx" kind="relationship" relationship="rootViewController" id="hwa-UG-EuK"/>
+                        <segue destination="PWF-3I-eV0" kind="relationship" relationship="rootViewController" id="puN-PQ-WUL"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DOT-DB-55B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7JB-oz-oJf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3153" y="-534"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="FoT-Wa-COT">
-            <objects>
-                <navigationController toolbarHidden="NO" id="zu2-j5-UVH" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="pI9-DC-2hg"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Igt-ck-szg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="e41-6a-wP8">
-                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="2" kind="relationship" relationship="rootViewController" id="KF0-yJ-7kT"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hOP-c0-7m9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2877" y="158"/>
+            <point key="canvasLocation" x="2544" y="158"/>
         </scene>
     </scenes>
     <resources>
         <image name="back_large.png" width="69" height="235"/>
         <image name="fullscreen.png" width="24" height="24"/>
         <image name="fwd_large.png" width="69" height="235"/>
-        <image name="home.png" width="24" height="24"/>
         <image name="index.png" width="24" height="24"/>
         <image name="unfullscreen.png" width="24" height="24"/>
         <image name="unlocked.png" width="40" height="40"/>
@@ -721,9 +596,11 @@
         <class className="ExternalWebViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
             <relationships>
+                <relationship kind="action" name="actions:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="back:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="forward:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="toggleFullscreen:"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="actionsButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
@@ -735,6 +612,10 @@
         </class>
         <class className="IndexTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+            </relationships>
         </class>
         <class className="PageViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
@@ -756,6 +637,7 @@
                 <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="mainView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
@@ -777,22 +659,10 @@
         <class className="SearchOptionsTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchOptionsTVC.h"/>
         </class>
-        <class className="SearchViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="searchWebView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="UAr-7G-L2p"/>
-        <segue reference="77L-gb-68x"/>
-    </inferredMetricsTieBreakers>
 </document>
