@@ -188,7 +188,7 @@ dispatch_queue_t backgroundQueue;
         backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
         void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
             self.url = response.URL.absoluteString;
-            [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]];
+            [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding]];
             dispatch_release(backgroundQueue);
         };
         dispatch_async(backgroundQueue, ^(void) {

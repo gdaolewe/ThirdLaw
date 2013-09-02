@@ -122,7 +122,7 @@ NSString* appSupportDir;
         NSLog(@"getting home page from bundle");
         fileData = [NSData dataWithContentsOfFile:filePath];
     }
-    return [[NSString alloc] initWithData:fileData encoding:NSASCIIStringEncoding];
+    return [[NSString alloc] initWithData:fileData encoding:NSISOLatin1StringEncoding];
 }
 +(NSData*) getIndexData {
     NSString* filePath = [NSString stringWithFormat:@"%@/%@", appSupportDir, @"index.html"];

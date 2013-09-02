@@ -51,7 +51,7 @@ NSArray *_pagesCached;
 	if (!self.htmlPath)
 		return nil;
 	NSError *error;
-	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSASCIIStringEncoding error:&error];
+	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSISOLatin1StringEncoding error:&error];
 	if (error) {
 		NSLog(@"Error retrieving page html file from disk: %@", error);
 		return nil;
