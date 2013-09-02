@@ -30,9 +30,25 @@
 
 NSUserDefaults *_defaults;
 
+-(NSURL *)url {
+	return _url;
+}
+-(void)setUrl:(NSURL *)url {
+	_url = url;
+	[_defaults setObject:self.url.absoluteString forKey:USER_PREF_EXTERNAL_URL];
+	[_defaults synchronize];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (!self.url) {
+		NSString *savedURLString = [_defaults objectForKey:USER_PREF_EXTERNAL_URL];
+		if (savedURLString.length > 0)
+			self.url = [NSURL URLWithString:savedURLString];
+		else
+			[self dismissViewControllerAnimated:NO completion:nil];
+	}
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     self.webView.hidden = NO;
 	_defaults = [NSUserDefaults standardUserDefaults];
@@ -41,7 +57,8 @@ NSUserDefaults *_defaults;
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self setupRotationLockButton];
-	[super viewDidAppear:animated];
+	[_defaults setInteger:USerPrefStartViewExternal forKey:USER_PREF_START_VIEW];
+	[_defaults synchronize];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(showRotationLockButton)
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -103,8 +120,9 @@ BOOL _isFullScreen = NO;
 
 #pragma mark - UIWebViewDelegate
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-	if (navigationType != UIWebViewNavigationTypeOther)
+	if (navigationType != UIWebViewNavigationTypeOther) {
 		self.url = request.mainDocumentURL;
+	}
 	return YES;
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {

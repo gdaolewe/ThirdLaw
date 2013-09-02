@@ -77,6 +77,10 @@ dispatch_queue_t backgroundQueue;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
     _defaults = [NSUserDefaults standardUserDefaults];
+	if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
+		ExternalWebViewController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"External web view"];
+		[self.navigationController pushViewController:webVC animated:NO];
+	}
     _script = [FileLoader getScript];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
@@ -106,6 +110,8 @@ dispatch_queue_t backgroundQueue;
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self setupRotationLockButton];
+	[_defaults setInteger:UserPrefStartViewPage forKey:USER_PREF_START_VIEW];
+	[_defaults synchronize];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(showRotationLockButton)
 												 name:UIDeviceOrientationDidChangeNotification object:nil];

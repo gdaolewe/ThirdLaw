@@ -34,6 +34,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="2" kind="push" identifier="IndexToPageSegue" id="iv4-iH-smF"/>
+                        <segue destination="jr5-0F-GYp" kind="push" identifier="IndexToExternalSegue" id="gVw-YM-NS7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lcv-gt-QOP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -268,7 +269,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3409" y="158"/>
+            <point key="canvasLocation" x="3500" y="158"/>
         </scene>
         <!--Saved Pages Controller-->
         <scene sceneID="cfA-s8-1Ga">
@@ -446,7 +447,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tx0-UK-PeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3830" y="762"/>
+            <point key="canvasLocation" x="3967" y="575"/>
         </scene>
         <!--External Web View Controller-->
         <scene sceneID="v96-4R-dGc">
@@ -540,7 +541,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AS5-Ps-hhA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4273" y="451"/>
+            <point key="canvasLocation" x="3976" y="-44"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="P6K-gg-5gA">
@@ -579,4 +580,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="w5H-su-O8C"/>
+    </inferredMetricsTieBreakers>
 </document>

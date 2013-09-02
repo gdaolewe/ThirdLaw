@@ -51,11 +51,13 @@ NSUserDefaults *_defaults;
 	}
 	
     NSDictionary *appDefaults = @{
+		USER_PREF_EXTERNAL_URL				: @"",
         USER_PREF_HISTORY_INDEX             : [NSNumber numberWithInt:-1],
         USER_PREF_ROTATION_LOCKED			: [NSNumber numberWithBool:NO],
         USER_PREF_ROTATION_ORIENTATION      : [NSNumber numberWithInt:UIInterfaceOrientationPortrait],
         USER_PREF_SAVED_PAGES_STARTING_TAB	: [NSNumber numberWithInt:0],
-        USER_PREF_SEARCH_STRING             : @""
+        USER_PREF_SEARCH_STRING             : @"",
+		USER_PREF_START_VIEW				: [NSNumber numberWithInt:UserPrefStartViewPage]
     };
     _defaults = [NSUserDefaults standardUserDefaults];
     [_defaults registerDefaults:appDefaults];
@@ -64,7 +66,11 @@ NSUserDefaults *_defaults;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
 	UIViewController *startingController = [[navController viewControllers] objectAtIndex:0];
-	[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
+	if ([_defaults integerForKey:USER_PREF_START_VIEW] == UserPrefStartViewPage)
+		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
+	else if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
+		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
+	}
     return YES;
 }
 							
