@@ -27,13 +27,20 @@ NSString *const RANDOM_URL;
 @interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 
-@property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
 @property (strong, nonatomic) IBOutlet UIButton *forwardButton;
 @property (strong, nonatomic) IBOutlet UIButton *backForwardCancelButton;
 @property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
 @property (strong, nonatomic) SearchOptionsTVC	*optionsController;
+@property (strong, nonatomic) IBOutlet UITableView *searchResultsTableView;
+
+//toolbar items
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *settingsToolbarItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *randomToolbarItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *actionsToolbarItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *savedToolbarItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *fullscreenToolbarItem;
 
 @end
 
@@ -48,7 +55,7 @@ NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php";
 @synthesize rotationLockButton = _rotationLockButton;
 @synthesize url = _url;
 
-NSString* _script;
+NSString *_script;
 NSUserDefaults *_defaults;
 
 bool _backForwardButtonsShowing;
@@ -65,10 +72,7 @@ dispatch_queue_t backgroundQueue;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.webView.delegate = self;
-    //self.navigationController.toolbarHidden = NO;
-	
-	
+	[self showDefaultToolbarItems];
     _isFullScreen = NO;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
@@ -77,7 +81,6 @@ dispatch_queue_t backgroundQueue;
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
-	[self setupNamespaces];
     if ([self.url isEqualToString:RANDOM_URL]) {
         [self loadRandomURL];
     } else if (self.url == nil) {
@@ -118,7 +121,12 @@ dispatch_queue_t backgroundQueue;
     [self setBackForwardCancelButton:nil];
     dispatch_release(backgroundQueue);
     [self setRotationLockButton:nil];
-	[self setMainView:nil];
+	[self setSearchResultsTableView:nil];
+	[self setSettingsToolbarItem:nil];
+	[self setRandomToolbarItem:nil];
+	[self setActionsToolbarItem:nil];
+	[self setSavedToolbarItem:nil];
+	[self setFullscreenToolbarItem:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -135,6 +143,11 @@ dispatch_queue_t backgroundQueue;
     } else {
         [self.activityIndicator stopAnimating];
     }
+}
+
+-(void)showDefaultToolbarItems {
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    self.toolbarItems = @[self.settingsToolbarItem, space, self.randomToolbarItem, space, self.actionsToolbarItem, space, self.savedToolbarItem, space, self.fullscreenToolbarItem];
 }
 
 -(void) filesUpdated:(NSNotification*)notification {
@@ -384,6 +397,7 @@ dispatch_queue_t backgroundQueue;
 }
 
 - (IBAction)showSearch:(UIBarButtonItem *)sender {
+	self.navigationController.navigationBarHidden = YES;
 	self.searchDisplayController.searchBar.hidden = NO;
 	[self.searchDisplayController setActive:YES animated:YES];
 }
@@ -392,31 +406,34 @@ dispatch_queue_t backgroundQueue;
 
 NSArray *searchResults;
 
--(void) setupNamespaces {
-	_mediaNamespacesDictionary = [NSMutableDictionary dictionary];
-	for (NSString *namespace in MEDIA_NAMESPACES)
-		[_mediaNamespacesDictionary setObject:[NSNumber numberWithBool:NO] forKey:namespace];
-	_subPageNamespacesDictionary = [NSMutableDictionary dictionary];
-	for (NSString *namespace in SUBPAGE_NAMESPACES)
-		[_subPageNamespacesDictionary setObject:[NSNumber numberWithBool:NO] forKey:namespace];
-	_momentsNamespacesDictionary = [NSMutableDictionary dictionary];
-	for (NSString *namespace in MOMENTS_NAMESPACES)
-		[_momentsNamespacesDictionary setObject:[NSNumber numberWithBool:NO] forKey:namespace];
+-(void)endSearch:(UIBarButtonItem*)sender {
+	self.searchDisplayController.searchBar.hidden = YES;
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
+	self.searchResultsTableView.hidden = YES;
+	[self showDefaultToolbarItems];
+	_willShowSearchResultsTable = NO;
 }
 
 #pragma mark - UISearchBarDelegate
 
--(void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
-	self.optionsController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchOptions"];
-	self.optionsController.tableView.dataSource = self;
-	self.optionsController.tableView.delegate = self;
-	[self presentViewController:self.optionsController animated:YES completion:nil];
+BOOL _willShowSearchResultsTable = NO;
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	_willShowSearchResultsTable = YES;
+	UIBarButtonItem *endSearch = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endSearch:)];
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	self.toolbarItems = [NSArray arrayWithObjects:space, endSearch, nil];
+	self.searchResultsTableView.hidden = NO;
+	[self.searchResultsTableView reloadData];
+	[self.searchDisplayController setActive:NO animated:YES];
+	self.navigationController.navigationBarHidden = YES;
 }
 
 #pragma mark - UISearchDisplayDelegate
 
 -(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-	self.searchDisplayController.searchBar.hidden = YES;
+	if (!_willShowSearchResultsTable)
+		[self endSearch:nil];
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -425,22 +442,14 @@ NSArray *searchResults;
 	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0)
 		return NO;
 	searchString = [searchString urlEncode];
-	
-	NSString* siteQuery = @"";
-	if (_allSwitchOn) {
-        siteQuery = BASE_SITE_QUERY;
-    } else {
-        siteQuery = [SearchResultData siteQueryForNamespaceDictionaries:_mediaNamespacesDictionary, _subPageNamespacesDictionary, _momentsNamespacesDictionary, nil];
-    }
-
-	
+    	
 	void (^doneBlock)(NSArray*) = ^(NSArray *results) {
 		searchResults = results;
 		[self.searchDisplayController.searchResultsTableView reloadData];
 	};
 	dispatch_queue_t queue = dispatch_queue_create("com.georgedw.lampshade.googlesearch", NULL);
 	dispatch_async(queue, ^ {
-		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", BASE_SEARCH_URL, searchString, siteQuery]];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", BASE_SEARCH_URL, searchString, BASE_SITE_QUERY]];
 		NSLog(@"%@", url.absoluteString);
 		NSURLRequest *request = [NSURLRequest requestWithURL:url];
 		NSURLResponse *response;
@@ -458,84 +467,16 @@ NSArray *searchResults;
 	return NO;
 }
 
-NSMutableDictionary *_mediaNamespacesDictionary;
-NSMutableDictionary *_subPageNamespacesDictionary;
-NSMutableDictionary *_momentsNamespacesDictionary;
-BOOL _titleSwitchOn = NO;
-BOOL _allSwitchOn = YES;
-BOOL _mediaNamespacesOn = NO;
-BOOL _subpageNamespacesOn = NO;
-BOOL _momentsNamespacesOn = NO;
-
-typedef enum {
-	SearchOptionsSectionSearchTitles,
-	SearchOptionsSectionSearchAll,
-	SearchOptionsSectionMediaNamespaces,
-	SearchOptionsSectionSubPageNamespaces,
-	SearchOptionsSectionMomentsNamespaces
-}SearchOptionsSection;
-
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return 1;
-	else if (tableView == self.optionsController.tableView) {
-		return _allSwitchOn? 2:5;
-	}
-	else
-		return 0;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (tableView == self.optionsController.tableView) {
-		switch (section) {
-			case SearchOptionsSectionSearchTitles:
-				return nil;
-				break;
-			case SearchOptionsSectionSearchAll:
-				return nil;
-				break;
-			case SearchOptionsSectionMediaNamespaces:
-				return @"Media Namespaces";
-				break;
-			case SearchOptionsSectionSubPageNamespaces:
-				return @"Subpage Namespaces";
-				break;
-			case SearchOptionsSectionMomentsNamespaces:
-				return @"Moments Namespaces";
-				break;
-			default:
-				return 0;
-		}
-	} else {
-		return nil;
-	}
-
+	return 1;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return searchResults.count;
-	else if (tableView == self.optionsController.tableView) {
-		switch (section) {
-		case SearchOptionsSectionSearchTitles:
-			return 1;
-			break;
-		case SearchOptionsSectionSearchAll:
-			return 1;
-			break;
-		case SearchOptionsSectionMediaNamespaces:
-			return MEDIA_NAMESPACES.count;
-			break;
-		case SearchOptionsSectionSubPageNamespaces:
-			return SUBPAGE_NAMESPACES.count;
-			break;
-		case SearchOptionsSectionMomentsNamespaces:
-			return MOMENTS_NAMESPACES.count;
-			break;
-		default:
-			return 0;
-		}
+	else if (tableView == self.searchResultsTableView) {
+		return searchResults.count;
 	}
 	else
 		return 0;
@@ -544,7 +485,7 @@ typedef enum {
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		UITableViewCell *cell = nil;
-		static NSString *cellIdentifier = @"Search Result";
+		static NSString *cellIdentifier = @"SearchSuggestion";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
@@ -555,40 +496,19 @@ typedef enum {
 		title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms" withString:@""];
 		cell.textLabel.text = title;
 		return cell;
-	} else if (tableView == self.optionsController.tableView) {
-		static NSString *CellIdentifier = @"Search Option Cell";
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		UISwitch *cellSwitch = [[UISwitch alloc] initWithFrame:cell.frame];
-		
-		[cellSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+	} else if (tableView == self.searchResultsTableView) {
+		UITableViewCell *cell = nil;
+		static NSString *cellIdentifier = @"SearchResult";
+		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Index level 1 cell"];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
 		}
-		switch (indexPath.section) {
-			case SearchOptionsSectionSearchTitles:
-				cell.textLabel.text = @"Search titles only";
-				cell.accessoryType = _titleSwitchOn? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-				break;
-			case SearchOptionsSectionSearchAll:
-				cell.textLabel.text = @"Search all namespaces";
-				cell.accessoryType = _allSwitchOn? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-				break;
-			case SearchOptionsSectionMediaNamespaces: {
-				cell.textLabel.text = [MEDIA_NAMESPACES objectAtIndex:indexPath.row];
-				BOOL rowSelected = ((NSNumber*)[_mediaNamespacesDictionary objectForKey:[MEDIA_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				cell.accessoryType = rowSelected? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-			}	break;
-			case SearchOptionsSectionSubPageNamespaces: {
-				cell.textLabel.text = [SUBPAGE_NAMESPACES objectAtIndex:indexPath.row];
-				BOOL rowSelected = ((NSNumber*)[_subPageNamespacesDictionary objectForKey:[SUBPAGE_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				cell.accessoryType = rowSelected? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-			}	break;
-			case SearchOptionsSectionMomentsNamespaces: {
-				cell.textLabel.text = [MOMENTS_NAMESPACES objectAtIndex:indexPath.row];
-				BOOL rowSelected = ((NSNumber*)[_momentsNamespacesDictionary objectForKey:[MOMENTS_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				cell.accessoryType = rowSelected? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-			}	break;
-		}
+		NSDictionary *result = [searchResults objectAtIndex:indexPath.row];
+		NSString *title = [result objectForKey:@"title"];
+		title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms - TV Tropes" withString:@""];
+		title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms" withString:@""];
+		cell.textLabel.text = title;
+		cell.detailTextLabel.text = [result objectForKey:@"description"];
 		return cell;
 	} else {
 		return nil;
@@ -603,31 +523,13 @@ typedef enum {
 		NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
 		NSLog(@"loading link: %@", [selectedResult objectForKey:@"link"]);
 		[self loadURLFromString:[selectedResult objectForKey:@"link"]];
-	} else if (tableView == self.optionsController.tableView) {
-		switch (indexPath.section) {
-			case SearchOptionsSectionSearchTitles:
-				_titleSwitchOn = !_titleSwitchOn;
-				break;
-			case SearchOptionsSectionSearchAll:
-				_allSwitchOn = !_allSwitchOn;
-				[tableView reloadData];
-				break;
-			case SearchOptionsSectionMediaNamespaces: {
-				BOOL rowShouldBeSelected = !((NSNumber*)[_mediaNamespacesDictionary objectForKey:[MEDIA_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				[_mediaNamespacesDictionary setObject:[NSNumber numberWithBool:rowShouldBeSelected] forKey:[MEDIA_NAMESPACES objectAtIndex:indexPath.row]];
-				[tableView reloadData];
-			}	break;
-			case SearchOptionsSectionSubPageNamespaces: {
-				BOOL rowShouldBeSelected = !((NSNumber*)[_subPageNamespacesDictionary objectForKey:[SUBPAGE_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				[_subPageNamespacesDictionary setObject:[NSNumber numberWithBool:rowShouldBeSelected] forKey:[SUBPAGE_NAMESPACES objectAtIndex:indexPath.row]];
-				[tableView reloadData];
-			}	break;
-			case SearchOptionsSectionMomentsNamespaces: {
-				BOOL rowShouldBeSelected = !((NSNumber*)[_momentsNamespacesDictionary objectForKey:[MOMENTS_NAMESPACES objectAtIndex:indexPath.row]]).boolValue;
-				[_momentsNamespacesDictionary setObject:[NSNumber numberWithBool:rowShouldBeSelected] forKey:[MOMENTS_NAMESPACES objectAtIndex:indexPath.row]];
-				[tableView reloadData];
-			}	break;
-		}
+	} else if (tableView == self.searchResultsTableView) {
+		self.searchResultsTableView.hidden = YES;
+		[self.searchDisplayController setActive:NO animated:YES];
+		self.searchDisplayController.searchBar.hidden = YES;
+		NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
+		NSLog(@"loading link: %@", [selectedResult objectForKey:@"link"]);
+		[self loadURLFromString:[selectedResult objectForKey:@"link"]];
 	}
 }
 

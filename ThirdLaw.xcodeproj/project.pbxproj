@@ -20,6 +20,8 @@
 		F6672DF617CDA160007F0F70 /* Poly-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF417CDA113007F0F70 /* Poly-Italic.ttf */; };
 		F6672DF717CDA160007F0F70 /* Poly-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */; };
 		F6672DFA17CEFE80007F0F70 /* SearchResultData.m in Sources */ = {isa = PBXBuildFile; fileRef = F6672DF917CEFE80007F0F70 /* SearchResultData.m */; };
+		F6964F1C17D2FEB8009A7BD1 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = F6964F1A17D2FEB8009A7BD1 /* settings.png */; };
+		F6964F1D17D2FEB8009A7BD1 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6964F1B17D2FEB8009A7BD1 /* settings@2x.png */; };
 		F69FCD4617BB275500C3A43D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F69FCD4517BB275500C3A43D /* CoreData.framework */; };
 		F6AA224016B5FBD800C7A6D4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */; };
 		F6BE336617C1E82D00E21314 /* jquery.js in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F20117C1D65600E1EDCA /* jquery.js */; };
@@ -94,6 +96,8 @@
 		F6672DF517CDA113007F0F70 /* Poly-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poly-Regular.ttf"; path = "Fonts/Poly-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		F6672DF817CEFE80007F0F70 /* SearchResultData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultData.h; sourceTree = "<group>"; };
 		F6672DF917CEFE80007F0F70 /* SearchResultData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultData.m; sourceTree = "<group>"; };
+		F6964F1A17D2FEB8009A7BD1 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = Images/settings.png; sourceTree = SOURCE_ROOT; };
+		F6964F1B17D2FEB8009A7BD1 /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "Images/settings@2x.png"; sourceTree = SOURCE_ROOT; };
 		F69FCD4517BB275500C3A43D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F6AA223F16B5FBD800C7A6D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6BE336517C1DC4500E21314 /* POORICH.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = POORICH.TTF; path = Fonts/POORICH.TTF; sourceTree = SOURCE_ROOT; };
@@ -409,6 +413,8 @@
 		F6EC50DD17C552C000E8876C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F6964F1A17D2FEB8009A7BD1 /* settings.png */,
+				F6964F1B17D2FEB8009A7BD1 /* settings@2x.png */,
 				F6672DD517CB1718007F0F70 /* locked.png */,
 				F6672DD617CB1718007F0F70 /* locked@2x.png */,
 				F6672DD717CB1718007F0F70 /* unlocked.png */,
@@ -518,6 +524,8 @@
 				F6672DDA17CB1718007F0F70 /* locked@2x.png in Resources */,
 				F6672DDB17CB1718007F0F70 /* unlocked.png in Resources */,
 				F6672DDC17CB1718007F0F70 /* unlocked@2x.png in Resources */,
+				F6964F1C17D2FEB8009A7BD1 /* settings.png in Resources */,
+				F6964F1D17D2FEB8009A7BD1 /* settings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
