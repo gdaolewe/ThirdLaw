@@ -404,6 +404,7 @@ dispatch_queue_t backgroundQueue;
 
 - (IBAction)showSearch:(UIBarButtonItem *)sender {
 	self.navigationController.navigationBarHidden = YES;
+	self.navigationController.toolbarHidden = YES;
 	self.searchDisplayController.searchBar.hidden = NO;
 	[self.searchDisplayController setActive:YES animated:YES];
 }
@@ -415,6 +416,7 @@ NSArray *searchResults;
 -(void)endSearch:(UIBarButtonItem*)sender {
 	self.searchDisplayController.searchBar.hidden = YES;
 	[self.navigationController setNavigationBarHidden:NO animated:YES];
+	self.navigationController.toolbarHidden = NO;
 	self.searchResultsTableView.hidden = YES;
 	[self showDefaultToolbarItems];
 	_willShowSearchResultsTable = NO;
@@ -424,33 +426,22 @@ NSArray *searchResults;
 
 BOOL _willShowSearchResultsTable = NO;
 
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[self endSearch:nil];
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	_willShowSearchResultsTable = YES;
-	UIBarButtonItem *endSearch = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endSearch:)];
-	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	self.toolbarItems = [NSArray arrayWithObjects:space, endSearch, nil];
-	self.searchResultsTableView.hidden = NO;
-	[self.searchResultsTableView reloadData];
-	[self.searchDisplayController setActive:NO animated:YES];
-	self.navigationController.navigationBarHidden = YES;
-}
-
-#pragma mark - UISearchDisplayDelegate
-
--(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-	if (!_willShowSearchResultsTable)
-		[self endSearch:nil];
-}
-
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+	
+	NSString* searchString = searchBar.text;
 	if (searchString.length == 0)
-		return NO;
+		return;
 	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0)
-		return NO;
+		return;
 	searchString = [searchString urlEncode];
-    	
+	
 	void (^doneBlock)(NSArray*) = ^(NSArray *results) {
 		searchResults = results;
+		self.searchDisplayController.searchResultsTableView.hidden = NO;
 		[self.searchDisplayController.searchResultsTableView reloadData];
 	};
 	dispatch_queue_t queue = dispatch_queue_create("com.georgedw.lampshade.googlesearch", NULL);
@@ -470,6 +461,18 @@ BOOL _willShowSearchResultsTable = NO;
 			doneBlock(results);
 		});
 	});
+}
+
+#pragma mark - UISearchDisplayDelegate
+
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+	//if (!_willShowSearchResultsTable)
+	//	[self endSearch:nil];
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+	if (searchResults.count == 0)
+		self.searchDisplayController.searchResultsTableView.hidden = YES;
 	return NO;
 }
 
@@ -481,9 +484,6 @@ BOOL _willShowSearchResultsTable = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return searchResults.count;
-	else if (tableView == self.searchResultsTableView) {
-		return searchResults.count;
-	}
 	else
 		return 0;
 }
@@ -494,20 +494,7 @@ BOOL _willShowSearchResultsTable = NO;
 		static NSString *cellIdentifier = @"SearchSuggestion";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
-		}
-		NSDictionary *result = [searchResults objectAtIndex:indexPath.row];
-		NSString *title = [result objectForKey:@"title"];
-		title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms - TV Tropes" withString:@""];
-		title = [title stringByReplacingOccurrencesOfString:@" - Television Tropes & Idioms" withString:@""];
-		cell.textLabel.text = title;
-		return cell;
-	} else if (tableView == self.searchResultsTableView) {
-		UITableViewCell *cell = nil;
-		static NSString *cellIdentifier = @"SearchResult";
-		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Search Result"];
 		}
 		NSDictionary *result = [searchResults objectAtIndex:indexPath.row];
 		NSString *title = [result objectForKey:@"title"];
@@ -526,13 +513,7 @@ BOOL _willShowSearchResultsTable = NO;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		[self.searchDisplayController setActive:NO animated:YES];
 		self.searchDisplayController.searchBar.hidden = YES;
-		NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
-		NSLog(@"loading link: %@", [selectedResult objectForKey:@"link"]);
-		[self loadURLFromString:[selectedResult objectForKey:@"link"]];
-	} else if (tableView == self.searchResultsTableView) {
-		self.searchResultsTableView.hidden = YES;
-		[self.searchDisplayController setActive:NO animated:YES];
-		self.searchDisplayController.searchBar.hidden = YES;
+		[self endSearch:nil];
 		NSDictionary *selectedResult = [searchResults objectAtIndex:indexPath.row];
 		NSLog(@"loading link: %@", [selectedResult objectForKey:@"link"]);
 		[self loadURLFromString:[selectedResult objectForKey:@"link"]];

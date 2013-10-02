@@ -655,12 +655,16 @@
 		F642FE69163E359C009080B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
 				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = ThirdLaw;
+				PROVISIONING_PROFILE = "87D702E5-E5B2-4F1F-AF31-0DBD82E21C52";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "87D702E5-E5B2-4F1F-AF31-0DBD82E21C52";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -669,12 +673,16 @@
 		F642FE6A163E359C009080B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
 				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = ThirdLaw;
+				PROVISIONING_PROFILE = "87D702E5-E5B2-4F1F-AF31-0DBD82E21C52";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "87D702E5-E5B2-4F1F-AF31-0DBD82E21C52";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

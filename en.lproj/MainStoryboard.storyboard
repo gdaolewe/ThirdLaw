@@ -249,15 +249,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="fYe-87-cEL">
-                    <connections>
-                        <outlet property="delegate" destination="2" id="4Vu-nG-sbi"/>
-                        <outlet property="searchBar" destination="FOK-4g-6gY" id="i7H-Dm-3w5"/>
-                        <outlet property="searchContentsController" destination="2" id="BMo-y1-LyI"/>
-                        <outlet property="searchResultsDataSource" destination="2" id="o37-lT-JwH"/>
-                        <outlet property="searchResultsDelegate" destination="2" id="yQ8-bZ-dxr"/>
-                    </connections>
-                </searchDisplayController>
                 <swipeGestureRecognizer direction="right" id="SLe-Hw-O18">
                     <connections>
                         <action selector="rightSwipeGesture:" destination="2" id="4aD-Uv-0gp"/>
@@ -268,6 +259,15 @@
                         <action selector="leftSwipeGesture:" destination="2" id="rHl-ps-dGw"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <searchDisplayController id="fYe-87-cEL">
+                    <connections>
+                        <outlet property="delegate" destination="2" id="4Vu-nG-sbi"/>
+                        <outlet property="searchBar" destination="FOK-4g-6gY" id="i7H-Dm-3w5"/>
+                        <outlet property="searchContentsController" destination="2" id="BMo-y1-LyI"/>
+                        <outlet property="searchResultsDataSource" destination="2" id="o37-lT-JwH"/>
+                        <outlet property="searchResultsDelegate" destination="2" id="yQ8-bZ-dxr"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="3500" y="158"/>
         </scene>

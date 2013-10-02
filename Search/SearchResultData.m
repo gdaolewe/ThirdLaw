@@ -44,7 +44,7 @@
 	NSMutableArray *results = [NSMutableArray array];
 	TFHpple *parser = [TFHpple hppleWithHTMLData:data];
 	NSMutableArray *titles = [NSMutableArray array];
-	NSArray *titleElements = [parser searchWithXPathQuery:@"//h3[@class='r']//a"];
+	NSArray *titleElements = [parser searchWithXPathQuery:@"//h3[@class='r']/a"];
 	for (TFHppleElement *e in titleElements) {
 		NSMutableString *title = [NSMutableString string];
 		for (TFHppleElement *c in e.children) {
@@ -53,11 +53,10 @@
 			else if (c.text)
 				[title appendString:c.text];
 		}
-		NSLog(@"%@", title);
 		[titles addObject:title];
 	}
 	NSMutableArray *links = [NSMutableArray array];
-	NSArray *linkElements = [parser searchWithXPathQuery:@"//h3[@class='r']//a"];
+	NSArray *linkElements = [parser searchWithXPathQuery:@"//h3[@class='r']/a"];
 	for (TFHppleElement *e in linkElements) {
 		NSString *link = [e objectForKey:@"href"];
 		for (NSString *param in [link componentsSeparatedByString:@"&"]) {
@@ -79,24 +78,20 @@
 			else if (c.text)
 				[desc appendString:c.text];
 		}
-		NSLog(@"%@", desc);
 		[descriptions addObject:desc];
 	}
-	if (descElements.count == 0 || linkElements.count == 0) {
-		NSArray *	errorElements = [parser searchWithXPathQuery:@"//div[@id='infoDiv']/text()"];
-		for (TFHppleElement *e in errorElements)
-			NSLog(@"%@", e.content);
-	}
+	NSLog(@"titles count: %d", titles.count);
+	NSLog(@"links count: %d", links.count);
+	NSLog(@"descriptions count: %d", descriptions.count);
 	for (int i=0; i<titles.count; i++) {
 		[results addObject:
-			@{
-				@"title"		: [titles objectAtIndex:i],
-				@"link"			: [links objectAtIndex:i],
-				@"description"	: [descriptions objectAtIndex:i]
-			}
+		 @{
+		 @"title"		: [titles objectAtIndex:i],
+		 @"link"			: [links objectAtIndex:i],
+		 @"description"	: [descriptions objectAtIndex:i]
+		 }
 		 ];
 	}
-	return [results copy];
-}
+	return [results copy];}
 
 @end
