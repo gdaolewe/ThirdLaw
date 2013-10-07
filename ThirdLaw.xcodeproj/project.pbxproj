@@ -63,6 +63,7 @@
 		F6CC418417C7EFE5006E8117 /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = F6CC417D17C7E97F006E8117 /* script.js */; };
 		F6CC418617C7F528006E8117 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6CC418517C7F528006E8117 /* SystemConfiguration.framework */; };
 		F6CC418A17C7F6A9006E8117 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CC418917C7F6A9006E8117 /* Reachability.m */; };
+		F6EAF2D418024066001CB734 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EAF2D318024066001CB734 /* HomeViewController.m */; };
 		F6EC50DA17C44DC400E8876C /* Styles.m in Sources */ = {isa = PBXBuildFile; fileRef = F6EC50D917C44DC400E8876C /* Styles.m */; };
 		F6EC50F817C55F3700E8876C /* fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F617C55F3700E8876C /* fullscreen.png */; };
 		F6EC50F917C55F3700E8876C /* fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6EC50F717C55F3700E8876C /* fullscreen@2x.png */; };
@@ -161,6 +162,8 @@
 		F6CC418517C7F528006E8117 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F6CC418817C7F6A9006E8117 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F6CC418917C7F6A9006E8117 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		F6EAF2D218024066001CB734 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		F6EAF2D318024066001CB734 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F6EC50D817C44DC400E8876C /* Styles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Styles.h; sourceTree = "<group>"; };
 		F6EC50D917C44DC400E8876C /* Styles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Styles.m; sourceTree = "<group>"; };
 		F6EC50F617C55F3700E8876C /* fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fullscreen.png; path = Images/fullscreen.png; sourceTree = SOURCE_ROOT; };
@@ -199,6 +202,8 @@
 		F642FE3F163E359C009080B9 = {
 			isa = PBXGroup;
 			children = (
+				F6EAF2D218024066001CB734 /* HomeViewController.h */,
+				F6EAF2D318024066001CB734 /* HomeViewController.m */,
 				F6C1F21C17C1D66900E1EDCA /* MainStoryboard.storyboard */,
 				F6CC417017C5BB55006E8117 /* MainStoryboard_iPad.storyboard */,
 				F6CC418517C7F528006E8117 /* SystemConfiguration.framework */,
@@ -562,6 +567,7 @@
 				F6672DD317CB0018007F0F70 /* UserDefaultsHelper.m in Sources */,
 				F6672DF117CC4D3B007F0F70 /* Page.m in Sources */,
 				F6672DFA17CEFE80007F0F70 /* SearchResultData.m in Sources */,
+				F6EAF2D418024066001CB734 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

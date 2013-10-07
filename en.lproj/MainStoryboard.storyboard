@@ -41,6 +41,95 @@
             </objects>
             <point key="canvasLocation" x="2971" y="158"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="rpc-l7-LOu">
+            <objects>
+                <viewController id="H1B-sA-IFh" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Cdu-qI-lp7">
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="u97-eS-guE">
+                                <rect key="frame" x="196" y="208" width="93" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Saved Pages">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="cyQ-83-4jx" kind="modal" identifier="HomeToSaved" id="qzV-ZO-2A5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pck-UI-mZh">
+                                <rect key="frame" x="39" y="157" width="82" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Home Page">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2" kind="push" identifier="HomeToHome" id="Rj1-ch-yFO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFB-AE-mJW">
+                                <rect key="frame" x="210" y="157" width="64" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Index">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="PWF-3I-eV0" kind="push" identifier="HomeToIndex" id="0o5-xa-D8V"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ur3-a5-GUU">
+                                <rect key="frame" x="30" y="208" width="101" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Random Page">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2" kind="push" identifier="HomeToRandom" id="Xhk-B2-Gad"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6pa-l2-PCR">
+                                <rect key="frame" x="118" y="259" width="84" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="rgQ-OW-aE1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pz8-Vm-Nu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2604" y="717"/>
+        </scene>
         <!--Page View Controller-->
         <scene sceneID="5">
             <objects>
@@ -559,12 +648,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="PWF-3I-eV0" kind="relationship" relationship="rootViewController" id="puN-PQ-WUL"/>
+                        <segue destination="H1B-sA-IFh" kind="relationship" relationship="rootViewController" id="RCZ-rw-cpC"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JB-oz-oJf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2544" y="158"/>
+            <point key="canvasLocation" x="2210" y="729"/>
         </scene>
     </scenes>
     <resources>
@@ -575,12 +664,80 @@
         <image name="unfullscreen.png" width="24" height="24"/>
         <image name="unlocked.png" width="40" height="40"/>
     </resources>
+    <classes>
+        <class className="ExternalWebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="actions:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="back:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="forward:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="toggleFullscreen:"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="actionsButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="fullscreenButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="IndexTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
+        </class>
+        <class className="PageViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="back:" candidateClass="UIButton"/>
+                <relationship kind="action" name="cancelBackForward:" candidateClass="UIButton"/>
+                <relationship kind="action" name="forward:" candidateClass="UIButton"/>
+                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="leftSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="rightSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
+                <relationship kind="action" name="saveActions:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="showSearch:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
+                <relationship kind="action" name="toggleFullscreen:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="actionsToolbarItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="fullscreenToolbarItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="randomToolbarItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="savedToolbarItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="searchResultsTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="settingsToolbarItem" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="SavedPagesController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
+            <relationships>
+                <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="editButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="tabBar" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Rj1-ch-yFO"/>
+        <segue reference="qzV-ZO-2A5"/>
         <segue reference="w5H-su-O8C"/>
     </inferredMetricsTieBreakers>
 </document>
