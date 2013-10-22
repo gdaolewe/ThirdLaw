@@ -70,8 +70,8 @@ NSUserDefaults *_defaults;
 		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
 	else if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
 		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
-	}
-    return YES;*/
+	}*/
+    return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

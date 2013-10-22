@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SavedPagesController.h"
 
-@interface HomeViewController : UIViewController
+@interface HomeViewController : UIViewController <SavedPagesDelegate>
 
 @end

@@ -7,8 +7,9 @@
 //
 
 #import "HomeViewController.h"
+#import "PageViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () 
 
 @end
 
@@ -35,8 +36,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	
+	NSLog(@"HomeToSaved segue");
+	if ([segue.identifier isEqualToString:@"HomeToSaved"])
+		((SavedPagesController*)segue.destinationViewController).delegate = self;
+}
+
+#pragma mark - SavedPagesDelegate
+-(void)savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {
+	PageViewController *pageVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+	[pageVC savedPageController:controller didSelectSavedPage:page];
+	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+	[self.navigationController pushViewController:pageVC animated:YES];
+}
+
+-(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
+	PageViewController *pageVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+	[pageVC savedPageController:controller didSelectBookmarkWithURL:url];
+	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+	[self.navigationController pushViewController:pageVC animated:YES];
 }
 
 @end

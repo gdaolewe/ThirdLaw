@@ -13,7 +13,6 @@
 #import "Bookmark.h"
 #import "Page.h"
 #import "NSString+URLEncoding.h"
-#import "SavedPagesController.h"
 #import "SearchResultData.h"
 #import "SearchViewController.h"
 #import "SearchOptionsTVC.h"
@@ -24,7 +23,7 @@
 
 NSString *const RANDOM_URL;
 
-@interface PageViewController () <UIWebViewDelegate, SavedPagesDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface PageViewController () <UIWebViewDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;

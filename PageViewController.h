@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericSavedPage.h"
+#import "SavedPagesController.h"
 
 extern NSString *const RANDOM_URL;
 
-@interface PageViewController : UIViewController
+@interface PageViewController : UIViewController <SavedPagesDelegate>
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property NSString *url;
 
 -(void)loadPageFromHTML:(NSString*)html;
+-(void) savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page;
+-(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url;
+
 @end

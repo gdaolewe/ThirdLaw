@@ -41,10 +41,10 @@
             </objects>
             <point key="canvasLocation" x="2971" y="158"/>
         </scene>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="rpc-l7-LOu">
             <objects>
-                <viewController id="H1B-sA-IFh" sceneMemberID="viewController">
+                <viewController id="H1B-sA-IFh" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Cdu-qI-lp7">
                         <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -682,6 +682,9 @@
                 <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
         </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+        </class>
         <class className="IndexTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
         </class>
@@ -718,7 +721,12 @@
         <class className="SavedPagesController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
             <relationships>
+                <relationship kind="action" name="clearHistory:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="edit:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="tabChanged:" candidateClass="UISegmentedControl"/>
+                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
