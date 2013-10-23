@@ -45,6 +45,7 @@ NSString *const RANDOM_URL;
 
 @implementation PageViewController
 
+NSString *const HOME_URL = @"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage";
 NSString *const RANDOM_URL = @"http://tvtropes.org/pmwiki/randomitem.php";
 
 @synthesize webView = _webView;
@@ -93,9 +94,9 @@ dispatch_queue_t backgroundQueue;
             item = [history objectAtIndex:[HistoryItem historyIndex]];
         if (item) { //load page where we last where
             [self savedPageController:nil didSelectSavedPage:item];
-        } else {    //load home page
+        } else {    //if there's no history, load home page
             _shouldSaveHistory = YES;
-            self.url = @"http://tvtropes.org/pmwiki/pmwiki.php/Main/HomePage";
+            self.url = HOME_URL;
             [self loadPageFromHTML: [FileLoader getHomePage]];
         }
     } else {

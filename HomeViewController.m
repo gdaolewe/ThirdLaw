@@ -38,7 +38,10 @@
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NSLog(@"HomeToSaved segue");
+	if ([segue.identifier isEqualToString:@"HomeToHome"])
+		((PageViewController*)segue.destinationViewController).url = HOME_URL;
+	if ([segue.identifier isEqualToString:@"HomeToRandom"])
+		((PageViewController*)segue.destinationViewController).url = RANDOM_URL;
 	if ([segue.identifier isEqualToString:@"HomeToSaved"])
 		((SavedPagesController*)segue.destinationViewController).delegate = self;
 }

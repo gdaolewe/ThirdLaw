@@ -10,6 +10,7 @@
 #import "GenericSavedPage.h"
 #import "SavedPagesController.h"
 
+extern NSString *const HOME_URL;
 extern NSString *const RANDOM_URL;
 
 @interface PageViewController : UIViewController <SavedPagesDelegate>

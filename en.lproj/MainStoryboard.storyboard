@@ -664,87 +664,13 @@
         <image name="unfullscreen.png" width="24" height="24"/>
         <image name="unlocked.png" width="40" height="40"/>
     </resources>
-    <classes>
-        <class className="ExternalWebViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExternalWebViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="actions:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="back:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="forward:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="toggleFullscreen:"/>
-                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="actionsButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="forwardButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="fullscreenButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="HomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
-        </class>
-        <class className="IndexTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/IndexTableViewController.h"/>
-        </class>
-        <class className="PageViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PageViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="back:" candidateClass="UIButton"/>
-                <relationship kind="action" name="cancelBackForward:" candidateClass="UIButton"/>
-                <relationship kind="action" name="forward:" candidateClass="UIButton"/>
-                <relationship kind="action" name="home:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="leftSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="random:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="rightSwipeGesture:" candidateClass="UISwipeGestureRecognizer"/>
-                <relationship kind="action" name="saveActions:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="showSearch:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="tapGesture:" candidateClass="UITapGestureRecognizer"/>
-                <relationship kind="action" name="toggleFullscreen:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="actionsToolbarItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="backForwardCancelButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="forwardButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="fullscreenOffButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="fullscreenToolbarItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="randomToolbarItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="savedToolbarItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="searchResultsTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="settingsToolbarItem" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="SavedPagesController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SavedPagesController.h"/>
-            <relationships>
-                <relationship kind="action" name="clearHistory:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="deleteRows:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="done:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="edit:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="tabChanged:" candidateClass="UISegmentedControl"/>
-                <relationship kind="action" name="toggleRotationLock:" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="clearButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="deleteButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="editButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="rotationLockButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="tabBar" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Rj1-ch-yFO"/>
+        <segue reference="Xhk-B2-Gad"/>
         <segue reference="qzV-ZO-2A5"/>
         <segue reference="w5H-su-O8C"/>
     </inferredMetricsTieBreakers>
