@@ -85,21 +85,20 @@ dispatch_queue_t backgroundQueue;
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
     _historySaved = NO;
-    if ([self.url isEqualToString:RANDOM_URL]) {
-        [self loadRandomURL];
-    } else if (self.url == nil) {
+	NSLog(@"%@", self.url);
+    if (self.url == nil) {
         NSArray *history = [HistoryItem history];
         HistoryItem *item;
         if (history.count > 0)
             item = [history objectAtIndex:[HistoryItem historyIndex]];
-        if (item) { //load page where we last where
+        if (item) { //load page where we last were
             [self savedPageController:nil didSelectSavedPage:item];
         } else {    //if there's no history, load home page
             _shouldSaveHistory = YES;
-            self.url = HOME_URL;
-            [self loadPageFromHTML: [FileLoader getHomePage]];
+            [self loadHomePage];
         }
     } else {
+		NSLog(@"self.url");
         [self loadURLFromString:self.url];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -171,7 +170,7 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void) loadURLFromString:(NSString *)urlString {
-    if ([self checkReachable]) {
+    if ([self checkReachable:YES]) {
         [self setPageHidden:YES];
         _finishedLoading = NO;
         _jsInjected = NO;
@@ -188,14 +187,20 @@ dispatch_queue_t backgroundQueue;
     [self.webView loadHTMLString:html baseURL:baseURL];
 }
 
+-(void) loadHomePage {
+	self.url = HOME_URL;
+	_loadingSavedPage = YES;
+	[self loadPageFromHTML: [FileLoader getHomePage]];
+}
+
 -(void) loadRandomURL {
-    if ([self checkReachable]) {
+	self.url = RANDOM_URL;
+    if ([self checkReachable:YES]) {
         [self setPageHidden:YES];
         backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
         void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
             self.url = response.URL.absoluteString;
             [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding]];
-            dispatch_release(backgroundQueue);
         };
         dispatch_async(backgroundQueue, ^(void) {
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
@@ -205,13 +210,14 @@ dispatch_queue_t backgroundQueue;
                 doneBlock(response, data);
             });
         });
+		dispatch_release(backgroundQueue);
     }
 }
 
--(BOOL) checkReachable {
+-(BOOL) checkReachable:(BOOL)withMessage {
     Reachability *networkReachability = [Reachability reachabilityWithHostName:@"tvtropes.org"];
     NetworkStatus networkStatus = networkReachability.currentReachabilityStatus;
-    if (networkStatus == NotReachable) {
+    if (networkStatus == NotReachable && withMessage) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No connection to TVTropes.org"
                                                         message:@"Check your internet connection or browse offline"
                                                        delegate:nil
@@ -259,6 +265,7 @@ dispatch_queue_t backgroundQueue;
     }
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
+	NSLog(@"webviewdidstartload");
     [self hideBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

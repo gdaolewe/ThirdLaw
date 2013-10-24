@@ -39,10 +39,10 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"HomeToHome"])
-		((PageViewController*)segue.destinationViewController).url = HOME_URL;
-	if ([segue.identifier isEqualToString:@"HomeToRandom"])
-		((PageViewController*)segue.destinationViewController).url = RANDOM_URL;
-	if ([segue.identifier isEqualToString:@"HomeToSaved"])
+		[((PageViewController*)segue.destinationViewController) loadHomePage];
+	else if ([segue.identifier isEqualToString:@"HomeToRandom"])
+		[((PageViewController*)segue.destinationViewController) loadRandomURL];
+	else if ([segue.identifier isEqualToString:@"HomeToSaved"])
 		((SavedPagesController*)segue.destinationViewController).delegate = self;
 }
 
@@ -50,14 +50,12 @@
 -(void)savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {
 	PageViewController *pageVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
 	[pageVC savedPageController:controller didSelectSavedPage:page];
-	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 	[self.navigationController pushViewController:pageVC animated:YES];
 }
 
 -(void)savedPageController:(id)controller didSelectBookmarkWithURL:(NSString *)url {
 	PageViewController *pageVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
 	[pageVC savedPageController:controller didSelectBookmarkWithURL:url];
-	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 	[self.navigationController pushViewController:pageVC animated:YES];
 }
 
