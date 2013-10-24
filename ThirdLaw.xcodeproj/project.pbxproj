@@ -36,8 +36,6 @@
 		F6C1F1CE17C1D40400E1EDCA /* IndexTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1B017C1D40400E1EDCA /* IndexTableViewController.m */; };
 		F6C1F1D017C1D40400E1EDCA /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1B417C1D40400E1EDCA /* PageViewController.m */; };
 		F6C1F1D717C1D40400E1EDCA /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1BE17C1D40400E1EDCA /* TTTAttributedLabel.m */; };
-		F6C1F1E817C1D5F000E1EDCA /* Contributor.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1DF17C1D5F000E1EDCA /* Contributor.m */; };
-		F6C1F1E917C1D5F000E1EDCA /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E117C1D5F000E1EDCA /* Parser.m */; };
 		F6C1F1EA17C1D5F000E1EDCA /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E317C1D5F000E1EDCA /* TFHpple.m */; };
 		F6C1F1EB17C1D5F000E1EDCA /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E517C1D5F000E1EDCA /* TFHppleElement.m */; };
 		F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F1E717C1D5F000E1EDCA /* XPathQuery.m */; };
@@ -118,10 +116,6 @@
 		F6C1F1B417C1D40400E1EDCA /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		F6C1F1BD17C1D40400E1EDCA /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		F6C1F1BE17C1D40400E1EDCA /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
-		F6C1F1DE17C1D5F000E1EDCA /* Contributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contributor.h; sourceTree = "<group>"; };
-		F6C1F1DF17C1D5F000E1EDCA /* Contributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contributor.m; sourceTree = "<group>"; };
-		F6C1F1E017C1D5F000E1EDCA /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
-		F6C1F1E117C1D5F000E1EDCA /* Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
 		F6C1F1E217C1D5F000E1EDCA /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		F6C1F1E317C1D5F000E1EDCA /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		F6C1F1E417C1D5F000E1EDCA /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
@@ -318,10 +312,6 @@
 		F6C1F1DD17C1D5F000E1EDCA /* hpple */ = {
 			isa = PBXGroup;
 			children = (
-				F6C1F1DE17C1D5F000E1EDCA /* Contributor.h */,
-				F6C1F1DF17C1D5F000E1EDCA /* Contributor.m */,
-				F6C1F1E017C1D5F000E1EDCA /* Parser.h */,
-				F6C1F1E117C1D5F000E1EDCA /* Parser.m */,
 				F6C1F1E217C1D5F000E1EDCA /* TFHpple.h */,
 				F6C1F1E317C1D5F000E1EDCA /* TFHpple.m */,
 				F6C1F1E417C1D5F000E1EDCA /* TFHppleElement.h */,
@@ -547,8 +537,6 @@
 				F6C1F1CE17C1D40400E1EDCA /* IndexTableViewController.m in Sources */,
 				F6C1F1D017C1D40400E1EDCA /* PageViewController.m in Sources */,
 				F6C1F1D717C1D40400E1EDCA /* TTTAttributedLabel.m in Sources */,
-				F6C1F1E817C1D5F000E1EDCA /* Contributor.m in Sources */,
-				F6C1F1E917C1D5F000E1EDCA /* Parser.m in Sources */,
 				F6C1F1EA17C1D5F000E1EDCA /* TFHpple.m in Sources */,
 				F6C1F1EB17C1D5F000E1EDCA /* TFHppleElement.m in Sources */,
 				F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */,

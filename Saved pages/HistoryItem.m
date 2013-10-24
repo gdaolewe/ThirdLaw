@@ -52,7 +52,7 @@ dispatch_queue_t queue;
 	if (!self.htmlPath)
 		return nil;
 	NSError *error;
-	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSISOLatin1StringEncoding error:&error];
+	NSString* html = [NSString stringWithContentsOfFile:[self fullHTMLPath] encoding:NSUTF8StringEncoding error:&error];
 	if (error) {
 		NSLog(@"Error retrieving history html file from disk: %@", error);
 		return nil;

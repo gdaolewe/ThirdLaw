@@ -265,7 +265,6 @@ dispatch_queue_t backgroundQueue;
     }
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
-	NSLog(@"webviewdidstartload");
     [self hideBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

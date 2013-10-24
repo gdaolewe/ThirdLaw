@@ -8,8 +8,6 @@
 
 #import "IndexData.h"
 #import "TFHpple.h"
-#import "Parser.h"
-#import "Contributor.h"
 #import "FileLoader.h"
 
 @interface IndexData () {
@@ -46,7 +44,7 @@ static IndexData* _singletonIndexData = nil;
 
 -(void) loadHTML {
     _htmlData = [FileLoader getIndexData];
-    TFHpple *parser = [TFHpple hppleWithHTMLData:_htmlData];
+    TFHpple *parser = [TFHpple hppleWithHTMLData:_htmlData encoding:@"ISO-LATIN-1"];
     _categoryHTML = [[parser searchWithXPathQuery:@"//div[@id='wikitext']/h2/span"] mutableCopy];
     _exampleHTML = [parser searchWithXPathQuery:@"//div[@id='wikitext']/ul"];
     for (int i=0; i<_categoryHTML.count; i++) {
