@@ -1,0 +1,3 @@
+[submodule "hpple"]
+	path = hpple
+	url = https://github.com/topfunky/hpple.git
