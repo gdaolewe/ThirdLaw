@@ -46,7 +46,7 @@
             <objects>
                 <viewController id="H1B-sA-IFh" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Cdu-qI-lp7">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="u97-eS-guE">
@@ -125,6 +125,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="rgQ-OW-aE1"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pz8-Vm-Nu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -670,8 +671,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Xhk-B2-Gad"/>
-        <segue reference="qzV-ZO-2A5"/>
         <segue reference="w5H-su-O8C"/>
+        <segue reference="Xhk-B2-Gad"/>
+        <segue reference="77L-gb-68x"/>
     </inferredMetricsTieBreakers>
 </document>

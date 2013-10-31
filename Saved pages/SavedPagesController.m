@@ -58,9 +58,6 @@ NSMutableSet * _selectedEditRows;
     [items removeObjectAtIndex:2];
     [self.toolbar setItems:items animated:YES];
     self.tabBar.selectedSegmentIndex = [defaults integerForKey:USER_PREF_SAVED_PAGES_STARTING_TAB];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHistory:) name:HISTORY_NOTIFICATION_NAME object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateBookmarks:) name:BOOKMARKS_NOTIFICATION_NAME object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePages:) name:PAGES_NOTIFICATION_NAME object:nil];
     [self setupTab];
 }
 
@@ -73,52 +70,10 @@ NSMutableSet * _selectedEditRows;
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
--(void) updateHistory:(NSNotification*)notification {
-    _history = [HistoryItem history];
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
-}
--(void) updateBookmarks:(NSNotification*)notification {
-    _bookmarks = [Bookmark bookmarks];
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
-}
--(void) updatePages:(NSNotification*)notification {
-    _pages = [Page pages];
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
-}
-
--(void) fetchTableDataAsyncForType:(int)type {
-    switch (type) {
-        case HISTORY: {
-            [HistoryItem fetchHistoryAsync];
-            _bookmarks = nil;
-            _pages = nil;
-            [Bookmark clearCache];
-            [Page clearCache];
-        }
-        break;
-        case BOOKMARKS: {
-            [Bookmark fetchBookmarksAsync];
-            _history = nil;
-            _pages = nil;
-            [HistoryItem clearCache];
-            [Page clearCache];
-        }
-        break;
-        case SAVED_PAGES: {
-            [Page fetchPagesAsync];
-            _history = nil;
-            _bookmarks = nil;
-            [HistoryItem clearCache];
-            [Bookmark clearCache];
-        }
-        break;
-    }
+-(void) loadSaved {
+	_history = [HistoryItem history];
+	_bookmarks = [Bookmark bookmarks];
+	_pages = [Page pages];
 }
 
 - (IBAction)tabChanged:(UISegmentedControl *)sender {
@@ -129,7 +84,11 @@ NSMutableSet * _selectedEditRows;
 -(void) setupTab {
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     int tabIndex = self.tabBar.selectedSegmentIndex;
-    [self fetchTableDataAsyncForType:tabIndex];
+    [self loadSaved];
+	if ([self tableView:self.tableView numberOfRowsInSection:0] > 0)
+		self.editButton.enabled = YES;
+	else
+		self.editButton.enabled = NO;
     switch (tabIndex) {
         case HISTORY:
             self.toolbar.items = [NSArray arrayWithObjects:self.clearButton, flexibleSpace, nil];
@@ -287,6 +246,7 @@ NSMutableSet * _selectedEditRows;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.tableView.editing) {
+		NSLog(@"editing");
         [_selectedEditRows addObject:indexPath];
         self.deleteButton.enabled = YES;
     } else {
