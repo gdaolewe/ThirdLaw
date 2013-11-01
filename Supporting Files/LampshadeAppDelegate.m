@@ -64,13 +64,15 @@ NSUserDefaults *_defaults;
     int historyIndex = [_defaults integerForKey:@"HistoryIndex"];
     [HistoryItem setHistoryIndex:historyIndex];
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	/*UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
+	UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
 	UIViewController *startingController = [[navController viewControllers] objectAtIndex:0];
-	if ([_defaults integerForKey:USER_PREF_START_VIEW] == UserPrefStartViewPage)
-		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
-	else if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
-		[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
-	}*/
+	//if ([_defaults integerForKey:USER_PREF_START_VIEW] == UserPrefStartViewPage)
+		//[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
+	UIViewController *pageVC = [startingController.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+	[navController pushViewController:pageVC animated:NO];
+	//if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
+	//	[pageVC performSegueWithIdentifier:@"Page to external web view" sender:pageVC];
+	//}
     return YES;
 }
 							

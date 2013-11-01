@@ -131,10 +131,10 @@
             </objects>
             <point key="canvasLocation" x="2604" y="717"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Page View Controller - Page-->
         <scene sceneID="5">
             <objects>
-                <viewController storyboardIdentifier="Page" id="2" customClass="PageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Page" title="Page" id="2" customClass="PageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>

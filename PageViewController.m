@@ -253,7 +253,7 @@ dispatch_queue_t backgroundQueue;
         [webView loadHTMLString:htmlString baseURL:baseURL];
         
         return NO;
-    } else if (navigationType == UIWebViewNavigationTypeLinkClicked || [request.URL.host isEqualToString:@"tvtropes.org"]) {
+    } else if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 		ExternalWebViewController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"External web view"];
 		webVC.url = request.URL;
         [self.navigationController pushViewController:webVC animated:YES];
