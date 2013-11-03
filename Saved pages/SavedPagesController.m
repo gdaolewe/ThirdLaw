@@ -58,6 +58,9 @@ NSMutableSet * _selectedEditRows;
     [items removeObjectAtIndex:2];
     [self.toolbar setItems:items animated:YES];
     self.tabBar.selectedSegmentIndex = [defaults integerForKey:USER_PREF_SAVED_PAGES_STARTING_TAB];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUpdateHistory:) name:HISTORY_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUpdateBookmarks:) name:BOOKMARKS_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUpdatePages:) name:PAGES_NOTIFICATION_NAME object:nil];
     [self setupTab];
 }
 
@@ -70,10 +73,30 @@ NSMutableSet * _selectedEditRows;
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
--(void) loadSaved {
-	_history = [HistoryItem history];
-	_bookmarks = [Bookmark bookmarks];
-	_pages = [Page pages];
+-(void) onUpdateHistory:(NSNotification*)notification {
+    _history = [HistoryItem history];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+-(void) onUpdateBookmarks:(NSNotification*)notification {
+    _bookmarks = [Bookmark bookmarks];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+-(void) onUpdatePages:(NSNotification*)notification {
+    _pages = [Page pages];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+-(void) loadSavedAsync {
+	[HistoryItem fetchHistoryAsync];
+	[Bookmark fetchBookmarksAsync];
+	[Page fetchPagesAsync];
+	[self.tableView reloadData];
 }
 
 - (IBAction)tabChanged:(UISegmentedControl *)sender {
@@ -84,7 +107,7 @@ NSMutableSet * _selectedEditRows;
 -(void) setupTab {
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     int tabIndex = self.tabBar.selectedSegmentIndex;
-    [self loadSaved];
+    [self loadSavedAsync];
 	if ([self tableView:self.tableView numberOfRowsInSection:0] > 0)
 		self.editButton.enabled = YES;
 	else
