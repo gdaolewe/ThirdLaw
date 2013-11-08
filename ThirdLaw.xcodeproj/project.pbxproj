@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E89EBD804049476885BA6368 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24856E6FED974D7AB74D7FBC /* libPods.a */; };
 		F642FE4F163E359C009080B9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F642FE4E163E359C009080B9 /* UIKit.framework */; };
 		F642FE51163E359C009080B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F642FE50163E359C009080B9 /* Foundation.framework */; };
 		F642FE53163E359C009080B9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F642FE52163E359C009080B9 /* CoreGraphics.framework */; };
@@ -75,6 +76,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		24856E6FED974D7AB74D7FBC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		39158ACEBDA14F14B48955A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F642FE4A163E359C009080B9 /* ThirdLaw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThirdLaw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F642FE4E163E359C009080B9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F642FE50163E359C009080B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -178,6 +181,7 @@
 				F642FE4F163E359C009080B9 /* UIKit.framework in Frameworks */,
 				F642FE51163E359C009080B9 /* Foundation.framework in Frameworks */,
 				F642FE53163E359C009080B9 /* CoreGraphics.framework in Frameworks */,
+				E89EBD804049476885BA6368 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +218,7 @@
 				F642FE54163E359C009080B9 /* Lampshade */,
 				F642FE4D163E359C009080B9 /* Frameworks */,
 				F642FE4B163E359C009080B9 /* Products */,
+				39158ACEBDA14F14B48955A5 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -231,6 +236,7 @@
 				F642FE4E163E359C009080B9 /* UIKit.framework */,
 				F642FE50163E359C009080B9 /* Foundation.framework */,
 				F642FE52163E359C009080B9 /* CoreGraphics.framework */,
+				24856E6FED974D7AB74D7FBC /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -417,9 +423,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F642FE68163E359C009080B9 /* Build configuration list for PBXNativeTarget "ThirdLaw" */;
 			buildPhases = (
+				DC29B29114EF4570BB5F089A /* Check Pods Manifest.lock */,
 				F642FE46163E359C009080B9 /* Sources */,
 				F642FE47163E359C009080B9 /* Frameworks */,
 				F642FE48163E359C009080B9 /* Resources */,
+				9DC72D0500074112B6E9E1B6 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -502,6 +510,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9DC72D0500074112B6E9E1B6 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DC29B29114EF4570BB5F089A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F642FE46163E359C009080B9 /* Sources */ = {
@@ -631,12 +672,16 @@
 		};
 		F642FE69163E359C009080B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39158ACEBDA14F14B48955A5 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = ThirdLaw;
@@ -649,12 +694,16 @@
 		};
 		F642FE6A163E359C009080B9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39158ACEBDA14F14B48955A5 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: George Daole-Wellman (6BJGLPE499)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Supporting Files/ThirdLaw-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/include/libxml2/**",
+				);
 				INFOPLIST_FILE = "Supporting Files/ThirdLaw-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = ThirdLaw;
