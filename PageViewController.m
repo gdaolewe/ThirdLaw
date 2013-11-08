@@ -80,6 +80,7 @@ dispatch_queue_t backgroundQueue;
 		ExternalWebViewController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"External web view"];
 		[self.navigationController pushViewController:webVC animated:NO];
 	}
+	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN]];
     _script = [FileLoader getScript];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
@@ -558,19 +559,23 @@ BOOL _willShowSearchResultsTable = NO;
 }
 
 - (IBAction)toggleFullscreen:(UIBarButtonItem *)sender {
-    if (_isFullScreen) {
-        _isFullScreen = NO;
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setToolbarHidden:NO animated:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        self.fullscreenOffButton.hidden = YES;
-    } else {
-        _isFullScreen = YES;
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [self setFullscreen:!_isFullScreen];
+}
+
+-(void)setFullscreen:(BOOL)fullscreen {
+	_isFullScreen = fullscreen;
+	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
+	if (fullscreen) {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         [self.navigationController setToolbarHidden:YES animated:YES];
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         self.fullscreenOffButton.hidden = NO;
-    }
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        self.fullscreenOffButton.hidden = YES;
+	}
 }
 
 - (IBAction)toggleRotationLock:(UIButton *)sender {

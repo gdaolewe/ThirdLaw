@@ -11,6 +11,7 @@
 @interface UserDefaultsHelper : NSObject
 
 #define USER_PREF_EXTERNAL_URL				@"ExternalURL"
+#define USER_PREF_FULLSCREEN				@"Fullscreen"
 #define USER_PREF_HISTORY_INDEX				@"HistoryIndex"
 #define USER_PREF_ROTATION_LOCKED			@"RotationLocked"
 #define USER_PREF_ROTATION_ORIENTATION		@"RotationOrientation"

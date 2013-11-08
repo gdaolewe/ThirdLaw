@@ -49,9 +49,13 @@ NSUserDefaults *_defaults;
 		else
 			[self dismissViewControllerAnimated:NO completion:nil];
 	}
+	if (self.navigationController.navigationBarHidden) {
+		
+	}
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     self.webView.hidden = NO;
 	_defaults = [NSUserDefaults standardUserDefaults];
+	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN]];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -103,19 +107,24 @@ NSUserDefaults *_defaults;
 BOOL _isFullScreen = NO;
 
 - (IBAction)toggleFullscreen:(id)sender {
-	if (_isFullScreen) {
-        _isFullScreen = NO;
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setToolbarHidden:NO animated:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        self.fullscreenOffButton.hidden = YES;
-    } else {
-        _isFullScreen = YES;
+	[self setFullscreen:!_isFullScreen];
+}
+
+-(void) setFullscreen:(BOOL)fullscreen {
+	_isFullScreen = fullscreen;
+	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
+	if (fullscreen) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         [self.navigationController setToolbarHidden:YES animated:YES];
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         self.fullscreenOffButton.hidden = NO;
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        self.fullscreenOffButton.hidden = YES;
     }
+
 }
 
 #pragma mark - UIWebViewDelegate
