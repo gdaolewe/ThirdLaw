@@ -11,10 +11,9 @@
 #import "FileLoader.h"
 #import "PageViewController.h"
 #import "SavedPagesController.h"
-#import "SearchViewController.h"
 #import "Styles.h"
 
-@interface IndexTableViewController () <SearchViewDelegate, SavedPagesDelegate>
+@interface IndexTableViewController () <SavedPagesDelegate>
 
 @end
 
@@ -134,20 +133,8 @@ IndexData * _indexData;
     [self.navigationController pushViewController:page animated:YES];
 }
 
-
-#pragma mark - SearchViewDelegate
--(void)searchViewController:(id)controller didSelectSearchResult:(NSString *)result {
-    [controller dismissViewControllerAnimated:YES completion:nil];
-    PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-    page.url = result;
-    [self.navigationController pushViewController:page animated:YES];
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"IndexToSearchSegue"]) {
-        UINavigationController *searchNav = (UINavigationController*)segue.destinationViewController;
-        ((SearchViewController*)searchNav.topViewController).delegate = self;
-    } else if ([segue.identifier isEqualToString:@"IndexToSavedPagesSegue"]) {
+    if ([segue.identifier isEqualToString:@"IndexToSavedPagesSegue"]) {
         SavedPagesController *savedPages = (SavedPagesController*)segue.destinationViewController;
         savedPages.delegate = self;
     }

@@ -14,7 +14,6 @@
 #import "Page.h"
 #import "NSString+URLEncoding.h"
 #import "SearchResultData.h"
-#import "SearchViewController.h"
 #import "SearchOptionsTVC.h"
 #import "ExternalWebViewController.h"
 #import <dispatch/dispatch.h>
@@ -23,7 +22,7 @@
 
 NSString *const RANDOM_URL;
 
-@interface PageViewController () <UIWebViewDelegate, SearchViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface PageViewController () <UIWebViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 -(void) loadURLFromString:(NSString *)urlString;
 
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
@@ -305,10 +304,6 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"PageToSearchSegue"]) {
-        UINavigationController *nav = (UINavigationController*)segue.destinationViewController;
-        ((SearchViewController*)nav.topViewController).delegate = self;
-    }
     if ([segue.identifier isEqualToString:@"PageToSavedPagesSegue"]) {
         ((SavedPagesController*)segue.destinationViewController).delegate = self;
     }
