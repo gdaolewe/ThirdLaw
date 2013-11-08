@@ -412,6 +412,7 @@ dispatch_queue_t backgroundQueue;
 	self.navigationController.navigationBarHidden = YES;
 	self.navigationController.toolbarHidden = YES;
 	self.searchDisplayController.searchBar.hidden = NO;
+	[self.searchDisplayController.searchBar becomeFirstResponder];
 	[self.searchDisplayController setActive:YES animated:YES];
 }
 
