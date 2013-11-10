@@ -401,12 +401,14 @@ dispatch_queue_t backgroundQueue;
 
 NSArray *searchResults;
 NSMutableArray *previousSearches;
+NSMutableArray *filteredPreviousSearches;
 BOOL showingPreviousSearches = NO;
 
 - (IBAction)showSearch:(UIBarButtonItem *)sender {
 	//clear out results from previous search
 	searchResults = [NSArray array];
 	previousSearches = [[_defaults arrayForKey:USER_PREF_PREVIOUS_SEARCHES] mutableCopy];
+	filteredPreviousSearches = [previousSearches mutableCopy];
 	showingPreviousSearches = YES;
 	self.navigationController.navigationBarHidden = YES;
 	self.navigationController.toolbarHidden = YES;
@@ -463,7 +465,7 @@ BOOL _willShowSearchResultsTable = NO;
 		NSError *error;
 		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 		if (error)
-			NSLog(@"error downloading data %@", error);
+			NSLog(@"error downloading google search data %@", error);
 		else
 			NSLog(@"downloaded google search data");
 		NSArray * results = [SearchResultData parseData:data];
@@ -480,9 +482,32 @@ BOOL _willShowSearchResultsTable = NO;
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-	//if (searchResults.count == 0)
-	//	self.searchDisplayController.searchResultsTableView.hidden = YES;
 	showingPreviousSearches = YES;
+	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) {
+		//for blank search text show all previous searches unfiltered
+		filteredPreviousSearches = [previousSearches mutableCopy];
+	} else {
+		//grab search terms in history in which current entered text occurs & location of occurrence
+		NSMutableArray *termsWithLocations = [NSMutableArray array];
+		for (NSString *term in previousSearches) {
+			NSRange range = [term rangeOfString:searchString options:NSCaseInsensitiveSearch];
+			if (range.location != NSNotFound)
+				[termsWithLocations addObject:
+				 @{@"term": term,
+				   @"location": [NSNumber numberWithInteger:range.location]}
+				 ];
+		}
+		//sort based on occurrence location: want terms that have current text occurring earlier to appear first
+		[termsWithLocations sortUsingComparator:^NSComparisonResult(id a, id b)  {
+			NSNumber *first = [(NSDictionary*)a objectForKey:@"location"];
+			NSNumber *second = [(NSDictionary*)b objectForKey:@"location"];
+			return [first compare:second];
+		}];
+		//then put sorted terms in our filtered search terms array
+		filteredPreviousSearches = [NSMutableArray array];
+		for (NSDictionary *tWithL in termsWithLocations)
+			[filteredPreviousSearches addObject:[tWithL objectForKey:@"term"]];
+	}
 	return YES;
 }
 
@@ -493,7 +518,7 @@ BOOL _willShowSearchResultsTable = NO;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (showingPreviousSearches)
-		return previousSearches.count;
+		return filteredPreviousSearches.count;
 	else if (tableView == self.searchDisplayController.searchResultsTableView)
 		return searchResults.count;
 	else
@@ -508,7 +533,7 @@ BOOL _willShowSearchResultsTable = NO;
 		if (cell == nil) {
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Search Result"];
 		}
-		cell.textLabel.text = [previousSearches objectAtIndex:indexPath.row];
+		cell.textLabel.text = [filteredPreviousSearches objectAtIndex:indexPath.row];
 		return cell;
 
 	} else if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -534,7 +559,7 @@ BOOL _willShowSearchResultsTable = NO;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (showingPreviousSearches) {
 		//put the selected history search term in the search bar
-		self.searchDisplayController.searchBar.text = [previousSearches objectAtIndex:indexPath.row];
+		self.searchDisplayController.searchBar.text = [filteredPreviousSearches objectAtIndex:indexPath.row];
 	}
 	else if (tableView == self.searchDisplayController.searchResultsTableView) {
 		[self.searchDisplayController setActive:NO animated:YES];
