@@ -7,6 +7,7 @@
 //
 
 #import "ExternalWebViewController.h"
+#import <UIViewController+MMDrawerController.h>
 #import "UserDefaultsHelper.h"
 
 @interface ExternalWebViewController () <UIWebViewDelegate, UIActionSheetDelegate>
@@ -49,9 +50,6 @@ NSUserDefaults *_defaults;
 		else
 			[self dismissViewControllerAnimated:NO completion:nil];
 	}
-	if (self.navigationController.navigationBarHidden) {
-		
-	}
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     self.webView.hidden = NO;
 	_defaults = [NSUserDefaults standardUserDefaults];
@@ -61,6 +59,7 @@ NSUserDefaults *_defaults;
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self setupRotationLockButton];
+	self.mm_drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeNone;
 	[_defaults setInteger:USerPrefStartViewExternal forKey:USER_PREF_START_VIEW];
 	[_defaults synchronize];
 	[[NSNotificationCenter defaultCenter] addObserver:self

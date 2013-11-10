@@ -49,6 +49,7 @@
 		F6C1F21817C1D65600E1EDCA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C1F21017C1D65600E1EDCA /* main.m */; };
 		F6C1F21E17C1D66900E1EDCA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F21A17C1D66900E1EDCA /* InfoPlist.strings */; };
 		F6C1F21F17C1D66900E1EDCA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C1F21C17C1D66900E1EDCA /* MainStoryboard.storyboard */; };
+		F6CB3E8A182F491B0040B4FF /* LeftDrawerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CB3E89182F491B0040B4FF /* LeftDrawerTVC.m */; };
 		F6CC416C17C5B742006E8117 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = F6CC416917C5B742006E8117 /* launch.png */; };
 		F6CC416D17C5B742006E8117 /* launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6CC416A17C5B742006E8117 /* launch@2x.png */; };
 		F6CC416F17C5B899006E8117 /* launch-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6CC416E17C5B899006E8117 /* launch-568h@2x.png */; };
@@ -139,6 +140,8 @@
 		F6C1F21017C1D65600E1EDCA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F6C1F21B17C1D66900E1EDCA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		F6C1F21D17C1D66900E1EDCA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		F6CB3E88182F491B0040B4FF /* LeftDrawerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftDrawerTVC.h; sourceTree = "<group>"; };
+		F6CB3E89182F491B0040B4FF /* LeftDrawerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftDrawerTVC.m; sourceTree = "<group>"; };
 		F6CC416917C5B742006E8117 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = launch.png; path = Images/launch.png; sourceTree = SOURCE_ROOT; };
 		F6CC416A17C5B742006E8117 /* launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "launch@2x.png"; path = "Images/launch@2x.png"; sourceTree = SOURCE_ROOT; };
 		F6CC416E17C5B899006E8117 /* launch-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "launch-568h@2x.png"; path = "Images/launch-568h@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -206,6 +209,8 @@
 				F6C1F1A817C1D40400E1EDCA /* FileLoader.m */,
 				F6C1F1B317C1D40400E1EDCA /* PageViewController.h */,
 				F6C1F1B417C1D40400E1EDCA /* PageViewController.m */,
+				F6CB3E88182F491B0040B4FF /* LeftDrawerTVC.h */,
+				F6CB3E89182F491B0040B4FF /* LeftDrawerTVC.m */,
 				F6EC50D817C44DC400E8876C /* Styles.h */,
 				F6EC50D917C44DC400E8876C /* Styles.m */,
 				F6CC418717C7F6A9006E8117 /* Reachability */,
@@ -557,6 +562,7 @@
 				F6C1F1EA17C1D5F000E1EDCA /* TFHpple.m in Sources */,
 				F6C1F1EB17C1D5F000E1EDCA /* TFHppleElement.m in Sources */,
 				F6C1F1EC17C1D5F000E1EDCA /* XPathQuery.m in Sources */,
+				F6CB3E8A182F491B0040B4FF /* LeftDrawerTVC.m in Sources */,
 				F6C1F1FA17C1D61100E1EDCA /* Bookmark.m in Sources */,
 				F6C1F1FB17C1D61100E1EDCA /* HistoryItem.m in Sources */,
 				F6C1F1FE17C1D61100E1EDCA /* SavedPages.xcdatamodeld in Sources */,

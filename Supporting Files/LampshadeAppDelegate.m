@@ -10,6 +10,8 @@
 #import "IndexData.h"
 #import "FileLoader.h"
 #import "HistoryItem.h"
+#import "MMDrawerController.h"
+#import "MMDrawerVisualState.h"
 #import "Styles.h"
 #import "Reachability.h"
 #import "UserDefaultsHelper.h"
@@ -21,6 +23,19 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 NSUserDefaults *_defaults;
+
+-(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	UIViewController *leftDrawer = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"LeftDrawer"];
+	UIViewController *centerController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"MainNav"];
+	MMDrawerController *drawerController = [[MMDrawerController alloc] initWithCenterViewController:centerController leftDrawerViewController:leftDrawer];
+	drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModePanningNavigationBar;
+	drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModePanningCenterView |
+													MMCloseDrawerGestureModePanningNavigationBar |
+													MMCloseDrawerGestureModeTapCenterView |
+													MMCloseDrawerGestureModeTapNavigationBar;
+	self.window.rootViewController = drawerController;
+	return YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -66,12 +81,12 @@ NSUserDefaults *_defaults;
     int historyIndex = [_defaults integerForKey:@"HistoryIndex"];
     [HistoryItem setHistoryIndex:historyIndex];
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
-	UIViewController *startingController = [[navController viewControllers] objectAtIndex:0];
+		//UINavigationController *navController = (UINavigationController*)self.window.rootViewController;
+	//UIViewController *startingController = [[navController viewControllers] objectAtIndex:0];
 	//if ([_defaults integerForKey:USER_PREF_START_VIEW] == UserPrefStartViewPage)
 		//[startingController performSegueWithIdentifier:@"IndexToPageSegue" sender:startingController];
-	UIViewController *pageVC = [startingController.storyboard instantiateViewControllerWithIdentifier:@"Page"];
-	[navController pushViewController:pageVC animated:NO];
+	//UIViewController *pageVC = [startingController.storyboard instantiateViewControllerWithIdentifier:@"Page"];
+	//[navController pushViewController:pageVC animated:NO];
 	//if ([_defaults integerForKey:USER_PREF_START_VIEW] == USerPrefStartViewExternal) {
 	//	[pageVC performSegueWithIdentifier:@"Page to external web view" sender:pageVC];
 	//}

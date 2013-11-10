@@ -10,6 +10,7 @@
 #import "IndexData.h"
 #import "FileLoader.h"
 #import "HistoryItem.h"
+#import <MMDrawerBarButtonItem.h>
 #import "Bookmark.h"
 #import "Page.h"
 #import "NSString+URLEncoding.h"
@@ -72,6 +73,7 @@ dispatch_queue_t backgroundQueue;
 {
     [super viewDidLoad];
 	[self showDefaultToolbarItems];
+	self.navigationItem.leftBarButtonItem = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftDrawerButtonPress:)];
     _isFullScreen = NO;
     _backForwardButtonsShowing = NO;
     self.fullscreenOffButton.hidden = YES;
@@ -109,6 +111,7 @@ dispatch_queue_t backgroundQueue;
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self setupRotationLockButton];
+	self.mm_drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModePanningNavigationBar;
 	[_defaults setInteger:UserPrefStartViewPage forKey:USER_PREF_START_VIEW];
 	[_defaults synchronize];
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -658,6 +661,11 @@ NSTimer *_pageLockHideTimer;
 }
 -(void) hideRotationLockButtonAfterTimer:(NSTimer*)theTimer {
 	[self.rotationLockButton setHidden:YES];
+}
+
+-(void) leftDrawerButtonPress:(id)sender {
+	NSLog(@"left drawer button press");
+	[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 //iOS 5

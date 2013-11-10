@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GenericSavedPage.h"
+#import <UIViewController+MMDrawerController.h>
 #import "SavedPagesController.h"
 
 extern NSString *const HOME_URL;
