@@ -53,6 +53,8 @@
 			else if (c.text)
 				[title appendString:c.text];
 		}
+		
+		NSLog(@"%@", title);
 		[titles addObject:title];
 	}
 	NSMutableArray *links = [NSMutableArray array];
@@ -66,6 +68,8 @@
 			}
 		}
 		NSLog(@"%@", link);
+		if (link == nil)
+			NSLog(@"link was nil");
 		[links addObject:link];
 	}
 	NSMutableArray *descriptions = [NSMutableArray array];
@@ -78,6 +82,9 @@
 			else if (c.text)
 				[desc appendString:c.text];
 		}
+		if (desc == nil)
+			NSLog(@"desc was nil");
+		NSLog(@"%@", desc);
 		[descriptions addObject:desc];
 	}
 	NSLog(@"titles count: %d", titles.count);

@@ -397,24 +397,23 @@ dispatch_queue_t backgroundQueue;
     [self loadURLFromString:url];
 }
 
-#pragma mark - SearchViewDelegate
--(void) searchViewController:(id)controller didSelectSearchResult:(NSString *)result {
-    NSLog(@"select search result");
-    [controller dismissViewControllerAnimated:YES completion:nil];
-    [self loadURLFromString:result];
-}
+#pragma mark - Search
+
+NSArray *searchResults;
+NSMutableArray *previousSearches;
+BOOL showingPreviousSearches = NO;
 
 - (IBAction)showSearch:(UIBarButtonItem *)sender {
+	//clear out results from previous search
+	searchResults = [NSArray array];
+	previousSearches = [[_defaults arrayForKey:USER_PREF_PREVIOUS_SEARCHES] mutableCopy];
+	showingPreviousSearches = YES;
 	self.navigationController.navigationBarHidden = YES;
 	self.navigationController.toolbarHidden = YES;
 	self.searchDisplayController.searchBar.hidden = NO;
 	[self.searchDisplayController.searchBar becomeFirstResponder];
 	[self.searchDisplayController setActive:YES animated:YES];
 }
-
-#pragma mark - Search
-
-NSArray *searchResults;
 
 -(void)endSearch:(UIBarButtonItem*)sender {
 	self.searchDisplayController.searchBar.hidden = YES;
@@ -434,14 +433,22 @@ BOOL _willShowSearchResultsTable = NO;
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	
 	NSString* searchString = searchBar.text;
 	if (searchString.length == 0)
 		return;
 	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0)
 		return;
-	searchString = [searchString urlEncode];
 	
+	//add this search term to search history
+	showingPreviousSearches = NO;
+	[previousSearches addObject:searchString];
+	if (previousSearches.count > 20)
+		[previousSearches removeObjectAtIndex:0];
+	[_defaults setObject:previousSearches forKey:USER_PREF_PREVIOUS_SEARCHES];
+	[_defaults synchronize];
+	//url encode the search AFTER adding to history, as we want the history to show terms as entered
+	searchString = [searchString urlEncode];
+	NSLog(@"%@", searchString);
 	void (^doneBlock)(NSArray*) = ^(NSArray *results) {
 		searchResults = results;
 		self.searchDisplayController.searchResultsTableView.hidden = NO;
@@ -469,14 +476,14 @@ BOOL _willShowSearchResultsTable = NO;
 #pragma mark - UISearchDisplayDelegate
 
 -(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-	//if (!_willShowSearchResultsTable)
-	//	[self endSearch:nil];
+	[self endSearch:nil];
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-	if (searchResults.count == 0)
-		self.searchDisplayController.searchResultsTableView.hidden = YES;
-	return NO;
+	//if (searchResults.count == 0)
+	//	self.searchDisplayController.searchResultsTableView.hidden = YES;
+	showingPreviousSearches = YES;
+	return YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -485,14 +492,26 @@ BOOL _willShowSearchResultsTable = NO;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
+	if (showingPreviousSearches)
+		return previousSearches.count;
+	else if (tableView == self.searchDisplayController.searchResultsTableView)
 		return searchResults.count;
 	else
 		return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (showingPreviousSearches) {
+		UITableViewCell *cell = nil;
+		static NSString *cellIdentifier = @"SearchSuggestion";
+		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Search Result"];
+		}
+		cell.textLabel.text = [previousSearches objectAtIndex:indexPath.row];
+		return cell;
+
+	} else if (tableView == self.searchDisplayController.searchResultsTableView) {
 		UITableViewCell *cell = nil;
 		static NSString *cellIdentifier = @"SearchSuggestion";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -513,7 +532,11 @@ BOOL _willShowSearchResultsTable = NO;
 
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
+	if (showingPreviousSearches) {
+		//put the selected history search term in the search bar
+		self.searchDisplayController.searchBar.text = [previousSearches objectAtIndex:indexPath.row];
+	}
+	else if (tableView == self.searchDisplayController.searchResultsTableView) {
 		[self.searchDisplayController setActive:NO animated:YES];
 		self.searchDisplayController.searchBar.hidden = YES;
 		[self endSearch:nil];

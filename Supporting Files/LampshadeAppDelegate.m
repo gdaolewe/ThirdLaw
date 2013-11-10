@@ -54,6 +54,7 @@ NSUserDefaults *_defaults;
 		USER_PREF_EXTERNAL_URL				: @"",
 		USER_PREF_FULLSCREEN				: [NSNumber numberWithBool:NO],
         USER_PREF_HISTORY_INDEX             : [NSNumber numberWithInt:-1],
+		USER_PREF_PREVIOUS_SEARCHES			: [NSArray array],
         USER_PREF_ROTATION_LOCKED			: [NSNumber numberWithBool:NO],
         USER_PREF_ROTATION_ORIENTATION      : [NSNumber numberWithInt:UIInterfaceOrientationPortrait],
         USER_PREF_SAVED_PAGES_STARTING_TAB	: [NSNumber numberWithInt:0],
