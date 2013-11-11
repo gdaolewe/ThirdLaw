@@ -613,19 +613,24 @@ BOOL _willShowSearchResultsTable = NO;
     [self setFullscreen:!_isFullScreen];
 }
 
+CGRect notFullscreenDrawerControllerFrame;
+
 -(void)setFullscreen:(BOOL)fullscreen {
 	_isFullScreen = fullscreen;
 	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
 	if (fullscreen) {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+		[[UIApplication sharedApplication] setStatusBarHidden:YES];
         [self.navigationController setToolbarHidden:YES animated:YES];
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         self.fullscreenOffButton.hidden = NO;
+		notFullscreenDrawerControllerFrame = self.mm_drawerController.view.frame;
+		self.mm_drawerController.view.frame = self.view.window.bounds;
 	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO];
         [self.navigationController setToolbarHidden:NO animated:YES];
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         self.fullscreenOffButton.hidden = YES;
+		self.mm_drawerController.view.frame = notFullscreenDrawerControllerFrame;
 	}
 }
 
