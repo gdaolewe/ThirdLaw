@@ -618,6 +618,7 @@ CGRect notFullscreenDrawerControllerFrame;
 -(void)setFullscreen:(BOOL)fullscreen {
 	_isFullScreen = fullscreen;
 	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
+	[_defaults synchronize];
 	if (fullscreen) {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES];
         [self.navigationController setToolbarHidden:YES animated:YES];
@@ -630,7 +631,8 @@ CGRect notFullscreenDrawerControllerFrame;
         [self.navigationController setToolbarHidden:NO animated:YES];
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         self.fullscreenOffButton.hidden = YES;
-		self.mm_drawerController.view.frame = notFullscreenDrawerControllerFrame;
+		if (!CGRectIsEmpty(notFullscreenDrawerControllerFrame))
+			self.mm_drawerController.view.frame = notFullscreenDrawerControllerFrame;
 	}
 }
 
