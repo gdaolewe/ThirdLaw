@@ -107,6 +107,7 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
+	NSLog(@"view did appear");
 	[super viewDidAppear:animated];
 	[self setupBackForwardButtons];
 	[self setupRotationLockButton];
@@ -322,12 +323,10 @@ dispatch_queue_t backgroundQueue;
 -(void)setupBackForwardButtons {
 	self.backButton.enabled = [self canGoBack];
 	self.forwardButton.enabled = [self canGoForward];
-	[HistoryItem clearCache];
 }
 
 -(BOOL)canGoBack {
-	NSArray* history = [HistoryItem history];
-	return ([HistoryItem historyIndex] < history.count-1);
+	return ([HistoryItem historyIndex] < [HistoryItem historyCount]-1);
 }
 
 -(BOOL)canGoForward {
@@ -362,7 +361,6 @@ dispatch_queue_t backgroundQueue;
     }
 
 }
-
 
 #pragma mark - SavedPagesDelegate
 -(void) savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {

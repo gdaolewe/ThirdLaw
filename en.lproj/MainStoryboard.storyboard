@@ -57,8 +57,6 @@
                                 <dataDetectorType key="dataDetectorTypes"/>
                                 <connections>
                                     <outlet property="delegate" destination="2" id="mqk-4i-0lf"/>
-                                    <outletCollection property="gestureRecognizers" destination="jKN-gl-q9L" appends="YES" id="KfA-T3-DPe"/>
-                                    <outletCollection property="gestureRecognizers" destination="SLe-Hw-O18" appends="YES" id="wpJ-A9-tjR"/>
                                 </connections>
                             </webView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sgZ-Xb-TD7">
@@ -200,16 +198,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="SLe-Hw-O18">
-                    <connections>
-                        <action selector="rightSwipeGesture:" destination="2" id="4aD-Uv-0gp"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="jKN-gl-q9L">
-                    <connections>
-                        <action selector="leftSwipeGesture:" destination="2" id="rHl-ps-dGw"/>
-                    </connections>
-                </swipeGestureRecognizer>
                 <searchDisplayController id="fYe-87-cEL">
                     <connections>
                         <outlet property="delegate" destination="2" id="4Vu-nG-sbi"/>

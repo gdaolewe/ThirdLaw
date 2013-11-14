@@ -22,6 +22,7 @@
 
 +(void)setHistoryIndex:(int)index;
 +(int)historyIndex;
++(int)historyCount;
 +(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title andURL:(NSString*)url;
 +(void) fetchHistoryAsync;
 +(NSArray*) history;

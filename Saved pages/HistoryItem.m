@@ -20,6 +20,7 @@ NSArray *_historyCached;
 NSDateFormatter *_formatter;
 
 static int _historyIndex;
+static int _historyCount;
 dispatch_queue_t queue;
 
 - (NSString*) generatePath
@@ -67,6 +68,10 @@ dispatch_queue_t queue;
 
 +(int) historyIndex {
     return _historyIndex;
+}
+
++(int) historyCount {
+	return _historyCount;
 }
 
 +(void)addHistoryItemAsyncWithHTML:(NSString *)html title:(NSString *)title andURL:(NSString*)url {
@@ -129,10 +134,12 @@ dispatch_queue_t queue;
 +(NSArray*) history {
     if (_historyCached == nil)
         _historyCached = [self fetchHistory];
+	_historyCount = _historyCached.count;
     return _historyCached;
 }
 
 +(void) clearHistoryAsync {
+	_historyCount = 0;
     if (!queue)
         queue = dispatch_queue_create("com.georgedw.lampshade.history", NULL);
     dispatch_async(queue, ^{
