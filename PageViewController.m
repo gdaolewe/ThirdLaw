@@ -104,6 +104,8 @@ dispatch_queue_t backgroundQueue;
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(filesUpdated:)
 												 name:FILES_NOTIFICATION_NAME object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(setupBackForwardButtons) name:HISTORY_NOTIFICATION_NAME object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -153,7 +155,7 @@ dispatch_queue_t backgroundQueue;
 -(void)showDefaultToolbarItems {
 	[self setupBackForwardButtons];
 	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    self.toolbarItems = @[self.backButton, self.forwardButton, space, self.actionsToolbarItem, space, self.savedToolbarItem, space, self.fullscreenToolbarItem];
+    self.toolbarItems = @[self.backButton, space, self.forwardButton, space, self.actionsToolbarItem, space, self.savedToolbarItem, space, self.fullscreenToolbarItem];
 }
 
 -(void) filesUpdated:(NSNotification*)notification {
@@ -266,6 +268,8 @@ dispatch_queue_t backgroundQueue;
     }
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
+	//force history to update
+	[HistoryItem history];
     [self setupBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
