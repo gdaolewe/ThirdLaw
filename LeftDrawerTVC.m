@@ -7,8 +7,19 @@
 //
 
 #import "LeftDrawerTVC.h"
+#import <UIViewController+MMDrawerController.h>
+#import "PageViewController.h"
+#import "IndexTableViewController.h"
 
 @interface LeftDrawerTVC ()
+
+typedef enum {
+	LeftDrawerCurrentPage,
+	LeftDrawerHomePage,
+	LeftDrawerRandomPage,
+	LeftDrawerIndex,
+	LeftDrawerSettings
+}LeftDrawerCell;
 
 @end
 
@@ -33,7 +44,7 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+/*- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     return 1;
@@ -42,18 +53,76 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 5;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+	static NSString *CellIdentifier;
+    switch(indexPath.row) {
+		case LeftDrawerCurrentPage: {
+			CellIdentifier = @"CurrentPage";
+		}
+			break;
+		case LeftDrawerHomePage: {
+			CellIdentifier = @"HomePage";
+		}
+			break;
+		case LeftDrawerRandomPage: {
+			CellIdentifier = @"RandomPage";
+		}
+			break;
+		case LeftDrawerIndex: {
+			CellIdentifier = @"Index";
+		}
+			break;
+		case LeftDrawerSettings: {
+			CellIdentifier = @"Settings";
+		}
+			break;
+	}
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
     return cell;
+}*/
+
+#pragma mark - UITableViewDelegate
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSLog(@"did select row");
+	switch (indexPath.row) {
+		case LeftDrawerCurrentPage: {
+			
+		}
+			break;
+		case LeftDrawerHomePage: {
+			UINavigationController *centerVC = (UINavigationController*)self.mm_drawerController.centerViewController;
+			PageViewController *pageVC = [centerVC.childViewControllers objectAtIndex:0];
+			[pageVC loadHomePage];
+			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+		}
+			break;
+		case LeftDrawerRandomPage: {
+			UINavigationController *centerVC = (UINavigationController*)self.mm_drawerController.centerViewController;
+			PageViewController *pageVC = [centerVC.childViewControllers objectAtIndex:0];
+			[pageVC loadRandomURL];
+			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+		}
+			break;
+		case LeftDrawerIndex: {
+			UINavigationController *nav = (UINavigationController*)self.mm_drawerController.centerViewController;
+			IndexTableViewController *index = [self.storyboard instantiateViewControllerWithIdentifier:@"Index"];
+			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+			[nav pushViewController:index animated:YES];
+		}
+			break;
+		case LeftDrawerSettings: {
+			
+		}
+			break;
+	}
 }
+
+
 
 /*
 #pragma mark - Navigation

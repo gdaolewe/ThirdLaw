@@ -111,6 +111,8 @@ IndexData * _indexData;
                 PageViewController *page = [self.storyboard instantiateViewControllerWithIdentifier:@"Page"];
                 page.url = [_indexData urlForCategoryIndex:self.categoryIndex atIndex:indexPath.row];
                 [self.navigationController pushViewController:page animated:YES];
+				//get rid of nav stack that now can't be popped back to
+				[self.navigationController setViewControllers:[NSArray arrayWithObject:page]];
             } 
         }
             break;
