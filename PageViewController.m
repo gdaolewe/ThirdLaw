@@ -29,16 +29,13 @@ NSString *const RANDOM_URL;
 -(void) loadURLFromString:(NSString *)urlString;
 
 @property (strong, nonatomic) IBOutlet UIButton *fullscreenOffButton;
-@property (strong, nonatomic) IBOutlet UIButton *backButton;
-@property (strong, nonatomic) IBOutlet UIButton *forwardButton;
-@property (strong, nonatomic) IBOutlet UIButton *backForwardCancelButton;
 @property (strong, nonatomic) IBOutlet UIButton *rotationLockButton;
 @property (strong, nonatomic) SearchOptionsTVC	*optionsController;
 @property (strong, nonatomic) IBOutlet UITableView *searchResultsTableView;
 
 //toolbar items
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *settingsToolbarItem;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *randomToolbarItem;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *actionsToolbarItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *savedToolbarItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *fullscreenToolbarItem;
@@ -111,6 +108,7 @@ dispatch_queue_t backgroundQueue;
 
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+	[self setupBackForwardButtons];
 	[self setupRotationLockButton];
 	self.mm_drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModePanningNavigationBar;
 	[_defaults setInteger:UserPrefStartViewPage forKey:USER_PREF_START_VIEW];
@@ -128,12 +126,9 @@ dispatch_queue_t backgroundQueue;
     [self setFullscreenOffButton:nil];
     [self setBackButton:nil];
     [self setForwardButton:nil];
-    [self setBackForwardCancelButton:nil];
     dispatch_release(backgroundQueue);
     [self setRotationLockButton:nil];
 	[self setSearchResultsTableView:nil];
-	[self setSettingsToolbarItem:nil];
-	[self setRandomToolbarItem:nil];
 	[self setActionsToolbarItem:nil];
 	[self setSavedToolbarItem:nil];
 	[self setFullscreenToolbarItem:nil];
@@ -142,7 +137,6 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
-    [self hideBackForwardButtons];
     [super viewWillDisappear:animated];
 }
 
@@ -156,8 +150,9 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void)showDefaultToolbarItems {
+	[self setupBackForwardButtons];
 	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    self.toolbarItems = @[self.settingsToolbarItem, space, self.randomToolbarItem, space, self.actionsToolbarItem, space, self.savedToolbarItem, space, self.fullscreenToolbarItem];
+    self.toolbarItems = @[self.backButton, self.forwardButton, space, self.actionsToolbarItem, space, self.savedToolbarItem, space, self.fullscreenToolbarItem];
 }
 
 -(void) filesUpdated:(NSNotification*)notification {
@@ -270,7 +265,7 @@ dispatch_queue_t backgroundQueue;
     }
 }
 -(void)webViewDidStartLoad:(UIWebView *)webView {
-    [self hideBackForwardButtons];
+    [self setupBackForwardButtons];
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self.activityIndicator stopAnimating];
@@ -323,44 +318,25 @@ dispatch_queue_t backgroundQueue;
 }
 
 #pragma mark - Navigation
-- (IBAction)cancelBackForward:(UIButton *)sender {
-    [self hideBackForwardButtons];
+
+-(void)setupBackForwardButtons {
+	self.backButton.enabled = [self canGoBack];
+	self.forwardButton.enabled = [self canGoForward];
+	[HistoryItem clearCache];
 }
 
-- (IBAction)tapGesture:(UITapGestureRecognizer *)sender {
-    [self hideBackForwardButtons];
-}
--(void) hideBackForwardButtons {
-    if (_backForwardButtonsShowing) {
-        self.webView.alpha = 1;
-        self.backButton.hidden = YES;
-        self.forwardButton.hidden = YES;
-        self.backForwardCancelButton.hidden = YES;
-    }
-}
-- (IBAction)rightSwipeGesture:(UISwipeGestureRecognizer *)sender {
-    NSArray* history = [HistoryItem history];
-    if ([HistoryItem historyIndex] < history.count-1) {
-        self.webView.alpha = 0.5;
-        self.forwardButton.hidden = YES;
-        self.backButton.hidden = NO;
-        self.backForwardCancelButton.hidden = NO;
-        _backForwardButtonsShowing = YES;
-    }
-}
-- (IBAction)leftSwipeGesture:(UISwipeGestureRecognizer *)sender {
-    if ([HistoryItem historyIndex] > 0) {
-        self.webView.alpha = 0.5;
-        self.backButton.hidden = YES;
-        self.forwardButton.hidden = NO;
-        self.backForwardCancelButton.hidden = NO;
-        _backForwardButtonsShowing = YES;
-    }
+-(BOOL)canGoBack {
+	NSArray* history = [HistoryItem history];
+	return ([HistoryItem historyIndex] < history.count-1);
 }
 
-- (IBAction)back:(UIButton *)sender {
-    NSArray* history = [HistoryItem history];
-    if ([HistoryItem historyIndex] < history.count-1) {
+-(BOOL)canGoForward {
+	return [HistoryItem historyIndex] > 0;
+}
+
+- (IBAction)back:(UIBarButtonItem *)sender {
+	NSArray* history = [HistoryItem history];
+    if ([self canGoBack]) {
         [HistoryItem setHistoryIndex:[HistoryItem historyIndex]+1];
         HistoryItem* previous = [history objectAtIndex:[HistoryItem historyIndex]];
         self.url = previous.url;
@@ -368,11 +344,12 @@ dispatch_queue_t backgroundQueue;
         _shouldSaveHistory = NO;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:previous.html];
+		[self setupBackForwardButtons];
     }
-    [HistoryItem clearCache];
 }
-- (IBAction)forward:(UIButton *)sender {
-    if ([HistoryItem historyIndex] > 0) {
+
+- (IBAction)forward:(UIBarButtonItem *)sender {
+	if ([self canGoForward]) {
         NSArray* history = [HistoryItem history];
         [HistoryItem setHistoryIndex:[HistoryItem historyIndex]-1];
         HistoryItem* next = [history objectAtIndex:[HistoryItem historyIndex]];
@@ -381,9 +358,11 @@ dispatch_queue_t backgroundQueue;
         _shouldSaveHistory = NO;
         _loadingSavedPage = YES;
         [self loadPageFromHTML:next.html];
+		[self setupBackForwardButtons];
     }
-    [HistoryItem clearCache];
+
 }
+
 
 #pragma mark - SavedPagesDelegate
 -(void) savedPageController:(id)controller didSelectSavedPage:(id<GenericSavedPage>)page {
