@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 George Daole-Wellman. All rights reserved.
 //
 
+#import "GlobalConstants.h"
+
 #import "ExternalWebViewController.h"
 #import <UIViewController+MMDrawerController.h>
 #import "UserDefaultsHelper.h"
@@ -53,7 +55,7 @@ NSUserDefaults *_defaults;
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     self.webView.hidden = NO;
 	_defaults = [NSUserDefaults standardUserDefaults];
-	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN]];
+	
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -62,6 +64,7 @@ NSUserDefaults *_defaults;
 	self.mm_drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeNone;
 	[_defaults setInteger:USerPrefStartViewExternal forKey:USER_PREF_START_VIEW];
 	[_defaults synchronize];
+	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN] animated:NO];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(showRotationLockButton)
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -106,32 +109,40 @@ NSUserDefaults *_defaults;
 BOOL _isFullScreen = NO;
 
 - (IBAction)toggleFullscreen:(id)sender {
-	[self setFullscreen:!_isFullScreen];
+	[self setFullscreen:!_isFullScreen animated:YES];
 }
 
-CGRect notFullscreenDrawerControllerFrame;
-
--(void) setFullscreen:(BOOL)fullscreen {
+-(void) setFullscreen:(BOOL)fullscreen animated:(BOOL)animated {
 	_isFullScreen = fullscreen;
 	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
 	[_defaults synchronize];
+	UIStatusBarAnimation animation = animated? UIStatusBarAnimationSlide : UIStatusBarAnimationNone;
 	if (fullscreen) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setToolbarHidden:YES animated:YES];
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animation];
+        [self.navigationController setToolbarHidden:YES animated:animated];
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
         self.fullscreenOffButton.hidden = NO;
-		notFullscreenDrawerControllerFrame = self.mm_drawerController.view.frame;
 		self.mm_drawerController.view.frame = self.view.window.bounds;
-
+		NSLog(@"%f %f", self.view.window.bounds.size.height, self.view.window.bounds.size.width);
     } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        [self.navigationController setToolbarHidden:NO animated:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animation];
+        [self.navigationController setToolbarHidden:NO animated:animated];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
         self.fullscreenOffButton.hidden = YES;
-		if (!CGRectIsEmpty(notFullscreenDrawerControllerFrame))
-			self.mm_drawerController.view.frame = notFullscreenDrawerControllerFrame;
+		if (!IS_OS_7_OR_LATER) {
+			//adjust for status bar offset in iOS 6
+			CGRect bounds = self.view.window.bounds;
+			int offset = 20;
+			if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+				bounds.origin.x += offset;
+				bounds.size.width -= offset;
+			} else {
+				bounds.origin.y += offset;
+				bounds.size.height -= offset;
+			}
+			self.mm_drawerController.view.frame = bounds;
+		}
     }
-
 }
 
 #pragma mark - UIWebViewDelegate

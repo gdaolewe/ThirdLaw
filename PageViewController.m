@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 George Daole-Wellman. All rights reserved.
 //
 
+#import "GlobalConstants.h"
+
 #import "PageViewController.h"
 #import "IndexData.h"
 #import "FileLoader.h"
@@ -82,7 +84,6 @@ dispatch_queue_t backgroundQueue;
 		ExternalWebViewController *webVC = [self.storyboard instantiateViewControllerWithIdentifier:@"External web view"];
 		[self.navigationController pushViewController:webVC animated:NO];
 	}
-	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN]];
     _script = [FileLoader getScript];
     _loadingSavedPage = NO;
     _shouldSaveHistory = YES;
@@ -114,6 +115,7 @@ dispatch_queue_t backgroundQueue;
 	self.mm_drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModePanningNavigationBar;
 	[_defaults setInteger:UserPrefStartViewPage forKey:USER_PREF_START_VIEW];
 	[_defaults synchronize];
+	[self setFullscreen:[_defaults boolForKey:USER_PREF_FULLSCREEN] animated:NO];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(showRotationLockButton)
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -610,30 +612,40 @@ BOOL _willShowSearchResultsTable = NO;
 }
 
 - (IBAction)toggleFullscreen:(UIBarButtonItem *)sender {
-    [self setFullscreen:!_isFullScreen];
+    [self setFullscreen:!_isFullScreen animated:YES];
 }
 
-CGRect notFullscreenDrawerControllerFrame;
-
--(void)setFullscreen:(BOOL)fullscreen {
+-(void)setFullscreen:(BOOL)fullscreen animated:(BOOL)animated {
 	_isFullScreen = fullscreen;
 	[_defaults setBool:fullscreen forKey:USER_PREF_FULLSCREEN];
 	[_defaults synchronize];
+	UIStatusBarAnimation animation = animated? UIStatusBarAnimationSlide : UIStatusBarAnimationNone;
 	if (fullscreen) {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES];
-        [self.navigationController setToolbarHidden:YES animated:YES];
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animation];
+        [self.navigationController setToolbarHidden:YES animated:animated];
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
         self.fullscreenOffButton.hidden = NO;
-		notFullscreenDrawerControllerFrame = self.mm_drawerController.view.frame;
 		self.mm_drawerController.view.frame = self.view.window.bounds;
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animation];
         [self.navigationController setToolbarHidden:NO animated:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        self.fullscreenOffButton.hidden = YES;
-		if (!CGRectIsEmpty(notFullscreenDrawerControllerFrame))
-			self.mm_drawerController.view.frame = notFullscreenDrawerControllerFrame;
-	}
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
+        self.fullscreenOffButton.hidden = animated;
+		if (!IS_OS_7_OR_LATER) {
+			//adjust for status bar offset in iOS 6
+			CGRect bounds = self.view.window.bounds;
+			int offset = 20;
+			if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+				bounds.origin.x += offset;
+				bounds.size.width -= offset;
+			} else {
+				bounds.origin.y += offset;
+				bounds.size.height -= offset;
+			}
+			self.mm_drawerController.view.frame = bounds;
+		}
+    }
+
 }
 
 - (IBAction)toggleRotationLock:(UIButton *)sender {

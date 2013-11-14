@@ -79,6 +79,7 @@
 /* Begin PBXFileReference section */
 		24856E6FED974D7AB74D7FBC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		39158ACEBDA14F14B48955A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		F60DD9321834934D0061C65A /* GlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		F642FE4A163E359C009080B9 /* ThirdLaw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThirdLaw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F642FE4E163E359C009080B9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F642FE50163E359C009080B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -258,6 +259,7 @@
 		F6672DD417CB015F007F0F70 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				F60DD9321834934D0061C65A /* GlobalConstants.h */,
 				F6672DD117CB0018007F0F70 /* UserDefaultsHelper.h */,
 				F6672DD217CB0018007F0F70 /* UserDefaultsHelper.m */,
 			);
