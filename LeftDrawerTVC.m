@@ -47,15 +47,15 @@ typedef enum {
 	NSLog(@"did select row");
 	switch (indexPath.row) {
 		case LeftDrawerHomePage: {
-			UINavigationController *centerVC = (UINavigationController*)self.mm_drawerController.centerViewController;
-			PageViewController *pageVC = [centerVC.childViewControllers objectAtIndex:0];
+			UINavigationController *nav = (UINavigationController*)self.mm_drawerController.centerViewController;
+			PageViewController *pageVC = [nav.childViewControllers objectAtIndex:0];
 			[pageVC loadHomePage];
 			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 		}
 			break;
 		case LeftDrawerRandomPage: {
-			UINavigationController *centerVC = (UINavigationController*)self.mm_drawerController.centerViewController;
-			PageViewController *pageVC = [centerVC.childViewControllers objectAtIndex:0];
+			UINavigationController *nav = (UINavigationController*)self.mm_drawerController.centerViewController;
+			PageViewController *pageVC = [nav.childViewControllers objectAtIndex:0];
 			[pageVC loadRandomURL];
 			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 		}
@@ -68,7 +68,10 @@ typedef enum {
 		}
 			break;
 		case LeftDrawerSettings: {
-			
+			UINavigationController *nav = (UINavigationController*)self.mm_drawerController.centerViewController;
+			UIViewController *settings = [self.storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+			[nav presentModalViewController:settings animated:YES];
 		}
 			break;
 	}

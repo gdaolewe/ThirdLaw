@@ -162,24 +162,13 @@ dispatch_queue_t backgroundQueue;
     _script = [FileLoader getScript];
 }
 
-- (void) reachabilityChanged:(NSNotification*) notification
-{
-	Reachability* reachability = notification.object;
-    
-	if(reachability.currentReachabilityStatus == NotReachable)
-		NSLog(@"Internet off");
-	else
-		NSLog(@"Internet on");
-}
-
 -(void) loadURLFromString:(NSString *)urlString {
-    if ([self checkReachable:YES]) {
-        [self setPageHidden:YES];
-        _finishedLoading = NO;
-        _jsInjected = NO;
-        self.url = urlString;
-        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
-    }
+    [self checkReachable:YES];
+	[self setPageHidden:YES];
+	_finishedLoading = NO;
+	_jsInjected = NO;
+	self.url = urlString;
+	[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
 }
 -(void)loadPageFromHTML:(NSString*)html{
     [self setPageHidden:YES];
@@ -192,43 +181,61 @@ dispatch_queue_t backgroundQueue;
 
 -(void) loadHomePage {
 	self.url = HOME_URL;
-	_loadingSavedPage = YES;
+	//_loadingSavedPage = YES;
 	[self loadPageFromHTML: [FileLoader getHomePage]];
 }
 
 -(void) loadRandomURL {
 	self.url = RANDOM_URL;
-    if ([self checkReachable:YES]) {
-        [self setPageHidden:YES];
-        backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
-        void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
-            self.url = response.URL.absoluteString;
-            [self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding]];
-        };
-        dispatch_async(backgroundQueue, ^(void) {
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
-            NSURLResponse *response = nil;
-            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                doneBlock(response, data);
-            });
-        });
-		dispatch_release(backgroundQueue);
-    }
+    [self checkReachable:YES];
+	backgroundQueue = dispatch_queue_create("com.georgedw.Lampshade.RandomURLConnection", NULL);
+	void (^doneBlock)(NSURLResponse*, NSData*) = ^(NSURLResponse *response, NSData *data) {
+		if (response != nil) {
+			self.url = response.URL.absoluteString;
+			[self loadPageFromHTML:[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding]];
+		}
+	};
+	dispatch_async(backgroundQueue, ^(void) {
+		NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:RANDOM_URL]];
+		NSURLResponse *response = nil;
+		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			doneBlock(response, data);
+		});
+	});
+	dispatch_release(backgroundQueue);
 }
 
--(BOOL) checkReachable:(BOOL)withMessage {
-    Reachability *networkReachability = [Reachability reachabilityWithHostName:@"tvtropes.org"];
-    NetworkStatus networkStatus = networkReachability.currentReachabilityStatus;
-    if (networkStatus == NotReachable && withMessage) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No connection to TVTropes.org"
-                                                        message:@"Check your internet connection or browse offline"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-    return networkStatus != NotReachable;
+#pragma mark - Reachability
+-(void) checkReachable:(BOOL)withMessage {
+	backgroundQueue = dispatch_queue_create("com.georgedw.ThirdLaw.CheckReachable", NULL);
+	void (^doneBlock)(BOOL, BOOL) = ^(BOOL networkStatus, BOOL withMessage) {
+		if (networkStatus == NotReachable && withMessage) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No connection to TVTropes.org"
+															message:@"Check your internet connection or browse offline"
+														   delegate:nil
+												  cancelButtonTitle:@"OK"
+												  otherButtonTitles:nil];
+			[alert show];
+		}
+	};
+	dispatch_async(backgroundQueue, ^{
+		Reachability *networkReachability = [Reachability reachabilityWithHostName:@"tvtropes.org"];
+		NetworkStatus networkStatus = networkReachability.currentReachabilityStatus;
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			doneBlock(networkStatus, withMessage);
+		});
+	});
+
+}
+
+- (void) reachabilityChanged:(NSNotification*) notification
+{
+	Reachability* reachability = notification.object;
+	if(reachability.currentReachabilityStatus == NotReachable)
+		NSLog(@"Internet off");
+	else
+		NSLog(@"Internet on");
 }
 
 #pragma mark - UIWebViewDelegate
