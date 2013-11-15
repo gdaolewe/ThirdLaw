@@ -394,7 +394,7 @@ dispatch_queue_t backgroundQueue;
 
 NSArray *searchResults;
 NSMutableArray *previousSearches;
-NSMutableArray *filteredPreviousSearches;
+NSMutableOrderedSet *filteredPreviousSearches;
 BOOL showingPreviousSearches = NO;
 
 - (IBAction)showSearch:(UIBarButtonItem *)sender {
@@ -497,7 +497,7 @@ BOOL _willShowSearchResultsTable = NO;
 			return [first compare:second];
 		}];
 		//then put sorted terms in our filtered search terms array
-		filteredPreviousSearches = [NSMutableArray array];
+		filteredPreviousSearches = [NSMutableOrderedSet orderedSet];
 		for (NSDictionary *tWithL in termsWithLocations)
 			[filteredPreviousSearches addObject:[tWithL objectForKey:@"term"]];
 	}
