@@ -21,6 +21,7 @@
 #import "ExternalWebViewController.h"
 #import <dispatch/dispatch.h>
 #import "Reachability.h"
+#import <QuartzCore/QuartzCore.h>
 #import "UserDefaultsHelper.h"
 
 NSString *const RANDOM_URL;
@@ -403,8 +404,6 @@ BOOL showingPreviousSearches = NO;
 	previousSearches = [[_defaults arrayForKey:USER_PREF_PREVIOUS_SEARCHES] mutableCopy];
 	filteredPreviousSearches = [previousSearches mutableCopy];
 	showingPreviousSearches = YES;
-	self.navigationController.navigationBarHidden = YES;
-	self.navigationController.toolbarHidden = YES;
 	self.searchDisplayController.searchBar.hidden = NO;
 	[self.searchDisplayController.searchBar becomeFirstResponder];
 	[self.searchDisplayController setActive:YES animated:YES];
@@ -412,16 +411,11 @@ BOOL showingPreviousSearches = NO;
 
 -(void)endSearch:(UIBarButtonItem*)sender {
 	self.searchDisplayController.searchBar.hidden = YES;
-	[self.navigationController setNavigationBarHidden:NO animated:YES];
-	self.navigationController.toolbarHidden = NO;
 	self.searchResultsTableView.hidden = YES;
 	[self showDefaultToolbarItems];
-	_willShowSearchResultsTable = NO;
 }
 
 #pragma mark - UISearchBarDelegate
-
-BOOL _willShowSearchResultsTable = NO;
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	[self endSearch:nil];
@@ -429,24 +423,23 @@ BOOL _willShowSearchResultsTable = NO;
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	NSString* searchString = searchBar.text;
+
+	[self executeSearchWithString:searchString];
+}
+
+- (void)executeSearchWithString:(NSString *)searchString {
 	if (searchString.length == 0)
 		return;
 	if ([searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0)
 		return;
-	
-	//add this search term to search history
-	showingPreviousSearches = NO;
-	[previousSearches addObject:searchString];
-	if (previousSearches.count > 20)
-		[previousSearches removeObjectAtIndex:0];
-	[_defaults setObject:previousSearches forKey:USER_PREF_PREVIOUS_SEARCHES];
-	[_defaults synchronize];
+	[self addSearchStringToHistory:searchString];
 	//url encode the search AFTER adding to history, as we want the history to show terms as entered
 	searchString = [searchString urlEncode];
 	NSLog(@"%@", searchString);
 	void (^doneBlock)(NSArray*) = ^(NSArray *results) {
 		searchResults = results;
 		self.searchDisplayController.searchResultsTableView.hidden = NO;
+		showingPreviousSearches = NO;
 		[self.searchDisplayController.searchResultsTableView reloadData];
 	};
 	dispatch_queue_t queue = dispatch_queue_create("com.georgedw.lampshade.googlesearch", NULL);
@@ -466,6 +459,15 @@ BOOL _willShowSearchResultsTable = NO;
 			doneBlock(results);
 		});
 	});
+}
+
+
+- (void)addSearchStringToHistory:(NSString *)searchString {
+	[previousSearches addObject:searchString];
+	if (previousSearches.count > 20)
+		[previousSearches removeObjectAtIndex:0];
+	[_defaults setObject:previousSearches forKey:USER_PREF_PREVIOUS_SEARCHES];
+	[_defaults synchronize];
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -512,10 +514,8 @@ BOOL _willShowSearchResultsTable = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (showingPreviousSearches)
 		return filteredPreviousSearches.count;
-	else if (tableView == self.searchDisplayController.searchResultsTableView)
-		return searchResults.count;
 	else
-		return 0;
+		return searchResults.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -524,12 +524,20 @@ BOOL _willShowSearchResultsTable = NO;
 		static NSString *cellIdentifier = @"SearchSuggestion";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Search Result"];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search Result"];
+			UIButton *accessoryArrow = [UIButton buttonWithType:UIButtonTypeSystem];
+			accessoryArrow.tintColor = [UIColor darkGrayColor];
+			[accessoryArrow setTitle:@"↑" forState:UIControlStateNormal];
+			accessoryArrow.tag = indexPath.row;
+			[accessoryArrow setFrame:CGRectMake(0, 0, 35, cell.frame.size.height)];
+			accessoryArrow.userInteractionEnabled = YES;
+			[accessoryArrow addTarget:self action:@selector(insertSearchTextArrowClicked:) forControlEvents:UIControlEventTouchUpInside];
+			cell.accessoryView = accessoryArrow;
 		}
 		cell.textLabel.text = [filteredPreviousSearches objectAtIndex:indexPath.row];
 		return cell;
 
-	} else if (tableView == self.searchDisplayController.searchResultsTableView) {
+	} else {
 		UITableViewCell *cell = nil;
 		static NSString *cellIdentifier = @"SearchSuggestion";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -543,18 +551,24 @@ BOOL _willShowSearchResultsTable = NO;
 		cell.textLabel.text = title;
 		cell.detailTextLabel.text = [result objectForKey:@"description"];
 		return cell;
-	} else {
-		return nil;
+	}
+}
+
+-(void)insertSearchTextArrowClicked:(UIButton*)sender {
+	NSInteger row = sender.tag;
+	if (showingPreviousSearches) {
+		//put the selected history search term in the search bar
+		self.searchDisplayController.searchBar.text = [filteredPreviousSearches objectAtIndex:row];
 	}
 }
 
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (showingPreviousSearches) {
-		//put the selected history search term in the search bar
-		self.searchDisplayController.searchBar.text = [filteredPreviousSearches objectAtIndex:indexPath.row];
-	}
-	else if (tableView == self.searchDisplayController.searchResultsTableView) {
+		NSString *searchString =[filteredPreviousSearches objectAtIndex:indexPath.row];
+		self.searchDisplayController.searchBar.text = searchString;
+		[self executeSearchWithString:searchString];
+	} else  {
 		[self.searchDisplayController setActive:NO animated:YES];
 		self.searchDisplayController.searchBar.hidden = YES;
 		[self endSearch:nil];
