@@ -69,6 +69,8 @@ bool _isFullScreen;
 
 dispatch_queue_t backgroundQueue;
 
+#pragma mark - UIViewController Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -121,6 +123,17 @@ dispatch_queue_t backgroundQueue;
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(showRotationLockButton)
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+-(void)viewDidLayoutSubviews {
+	//Put rotation lock button at bottom of screen
+	CGRect frame = self.rotationLockButton.frame;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		frame.origin.y = self.webView.frame.origin.y + self.webView.frame.size.height - frame.size.height;
+	else
+		frame.origin.y = self.view.frame.size.height - self.navigationController.toolbar.frame.size.height - frame.size.height;
+	NSLog(@"view did layout subviews%f", self.webView.frame.size.height);
+	self.rotationLockButton.frame = frame;
 }
 
 - (void)viewDidUnload
@@ -706,9 +719,6 @@ NSTimer *_pageLockHideTimer;
     } else {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     }
-	
 }
-
-
 
 @end
