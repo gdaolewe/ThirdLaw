@@ -632,7 +632,7 @@ BOOL showingPreviousSearches = NO;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animation];
         [self.navigationController setToolbarHidden:NO animated:YES];
         [self.navigationController setNavigationBarHidden:NO animated:animated];
-        self.fullscreenOffButton.hidden = animated;
+        self.fullscreenOffButton.hidden = YES;
 		if (!IS_OS_7_OR_LATER) {
 			//adjust for status bar offset in iOS 6
 			CGRect bounds = self.view.window.bounds;
